@@ -99,7 +99,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Project dependencies -->
         <dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v4</artifactId>
@@ -112,13 +111,6 @@
             <version>${aerogear.android.core.version}</version>
             <type>apklib</type>
         </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <type>jar</type>
-        </dependency>
-
 
         <dependency>
             <groupId>org.jboss.aerogear</groupId>
@@ -134,6 +126,12 @@
             <version>${aerogear.crypto.version}</version>
             <scope>compile</scope>
             <classifier>android</classifier>
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
             <type>jar</type>
         </dependency>
 
