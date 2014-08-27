@@ -74,7 +74,9 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import static junit.framework.Assert.assertEquals;
+import org.jboss.aerogear.android.pipeline.MarshallingConfig;
 
 public class RestAdapterTest extends AndroidTestCase {
 
@@ -147,7 +149,10 @@ public class RestAdapterTest extends AndroidTestCase {
 
         PipeConfig config = new PipeConfig(url, ListClassId.class);
         config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
-        config.getRequestBuilder().getMarshallingConfig().setEncoding(utf_16);
+        MarshallingConfig marshallingConfig = config.getRequestBuilder().getMarshallingConfig();
+        marshallingConfig.setEncoding(utf_16);
+        marshallingConfig = config.getResponseParser().getMarshallingConfig();
+        marshallingConfig.setEncoding(utf_16);
         RestAdapter<ListClassId> restPipe = new RestAdapter<ListClassId>(ListClassId.class, url, config);
         Object restRunner = UnitTestUtils.getPrivateField(restPipe, "restRunner");
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory", new Provider<HttpProvider>() {
@@ -158,6 +163,7 @@ public class RestAdapterTest extends AndroidTestCase {
         });
 
         runRead(restPipe);
+
 
     }
 
@@ -208,7 +214,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
         PipeConfig config = new PipeConfig(url, ListClassId.class);
         config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
-        ((GsonRequestBuilder)config.getRequestBuilder()).getMarshallingConfig().setDataRoot("result.points");
+        config.getResponseParser().getMarshallingConfig().setDataRoot("result.points");
 
         RestAdapter<ListClassId> restPipe = new RestAdapter<ListClassId>(ListClassId.class, url, config);
 
@@ -390,9 +396,11 @@ public class RestAdapterTest extends AndroidTestCase {
     /**
      * This test tests the default paging configuration.
      *
-     * @throws java.lang.Exception aerogear-android breaks an exception may be thrown and recorded by JUnit
+     * @throws java.lang.NoSuchFieldException If this is thrown then the test is broken.
+     * @throws java.lang.IllegalAccessException If this is thrown then the test is broken.
+     * @throws java.lang.InterruptedException
      */
-    public void testLinkPagingReturnsData() throws Exception {
+    public void testLinkPagingReturnsData() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InterruptedException {
         Pipeline pipeline = new Pipeline(url);
 
         final HttpStubProvider provider = new HttpStubProvider(url, new HeaderAndBody(SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>()));
@@ -428,9 +436,9 @@ public class RestAdapterTest extends AndroidTestCase {
     /**
      * This test tests the default paging configuration.
      *
-     * @throws java.lang.Exception aerogear-android breaks an exception may be thrown and recorded by JUnit
      */
-    public void testDefaultPaging() throws Exception {
+   public void testDefaultPaging() throws InterruptedException, NoSuchFieldException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
+            URISyntaxException {
         Pipeline pipeline = new Pipeline(url);
 
         PageConfig pageConfig = new PageConfig();
@@ -466,7 +474,7 @@ public class RestAdapterTest extends AndroidTestCase {
         assertEquals(new URI("http://example.com/TheBook/chapter3"), pagedList.getNextFilter().getLinkUri());
         assertEquals(new URI("http://example.com/TheBook/chapter2"), pagedList.getPreviousFilter().getLinkUri());
     }
-
+   
     public void testBuildPagedResultsFromHeaders() throws Exception {
         PageConfig pageConfig = new PageConfig();
         pageConfig.setMetadataLocation(PageConfig.MetadataLocations.HEADERS);
@@ -483,11 +491,11 @@ public class RestAdapterTest extends AndroidTestCase {
             }
         });
         JSONObject where = new JSONObject();
-        Object restRunner = UnitTestUtils.getPrivateField(adapter, "restRunner");
-        Method method = restRunner.getClass().getDeclaredMethod("computePagedList", List.class, HeaderAndBody.class, JSONObject.class, Pipe.class);
+        
+        Method method = adapter.getClass().getDeclaredMethod("computePagedList", List.class, HeaderAndBody.class, JSONObject.class, Pipe.class);
         method.setAccessible(true);
 
-        WrappingPagedList<Data> pagedList = (WrappingPagedList<Data>) method.invoke(restRunner, list, response, where, adapter);
+        WrappingPagedList<Data> pagedList = (WrappingPagedList<Data>) method.invoke(adapter, list, response, where, adapter);
         assertEquals(new URI("http://server.com/context/chapter3"), pagedList.getNextFilter().getLinkUri());
         assertEquals(new URI("http://server.com/context/chapter2"), pagedList.getPreviousFilter().getLinkUri());
 
@@ -503,15 +511,14 @@ public class RestAdapterTest extends AndroidTestCase {
         config.setPageConfig(pageConfig);
 
         RestAdapter adapter = new RestAdapter(Data.class, url, config);
-        Object restRunner = UnitTestUtils.getPrivateField(adapter, "restRunner");
-
+        
         List<Data> list = new ArrayList<Data>();
         HeaderAndBody response = new HeaderAndBody("{\"pages\":{\"next\":\"chapter3\",\"previous\":\"chapter2\"}}".getBytes(), new HashMap<String, Object>());
         JSONObject where = new JSONObject();
-        Method method = restRunner.getClass().getDeclaredMethod("computePagedList", List.class, HeaderAndBody.class, JSONObject.class, Pipe.class);
+        Method method = adapter.getClass().getDeclaredMethod("computePagedList", List.class, HeaderAndBody.class, JSONObject.class, Pipe.class);
         method.setAccessible(true);
 
-        WrappingPagedList<Data> pagedList = (WrappingPagedList<Data>) method.invoke(restRunner, list, response, where, adapter);
+        WrappingPagedList<Data> pagedList = (WrappingPagedList<Data>) method.invoke(adapter, list, response, where, adapter);
         assertEquals(new URI("http://server.com/context/chapter3"), pagedList.getNextFilter().getLinkUri());
         assertEquals(new URI("http://server.com/context/chapter2"), pagedList.getPreviousFilter().getLinkUri());
 

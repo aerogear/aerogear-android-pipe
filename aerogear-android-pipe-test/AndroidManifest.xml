@@ -5,6 +5,8 @@
           package="org.jboss.aerogear.android.pipe">
 
     <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="19"/>
+    <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
+
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="org.jboss.aerogear.android.pipe" />
