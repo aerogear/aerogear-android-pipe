@@ -19,11 +19,12 @@ package org.jboss.aerogear.android.impl.pipeline;
 import android.app.Activity;
 import android.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.test.AndroidTestCase;
 import org.jboss.aerogear.android.impl.helper.UnitTestUtils;
 import org.jboss.aerogear.android.impl.pipeline.LoaderAdapter.CallbackHandler;
 import org.jboss.aerogear.android.impl.pipeline.loader.ReadLoader;
 import org.jboss.aerogear.android.impl.pipeline.loader.support.SupportReadLoader;
+import org.jboss.aerogear.android.impl.util.PatchedActivityInstrumentationTestCase;
+import org.jboss.aerogear.android.pipe.MainActivity;
 import org.jboss.aerogear.android.pipeline.AbstractActivityCallback;
 import org.jboss.aerogear.android.pipeline.AbstractFragmentCallback;
 import org.jboss.aerogear.android.pipeline.Pipe;
@@ -33,12 +34,16 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 
 @SuppressWarnings( { "unchecked", "rawtypes" })
-public class CallbackTest extends AndroidTestCase {
+public class CallbackTest extends PatchedActivityInstrumentationTestCase<MainActivity> {
+
+    public CallbackTest() {
+        super(MainActivity.class);
+    }
 
     public void testPassModernFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
         Fragment fragment = Mockito.mock(Fragment.class);
 
-        LoaderAdapter adapter = new LoaderAdapter(fragment, getContext(), mock(Pipe.class), "ignore");
+        LoaderAdapter adapter = new LoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
         VoidFragmentCallback fragmentCallback = new VoidFragmentCallback();
         ReadLoader loader = Mockito.mock(ReadLoader.class);
         Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);
@@ -54,7 +59,7 @@ public class CallbackTest extends AndroidTestCase {
     public void testFailSupportFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
         android.support.v4.app.Fragment fragment = Mockito.mock(android.support.v4.app.Fragment.class);
 
-        SupportLoaderAdapter adapter = new SupportLoaderAdapter(fragment, getContext(), mock(Pipe.class), "ignore");
+        SupportLoaderAdapter adapter = new SupportLoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
         VoidSupportFragmentCallback fragmentCallback = new VoidSupportFragmentCallback();
         SupportReadLoader loader = Mockito.mock(SupportReadLoader.class);
         Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);
@@ -106,7 +111,7 @@ public class CallbackTest extends AndroidTestCase {
     public void testPassSupportFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
         android.support.v4.app.Fragment fragment = Mockito.mock(android.support.v4.app.Fragment.class);
 
-        SupportLoaderAdapter adapter = new SupportLoaderAdapter(fragment, getContext(), mock(Pipe.class), "ignore");
+        SupportLoaderAdapter adapter = new SupportLoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
         VoidSupportFragmentCallback fragmentCallback = new VoidSupportFragmentCallback();
         SupportReadLoader loader = Mockito.mock(SupportReadLoader.class);
         Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);
@@ -122,7 +127,7 @@ public class CallbackTest extends AndroidTestCase {
     public void testFailModernFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
         Fragment fragment = Mockito.mock(Fragment.class);
 
-        LoaderAdapter adapter = new LoaderAdapter(fragment, getContext(), mock(Pipe.class), "ignore");
+        LoaderAdapter adapter = new LoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
         VoidFragmentCallback fragmentCallback = new VoidFragmentCallback();
         ReadLoader loader = Mockito.mock(ReadLoader.class);
         Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);

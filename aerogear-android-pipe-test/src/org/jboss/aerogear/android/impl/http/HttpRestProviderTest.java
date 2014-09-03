@@ -42,9 +42,10 @@ import org.jboss.aerogear.android.http.HttpException;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import android.test.AndroidTestCase;
+import org.jboss.aerogear.android.impl.util.PatchedActivityInstrumentationTestCase;
+import org.jboss.aerogear.android.pipe.MainActivity;
 
-public class HttpRestProviderTest extends AndroidTestCase {
+public class HttpRestProviderTest extends PatchedActivityInstrumentationTestCase<MainActivity> {
 
     private static final URL SIMPLE_URL;
     private static final String HEADER_KEY1_NAME = "KEY1";
@@ -71,6 +72,10 @@ public class HttpRestProviderTest extends AndroidTestCase {
         RESPONSE_HEADERS.get(HEADER_KEY1_NAME).add(HEADER_VALUE);
         RESPONSE_HEADERS.get(HEADER_KEY2_NAME).add(HEADER_VALUE);
 
+    }
+
+    public HttpRestProviderTest() {
+        super(MainActivity.class);
     }
 
     public void testGetFailsWith404() throws Exception {
