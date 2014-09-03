@@ -16,7 +16,7 @@ Until the 2.0 modules are stable and in Maven Central, we will need to build the
 
 ## Usage
 
-There are two supported ways of developing apps using AeroGear for Android. Development may be done with Maven and Android Studio. Maven and Android Studio feature good dependency and library management and are far easier to get set up and developing.
+There are two supported ways of developing apps using AeroGear for Android: Android Studio and Maven.
 
 ### Android Studio
 
@@ -73,5 +73,5 @@ Also takes some time and skim the [contributor guide](http://aerogear.org/docs/g
 
 ## Questions?
 
-Join our [user's mailing list](https://lists.jboss.org/mailman/listinfo/aerogear-users) for any questions and help! We really hope you enjoy app development with AeroGear!
+Join our [user mailing list](https://lists.jboss.org/mailman/listinfo/aerogear-users) for any questions or help! We really hope you enjoy app development with AeroGear!
 
