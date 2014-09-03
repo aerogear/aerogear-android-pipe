@@ -81,7 +81,8 @@ public class SupportLoaderAdapterTest extends
     private static final String SERIALIZED_POINTS = "{\"points\":[{\"x\":0,\"y\":0},{\"x\":1,\"y\":2},{\"x\":2,\"y\":4},{\"x\":3,\"y\":6},{\"x\":4,\"y\":8},{\"x\":5,\"y\":10},{\"x\":6,\"y\":12},{\"x\":7,\"y\":14},{\"x\":8,\"y\":16},{\"x\":9,\"y\":18}],\"id\":\"1\"}";
     private URL url;
 
-    public void setUp() throws MalformedURLException {
+    public void setUp() throws MalformedURLException, Exception {
+        super.setUp();
         url = new URL("http://server.com/context/");
     }
 

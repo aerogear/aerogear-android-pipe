@@ -92,7 +92,8 @@ public class RestAdapterTest extends AndroidTestCase {
     };
 
     @Override
-    public void setUp() throws MalformedURLException {
+    public void setUp() throws MalformedURLException, Exception {
+        super.setUp();
         url = new URL("http://server.com/context/");
     }
 

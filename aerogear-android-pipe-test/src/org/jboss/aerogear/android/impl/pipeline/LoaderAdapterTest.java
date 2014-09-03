@@ -1,18 +1,18 @@
 /**
- * JBoss, Home of Professional Open Source
- * Copyright Red Hat, Inc., and individual contributors.
+ * JBoss, Home of Professional Open Source Copyright Red Hat, Inc., and
+ * individual contributors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package org.jboss.aerogear.android.impl.pipeline;
 
@@ -80,7 +80,7 @@ import org.jboss.aerogear.android.pipeline.AbstractFragmentCallback;
 import org.mockito.Matchers;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-@SuppressWarnings( { "unchecked", "rawtypes" })
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<MainActivity> {
 
     public LoaderAdapterTest() {
@@ -92,7 +92,8 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     private static final String SERIALIZED_POINTS = "{\"points\":[{\"x\":0,\"y\":0},{\"x\":1,\"y\":2},{\"x\":2,\"y\":4},{\"x\":3,\"y\":6},{\"x\":4,\"y\":8},{\"x\":5,\"y\":10},{\"x\":6,\"y\":12},{\"x\":7,\"y\":14},{\"x\":8,\"y\":16},{\"x\":9,\"y\":18}],\"id\":\"1\"}";
     private URL url;
 
-    public void setUp() throws MalformedURLException {
+    public void setUp() throws MalformedURLException, Exception {
+        super.setUp();
         url = new URL("http://server.com/context/");
     }
 
@@ -368,7 +369,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     public void onFailure(Exception e) {
                         hasException.set(true);
                         Logger.getLogger(LoaderAdapterTest.class.getSimpleName())
-                                .log(Level.SEVERE, e.getMessage(), e);
+                        .log(Level.SEVERE, e.getMessage(), e);
                         latch.countDown();
                     }
                 });
@@ -417,7 +418,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     public void testMultipleCallsToLoadCallDeliver() {
         PipeHandler handler = mock(PipeHandler.class);
         final AtomicBoolean called = new AtomicBoolean(false);
-        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[] {}, new HashMap<String, Object>()));
+        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
         ReadLoader loader = new ReadLoader(getActivity(), null, handler, null, null) {
 
             @Override
@@ -447,7 +448,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     public void testMultipleCallsToSaveCallDeliver() {
         PipeHandler handler = mock(PipeHandler.class);
         final AtomicBoolean called = new AtomicBoolean(false);
-        when(handler.onRawSave(Matchers.anyString(), (byte[]) anyObject())).thenReturn(new HeaderAndBody(new byte[] {}, new HashMap<String, Object>()));
+        when(handler.onRawSave(Matchers.anyString(), (byte[]) anyObject())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
         SaveLoader loader = new SaveLoader(getActivity(), null, handler, null, null) {
 
             @Override
@@ -477,7 +478,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     public void testMultipleCallsToRemoveCallDeliver() {
         PipeHandler handler = mock(PipeHandler.class);
         final AtomicBoolean called = new AtomicBoolean(false);
-        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[] {}, new HashMap<String, Object>()));
+        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
 
         RemoveLoader loader = new RemoveLoader(getActivity(), null, handler, null) {
 
@@ -594,7 +595,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     public void onFailure(Exception e) {
                         hasException.set(true);
                         Logger.getLogger(LoaderAdapterTest.class.getSimpleName())
-                                .log(Level.SEVERE, e.getMessage(), e);
+                        .log(Level.SEVERE, e.getMessage(), e);
                         latch.countDown();
                     }
                 });
@@ -710,7 +711,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     public static class MultiPartData {
 
-        private byte[] byteArray = { 'a', 'b', 'c', 'd', 'e', 'f' };
+        private byte[] byteArray = {'a', 'b', 'c', 'd', 'e', 'f'};
         private InputStream inputStream = new ByteArrayInputStream(byteArray);
 
         @RecordId

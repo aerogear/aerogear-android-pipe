@@ -31,7 +31,8 @@ public class PipelineTest extends AndroidTestCase {
 
     private URL url;
 
-    public void setUp() throws MalformedURLException {
+    public void setUp() throws MalformedURLException, Exception {
+        super.setUp();
         url = new URL("http://server.com/context/");
     }
 
