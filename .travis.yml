@@ -33,6 +33,16 @@ before_install:
   - mvn install -N --quiet
   - cd -
 
+  #################################################
+  ############ Snapshot dependencies ##############
+  #################################################
+
+  # AeroGear Android Core
+  - git clone git://github.com/aerogear/aerogear-android-core.git
+  - cd $PWD/aerogear-android-core
+  - mvn install -N --quiet
+  - cd -
+
 before_script:
 
   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
