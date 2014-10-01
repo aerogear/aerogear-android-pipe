@@ -40,8 +40,8 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
     
     private List<PipeModule> modules = new ArrayList<PipeModule>();
     private PageConfig pageConfig;
-    private RequestBuilder requestBuilder;
-    private ResponseParser responseParser;
+    private RequestBuilder requestBuilder = new GsonRequestBuilder();
+    private ResponseParser responseParser = new GsonResponseParser();
     private PipeHandler handler = null;
     
     @Override
