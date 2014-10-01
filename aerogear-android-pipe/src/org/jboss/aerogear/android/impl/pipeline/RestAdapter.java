@@ -64,10 +64,6 @@ public final class RestAdapter<T> implements Pipe<T> {
      * deserializing.
      */
     private final Class<T> klass;
-    /**
-     * A class of the Generic collection type this pipe wraps. This is used by
-     * JSON for deserializing collections.
-     */
     private final URL url;
     private final PipeHandler<T> restRunner;
     private final RequestBuilder<T> requestBuilder;
@@ -100,7 +96,7 @@ public final class RestAdapter<T> implements Pipe<T> {
      * are ignored in deference to the absoluteURL parameter.
      */
     @SuppressWarnings("unchecked")
-    public RestAdapter(Class<T> klass, URL absoluteURL, PipeConfig config) {
+    public RestAdapter(Class<T> klass, URL absoluteURL, RestfulPipeConfiguration config) {
         this.klass = klass;
         this.url = absoluteURL;
 
@@ -108,8 +104,8 @@ public final class RestAdapter<T> implements Pipe<T> {
         this.requestBuilder = config.getRequestBuilder();
         this.responseParser = config.getResponseParser();
 
-        if (config.getHandler() != null) {
-            this.restRunner = (PipeHandler<T>) config.getHandler();
+        if (config.getPipeHandler() != null) {
+            this.restRunner = (PipeHandler<T>) config.getPipeHandler();
         } else {
             this.restRunner = new RestRunner<T>(klass, absoluteURL, config);
         }

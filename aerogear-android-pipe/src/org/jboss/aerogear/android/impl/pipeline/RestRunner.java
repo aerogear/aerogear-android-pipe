@@ -86,57 +86,6 @@ public class RestRunner<T> implements PipeHandler<T> {
         this.responseParser = new GsonResponseParser<T>();
     }
 
-    public RestRunner(Class<T> klass, URL baseURL,
-            PipeConfig config) {
-        this.klass = klass;
-        this.arrayKlass = ClassUtils.asArrayClass(klass);
-        this.baseURL = baseURL;
-        this.timeout = config.getTimeout();
-
-        if (config.getRequestBuilder() != null) {
-            this.requestBuilder = config.getRequestBuilder();
-        } else {
-            this.requestBuilder = new GsonRequestBuilder<T>();
-        }
-
-        if (config.getResponseParser() != null) {
-            this.responseParser = config.getResponseParser();
-        } else {
-            this.responseParser = new GsonResponseParser<T>();
-        }
-
-        if (config.getPageConfig() != null) {
-            this.pageConfig = config.getPageConfig();
-
-            if (pageConfig.getParameterProvider() != null) {
-                this.parameterProvider = pageConfig.getParameterProvider();
-            } else {
-                this.parameterProvider = new DefaultParameterProvider();
-            }
-
-            if (pageConfig.getPageParameterExtractor() == null) {
-                if (PageConfig.MetadataLocations.BODY.equals(pageConfig.getMetadataLocation())) {
-                    pageConfig.setPageParameterExtractor(new URIBodyPageParser(baseURL));
-                } else if (PageConfig.MetadataLocations.HEADERS.equals(pageConfig.getMetadataLocation())) {
-                    pageConfig.setPageParameterExtractor(new URIPageHeaderParser(baseURL));
-                }
-            }
-
-        } else {
-            this.pageConfig = null;
-            this.parameterProvider = new DefaultParameterProvider();
-        }
-
-        if (config.getAuthModule() != null) {
-            this.authModule = config.getAuthModule();
-        }
-
-        if (config.getAuthzModule() != null) {
-            this.authzModule = config.getAuthzModule();
-        }
-
-    }
-
     RestRunner(Class<T> klass, URL baseURL,
             RestfulPipeConfiguration config) {
         this.klass = klass;

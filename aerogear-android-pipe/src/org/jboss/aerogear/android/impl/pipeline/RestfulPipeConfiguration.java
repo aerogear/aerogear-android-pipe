@@ -26,6 +26,7 @@ import org.jboss.aerogear.android.code.PipeModule;
 import org.jboss.aerogear.android.impl.util.UrlUtils;
 import org.jboss.aerogear.android.pipeline.Pipe;
 import org.jboss.aerogear.android.pipeline.PipeConfiguration;
+import org.jboss.aerogear.android.pipeline.PipeHandler;
 import org.jboss.aerogear.android.pipeline.RequestBuilder;
 import org.jboss.aerogear.android.pipeline.ResponseParser;
 import org.jboss.aerogear.android.pipeline.paging.PageConfig;
@@ -42,6 +43,7 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
     private PageConfig pageConfig;
     private RequestBuilder requestBuilder;
     private ResponseParser responseParser;
+    private PipeHandler handler = null;
     
     @Override
     public String getName() {
@@ -98,6 +100,15 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
     public RestfulPipeConfiguration responseParser(ResponseParser responseParser) {
         this.responseParser = responseParser;
         return this;
+    }
+    
+    public RestfulPipeConfiguration pipeHandler(PipeHandler handler) {
+        this.handler = handler;
+        return this;
+    }
+    
+    public PipeHandler getPipeHandler() {
+        return this.handler;
     }
     
     Integer getTimeout() {
