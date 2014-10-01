@@ -23,7 +23,6 @@ import org.jboss.aerogear.android.Config;
 import org.jboss.aerogear.android.authentication.AuthenticationModule;
 import org.jboss.aerogear.android.authorization.AuthzModule;
 import org.jboss.aerogear.android.code.PipeModule;
-import org.jboss.aerogear.android.impl.util.UrlUtils;
 import org.jboss.aerogear.android.pipeline.Pipe;
 import org.jboss.aerogear.android.pipeline.PipeConfiguration;
 import org.jboss.aerogear.android.pipeline.PipeHandler;
@@ -123,10 +122,6 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
         return this.responseParser;
     }
 
-    public URL getAbsoluteURL() {
-        return UrlUtils.appendToBaseURL(url, name);
-    }
-
     public PageConfig getPageConfig() {
         return pageConfig;
     }
@@ -147,6 +142,10 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
             }
         }
         return null;
+    }
+
+    public URL getUrl() {
+        return url;
     }
 
 

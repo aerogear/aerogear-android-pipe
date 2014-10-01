@@ -120,7 +120,7 @@ public final class RestAdapter<T> implements Pipe<T> {
      */
     RestAdapter(Class<T> klass, RestfulPipeConfiguration configuration) {
         this.klass = klass;
-        this.url = configuration.getAbsoluteURL();
+        this.url = configuration.getUrl();
         this.pageConfig = configuration.getPageConfig();
         this.requestBuilder = configuration.getRequestBuilder();
         this.responseParser = configuration.getResponseParser();
