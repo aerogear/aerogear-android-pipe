@@ -43,12 +43,10 @@ import java.util.logging.Logger;
 import junit.framework.Assert;
 
 import org.jboss.aerogear.android.Callback;
-import org.jboss.aerogear.android.Pipeline;
 import org.jboss.aerogear.android.Provider;
 import org.jboss.aerogear.android.ReadFilter;
 import org.jboss.aerogear.android.RecordId;
 import org.jboss.aerogear.android.authentication.AuthenticationModule;
-import org.jboss.aerogear.android.authentication.AuthorizationFields;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.http.HttpProvider;
 import org.jboss.aerogear.android.impl.core.HttpProviderFactory;
@@ -76,7 +74,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import static junit.framework.Assert.assertEquals;
+import org.jboss.aerogear.android.code.ModuleFields;
 import org.jboss.aerogear.android.pipeline.MarshallingConfig;
+import org.jboss.aerogear.android.pipeline.PipeManager;
 
 public class RestAdapterTest extends AndroidTestCase {
 
@@ -113,7 +113,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
     public void testPipeFactoryPipeConfigEncoding() {
         try {
-            PipeConfig config = new PipeConfig(url, Data.class);
+            RestfulPipeConfiguration config = PipeManager.config("data", RestfulPipeConfiguration.class).withUrl(url);
             config.getRequestBuilder().getMarshallingConfig().setEncoding(Charset.forName("UTF-16"));
             assertEquals(Charset.forName("UTF-16"), config.getRequestBuilder().getMarshallingConfig().getEncoding());
             config.getRequestBuilder().getMarshallingConfig().setEncoding((Charset) null);
@@ -125,14 +125,13 @@ public class RestAdapterTest extends AndroidTestCase {
 
     public void testPipeFactoryPipeConfigGson() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
-
-        DefaultPipeFactory factory = new DefaultPipeFactory();
-        PipeConfig pc = new PipeConfig(url, ListClassId.class);
-
         GsonResponseParser<ListClassId> responseParser = new GsonResponseParser<ListClassId>(builder.create());
-        pc.setResponseParser(responseParser);
+        
+        RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class)
+                .withUrl(url)
+                .responseParser(responseParser);
 
-        Pipe<ListClassId> restPipe = factory.createPipe(ListClassId.class, pc);
+        Pipe<ListClassId> restPipe = config.forClass(ListClassId.class);
         Object restRunner = UnitTestUtils.getPrivateField(restPipe, "restRunner");
         Field gsonField = restRunner.getClass().getDeclaredField("responseParser");
         gsonField.setAccessible(true);
@@ -148,14 +147,17 @@ public class RestAdapterTest extends AndroidTestCase {
 
         final HttpStubProvider provider = new HttpStubProvider(url, new HeaderAndBody(SERIALIZED_POINTS.getBytes(utf_16), new HashMap<String, Object>()));
 
-        PipeConfig config = new PipeConfig(url, ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
+        RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class).requestBuilder(new GsonRequestBuilder(builder.create()));
+
         MarshallingConfig marshallingConfig = config.getRequestBuilder().getMarshallingConfig();
         marshallingConfig.setEncoding(utf_16);
         marshallingConfig = config.getResponseParser().getMarshallingConfig();
         marshallingConfig.setEncoding(utf_16);
+        
         RestAdapter<ListClassId> restPipe = new RestAdapter<ListClassId>(ListClassId.class, url, config);
+        
         Object restRunner = UnitTestUtils.getPrivateField(restPipe, "restRunner");
+        
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory", new Provider<HttpProvider>() {
             @Override
             public HttpProvider get(Object... in) {
@@ -173,13 +175,11 @@ public class RestAdapterTest extends AndroidTestCase {
                 Point.class, new RestAdapterTest.PointTypeAdapter());
         final Charset utf_16 = Charset.forName("UTF-16");
 
-        Pipeline pipeline = new Pipeline(url);
-        PipeConfig config = new PipeConfig(url, ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
-        config.getRequestBuilder().getMarshallingConfig().setEncoding(utf_16);
+        RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class);
+        config.withUrl(url).requestBuilder(new GsonRequestBuilder(builder.create()))
+        .getRequestBuilder().getMarshallingConfig().setEncoding(utf_16);
 
-        RestAdapter<ListClassId> restPipe = (RestAdapter<ListClassId>) pipeline
-                .pipe(ListClassId.class, config);
+        RestAdapter<ListClassId> restPipe = (RestAdapter<ListClassId>) config.forClass(ListClassId.class);
 
         assertEquals(utf_16, restPipe.getRequestBuilder().getMarshallingConfig().getEncoding());
 
@@ -190,8 +190,8 @@ public class RestAdapterTest extends AndroidTestCase {
         HeaderAndBody response = new HeaderAndBody(SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>());
         final HttpStubProvider provider = new HttpStubProvider(url, response);
 
-        PipeConfig config = new PipeConfig(url, ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
+        RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
+        config.requestBuilder(new GsonRequestBuilder(builder.create()));
 
         RestAdapter<ListClassId> restPipe = new RestAdapter<ListClassId>(ListClassId.class, url, config);
         Object restRunner = UnitTestUtils.getPrivateField(restPipe, "restRunner");
@@ -213,8 +213,8 @@ public class RestAdapterTest extends AndroidTestCase {
         HeaderAndBody response = new HeaderAndBody(("{\"result\":{\"points\":" + SERIALIZED_POINTS + "}}").getBytes(), new HashMap<String, Object>());
         final HttpStubProvider provider = new HttpStubProvider(url, response);
 
-        PipeConfig config = new PipeConfig(url, ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
+        RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
+        config.requestBuilder(new GsonRequestBuilder(builder.create()));
         config.getResponseParser().getMarshallingConfig().setDataRoot("result.points");
 
         RestAdapter<ListClassId> restPipe = new RestAdapter<ListClassId>(ListClassId.class, url, config);
@@ -238,8 +238,8 @@ public class RestAdapterTest extends AndroidTestCase {
         HeaderAndBody response = new HeaderAndBody((POINTS_ARRAY).getBytes(), new HashMap<String, Object>());
         final HttpStubProvider provider = new HttpStubProvider(url, response);
 
-        PipeConfig config = new PipeConfig(url, ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
+        RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
+        config.requestBuilder(new GsonRequestBuilder(builder.create()));
         config.getRequestBuilder().getMarshallingConfig().setDataRoot("");
 
         RestAdapter<Point> restPipe = new RestAdapter<Point>(Point.class, url, config);
@@ -284,8 +284,8 @@ public class RestAdapterTest extends AndroidTestCase {
             }
         };
 
-        PipeConfig config = new PipeConfig(url, ListClassId.class);
-        config.setResponseParser(new GsonResponseParser(builder.create()));
+        RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
+        config.responseParser(new GsonResponseParser(builder.create()));
 
         Pipe<ListClassId> restPipe = new RestAdapter<ListClassId>(ListClassId.class, url, config);
         Object restRunner = UnitTestUtils.getPrivateField(restPipe, "restRunner");
@@ -359,14 +359,14 @@ public class RestAdapterTest extends AndroidTestCase {
         HttpProviderFactory factory = mock(HttpProviderFactory.class);
         when(factory.get(anyObject())).thenReturn(mock(HttpProvider.class));
 
-        AuthorizationFields authFields = new AuthorizationFields();
+        ModuleFields authFields = new ModuleFields();
 
         AuthenticationModule urlModule = mock(AuthenticationModule.class);
         when(urlModule.isLoggedIn()).thenReturn(true);
-        when(urlModule.getAuthorizationFields((URI) anyObject(), (String) anyObject(), (byte[]) anyObject())).thenReturn(authFields);
+        when(urlModule.loadModule((URI) anyObject(), (String) anyObject(), (byte[]) anyObject())).thenReturn(authFields);
 
-        PipeConfig config = new PipeConfig(url, Data.class);
-        config.setAuthModule(urlModule);
+        RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
+        config.module(urlModule);
 
         RestAdapter<Data> adapter = new RestAdapter<Data>(Data.class, url, config);
         Object restRunner = UnitTestUtils.getPrivateField(adapter, "restRunner");
@@ -402,18 +402,18 @@ public class RestAdapterTest extends AndroidTestCase {
      * @throws java.lang.InterruptedException
      */
     public void testLinkPagingReturnsData() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InterruptedException {
-        Pipeline pipeline = new Pipeline(url);
+        
 
         final HttpStubProvider provider = new HttpStubProvider(url, new HeaderAndBody(SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>()));
 
         PageConfig pageConfig = new PageConfig();
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
 
-        PipeConfig pipeConfig = new PipeConfig(url, ListClassId.class);
-        pipeConfig.setRequestBuilder(new GsonRequestBuilder(builder.create()));
-        pipeConfig.setPageConfig(pageConfig);
+        RestfulPipeConfiguration pipeConfig = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
+        pipeConfig.requestBuilder(new GsonRequestBuilder(builder.create()));
+        pipeConfig.pageConfig(pageConfig);
 
-        Pipe<ListClassId> dataPipe = pipeline.pipe(ListClassId.class, pipeConfig);
+        Pipe<ListClassId> dataPipe = pipeConfig.forClass(ListClassId.class);
         Object restRunner = UnitTestUtils.getPrivateField(dataPipe, "restRunner");
 
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory", new Provider<HttpProvider>() {
@@ -440,16 +440,16 @@ public class RestAdapterTest extends AndroidTestCase {
      */
    public void testDefaultPaging() throws InterruptedException, NoSuchFieldException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
             URISyntaxException {
-        Pipeline pipeline = new Pipeline(url);
+        
 
         PageConfig pageConfig = new PageConfig();
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
 
-        PipeConfig pipeConfig = new PipeConfig(url, ListClassId.class);
-        pipeConfig.setRequestBuilder(new GsonRequestBuilder(builder.create()));
-        pipeConfig.setPageConfig(pageConfig);
+        RestfulPipeConfiguration pipeConfig = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
+        pipeConfig.requestBuilder(new GsonRequestBuilder(builder.create()));
+        pipeConfig.pageConfig(pageConfig);
 
-        Pipe<ListClassId> dataPipe = pipeline.pipe(ListClassId.class, pipeConfig);
+        Pipe<ListClassId> dataPipe = pipeConfig.forClass(ListClassId.class);
         Object restRunner = UnitTestUtils.getPrivateField(dataPipe, "restRunner");
 
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory", new Provider<HttpProvider>() {
@@ -480,8 +480,8 @@ public class RestAdapterTest extends AndroidTestCase {
         PageConfig pageConfig = new PageConfig();
         pageConfig.setMetadataLocation(PageConfig.MetadataLocations.HEADERS);
 
-        PipeConfig config = new PipeConfig(url, ListClassId.class);
-        config.setPageConfig(pageConfig);
+        RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
+        config.pageConfig(pageConfig);
 
         RestAdapter adapter = new RestAdapter(Data.class, url, config);
         List<Data> list = new ArrayList<Data>();
@@ -508,10 +508,10 @@ public class RestAdapterTest extends AndroidTestCase {
         pageConfig.setNextIdentifier("pages.next");
         pageConfig.setPreviousIdentifier("pages.previous");
 
-        PipeConfig config = new PipeConfig(url, ListClassId.class);
-        config.setPageConfig(pageConfig);
+        RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
+        config.pageConfig(pageConfig);
 
-        RestAdapter adapter = new RestAdapter(Data.class, url, config);
+        RestAdapter adapter = (RestAdapter) config.forClass(Data.class);
         
         List<Data> list = new ArrayList<Data>();
         HeaderAndBody response = new HeaderAndBody("{\"pages\":{\"next\":\"chapter3\",\"previous\":\"chapter2\"}}".getBytes(), new HashMap<String, Object>());
@@ -529,9 +529,9 @@ public class RestAdapterTest extends AndroidTestCase {
 
         final CountDownLatch latch = new CountDownLatch(1);
         URL aerogearserverUrl = new URL("https://controller-aerogear.rhcloud.com/aerogear-controller-demo/");
-        PipeConfig config = new PipeConfig(aerogearserverUrl, Data.class);
-        config.setTimeout(1);
-        RestAdapter<Data> adapter = new RestAdapter<Data>(Data.class, aerogearserverUrl, config);
+        RestfulPipeConfiguration pipeConfig = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(aerogearserverUrl);
+        pipeConfig.timeout(1);
+        RestAdapter<Data> adapter = (RestAdapter<Data>) pipeConfig.forClass(Data.class);
         final AtomicBoolean onFailCalled = new AtomicBoolean(false);
         final AtomicReference<Exception> exceptionReference = new AtomicReference<Exception>();
         adapter.read(new Callback<List<Data>>() {

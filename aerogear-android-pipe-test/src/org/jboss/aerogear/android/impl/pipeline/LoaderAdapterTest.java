@@ -40,7 +40,6 @@ import junit.framework.Assert;
 
 import org.jboss.aerogear.android.pipe.MainActivity;
 import org.jboss.aerogear.android.Callback;
-import org.jboss.aerogear.android.Pipeline;
 import org.jboss.aerogear.android.Provider;
 import org.jboss.aerogear.android.ReadFilter;
 import org.jboss.aerogear.android.RecordId;
@@ -77,6 +76,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.jboss.aerogear.android.impl.util.PatchedActivityInstrumentationTestCase;
 import org.jboss.aerogear.android.pipeline.AbstractFragmentCallback;
+import org.jboss.aerogear.android.pipeline.PipeManager;
 import org.mockito.Matchers;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -104,13 +104,11 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         HeaderAndBody response = new HeaderAndBody(
                 SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>());
         final HttpStubProvider provider = new HttpStubProvider(url, response);
-        PipeConfig config = new PipeConfig(url,
-                LoaderAdapterTest.ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
+        RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
 
-        Pipeline pipeline = new Pipeline(url);
-
-        Pipe<LoaderAdapterTest.ListClassId> restPipe = pipeline.pipe(LoaderAdapterTest.ListClassId.class, config);
+        Pipe<LoaderAdapterTest.ListClassId> restPipe = config.withUrl(url)
+                .requestBuilder(new GsonRequestBuilder(builder.create()))
+                .forClass(LoaderAdapterTest.ListClassId.class);
 
         Object restRunner = UnitTestUtils.getPrivateField(restPipe,
                 "restRunner");
@@ -122,7 +120,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = pipeline.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
 
         List<LoaderAdapterTest.ListClassId> result = runRead(adapter);
 
@@ -138,13 +136,13 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         HeaderAndBody response = new HeaderAndBody(
                 SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>());
         final HttpStubProvider provider = new HttpStubProvider(url, response);
-        PipeConfig config = new PipeConfig(url,
-                LoaderAdapterTest.ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
 
-        Pipeline pipeline = new Pipeline(url);
+        RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
 
-        Pipe<LoaderAdapterTest.ListClassId> restPipe = pipeline.pipe(LoaderAdapterTest.ListClassId.class, config);
+        Pipe<LoaderAdapterTest.ListClassId> restPipe = config.withUrl(url)
+                .requestBuilder(new GsonRequestBuilder(builder.create()))
+                .forClass(LoaderAdapterTest.ListClassId.class);
+
 
         Object restRunner = UnitTestUtils.getPrivateField(restPipe,
                 "restRunner");
@@ -156,7 +154,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = pipeline.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
 
         try {
             adapter.read(new AbstractFragmentCallback<List<LoaderAdapterTest.ListClassId>>() {
@@ -183,14 +181,12 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         HeaderAndBody response = new HeaderAndBody(
                 SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>());
         final HttpStubProvider provider = new HttpStubProvider(url, response);
-        PipeConfig config = new PipeConfig(url,
-                LoaderAdapterTest.ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
+        
+        RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
 
-        Pipeline pipeline = new Pipeline(url);
-
-        Pipe<LoaderAdapterTest.ListClassId> restPipe = pipeline.pipe(LoaderAdapterTest.ListClassId.class, config);
-
+        Pipe<LoaderAdapterTest.ListClassId> restPipe = config.withUrl(url)
+                .requestBuilder(new GsonRequestBuilder(builder.create()))
+                .forClass(LoaderAdapterTest.ListClassId.class);
         Object restRunner = UnitTestUtils.getPrivateField(restPipe,
                 "restRunner");
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory",
@@ -201,7 +197,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = pipeline.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
 
         try {
 
@@ -231,14 +227,13 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         HeaderAndBody response = new HeaderAndBody(
                 SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>());
         final HttpStubProvider provider = new HttpStubProvider(url, response);
-        PipeConfig config = new PipeConfig(url,
-                LoaderAdapterTest.ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
+        
+        RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
 
-        Pipeline pipeline = new Pipeline(url);
-
-        Pipe<LoaderAdapterTest.ListClassId> restPipe = pipeline.pipe(LoaderAdapterTest.ListClassId.class, config);
-
+        Pipe<LoaderAdapterTest.ListClassId> restPipe = config.withUrl(url)
+                .requestBuilder(new GsonRequestBuilder(builder.create()))
+                .forClass(LoaderAdapterTest.ListClassId.class);
+        
         Object restRunner = UnitTestUtils.getPrivateField(restPipe,
                 "restRunner");
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory",
@@ -249,7 +244,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = pipeline.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
 
         try {
             adapter.remove("1", new AbstractFragmentCallback<Void>() {
@@ -290,14 +285,12 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                                 new HashMap<String, Object>())
                 );
 
-        PipeConfig config = new PipeConfig(url,
-                LoaderAdapterTest.ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
+        RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
 
-        Pipeline pipeline = new Pipeline(url);
-
-        Pipe<LoaderAdapterTest.ListClassId> restPipe = pipeline.pipe(LoaderAdapterTest.ListClassId.class, config);
-
+        Pipe<LoaderAdapterTest.ListClassId> restPipe = config.withUrl(url)
+                .requestBuilder(new GsonRequestBuilder(builder.create()))
+                .forClass(LoaderAdapterTest.ListClassId.class);
+        
         Object restRunner = UnitTestUtils.getPrivateField(restPipe,
                 "restRunner");
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory",
@@ -308,7 +301,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = pipeline.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
 
         runSave(adapter);
 
@@ -333,14 +326,12 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                                 new HashMap<String, Object>())
                 );
 
-        PipeConfig config = new PipeConfig(url,
-                MultiPartData.class);
-        config.setRequestBuilder(new MultipartRequestBuilder());
+        RestfulPipeConfiguration config = PipeManager.config("MultiPartData", RestfulPipeConfiguration.class);
 
-        Pipeline pipeline = new Pipeline(url);
-
-        Pipe<MultiPartData> restPipe = pipeline.pipe(MultiPartData.class, config);
-
+        Pipe<MultiPartData> restPipe = config.withUrl(url)
+                .requestBuilder(new MultipartRequestBuilder())
+                .forClass(MultiPartData.class);
+        
         Object restRunner = UnitTestUtils.getPrivateField(restPipe,
                 "restRunner");
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory",
@@ -351,7 +342,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<MultiPartData> adapter = pipeline.get(config.getName(), getActivity());
+        LoaderPipe<MultiPartData> adapter = PipeManager.get(config.getName(), getActivity());
 
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicBoolean hasException = new AtomicBoolean(false);
@@ -389,14 +380,12 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         final HttpStubProvider provider = mock(HttpStubProvider.class);
         when(provider.getUrl()).thenReturn(url);
 
-        PipeConfig config = new PipeConfig(url,
-                LoaderAdapterTest.ListClassId.class);
-        config.setRequestBuilder(new GsonRequestBuilder(builder.create()));
+        RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
 
-        Pipeline pipeline = new Pipeline(url);
-
-        Pipe<LoaderAdapterTest.ListClassId> restPipe = pipeline.pipe(LoaderAdapterTest.ListClassId.class, config);
-
+        Pipe<LoaderAdapterTest.ListClassId> restPipe = config.withUrl(url)
+                .requestBuilder(new GsonRequestBuilder(builder.create()))
+                .forClass(LoaderAdapterTest.ListClassId.class);
+       
         Object restRunner = UnitTestUtils.getPrivateField(restPipe,
                 "restRunner");
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory",
@@ -407,7 +396,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = pipeline.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
 
         runRemove(adapter, "1");
 
@@ -611,11 +600,11 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         HttpProviderFactory factory = mock(HttpProviderFactory.class);
         when(factory.get(anyObject())).thenReturn(mock(HttpProvider.class));
 
-        PipeConfig config = new PipeConfig(url, Data.class);
-        config.setEndpoint("");
+        RestfulPipeConfiguration config = PipeManager.config("data", RestfulPipeConfiguration.class);
 
-        Pipeline pipeline = new Pipeline(url);
-        RestAdapter<Data> pipe = (RestAdapter<Data>) pipeline.pipe(Data.class, config);
+        Pipe<Data> pipe = config.withUrl(url)
+                .forClass(Data.class);
+        
         Object restRunner = UnitTestUtils.getPrivateField(pipe, "restRunner");
 
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory",
@@ -625,7 +614,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         filter.setLimit(10);
         filter.setWhere(new JSONObject("{\"model\":\"BMW\"}"));
 
-        LoaderAdapter<Data> adapter = (LoaderAdapter<Data>) pipeline.get("data", getActivity());
+        LoaderAdapter<Data> adapter = (LoaderAdapter<Data>) PipeManager.get("data", getActivity());
 
         adapter.read(filter, new Callback<List<Data>>() {
             private static final long serialVersionUID = 1L;
