@@ -1,5 +1,10 @@
 language: android
 
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+  - openjdk6
+
 notifications:
   irc: "irc.freenode.org#aerogear"
 
@@ -15,6 +20,11 @@ env:
       - ANDROID_SDKS=android-19 ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
 
 before_install:
+
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
   #################################################
   ########## maven-android-sdk-deployer ###########
@@ -42,11 +52,4 @@ before_install:
   - cd $PWD/aerogear-android-core
   - mvn install -N --quiet
   - cd -
-
-before_script:
-
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
 
