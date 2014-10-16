@@ -28,9 +28,8 @@
     <parent>
         <groupId>org.jboss.aerogear</groupId>
         <artifactId>aerogear-parent</artifactId>
-        <version>0.2.4</version>
+        <version>0.2.8</version>
     </parent>
-
 
     <modules>
         <module>aerogear-android-pipe</module>
@@ -45,20 +44,13 @@
     </scm>
 
     <properties>
-
         <!-- Project depencies versions -->
-        <aerogear.bom.version>0.2.5</aerogear.bom.version>
-        <android.version>4.4.2_r4</android.version>
+        <aerogear.bom.version>0.2.8</aerogear.bom.version>
         <aerogear.android.core.version>2.0.0-SNAPSHOT</aerogear.android.core.version>
         
-
-        <!-- Test dependencies -->
-        <junit.version>4.8.2</junit.version>
-        
         <!-- Plugins versions -->
-        <java.version>1.7</java.version>
         <maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
-        <maven.android.plugin.verson>3.8.0</maven.android.plugin.verson>
+        <maven.android.plugin.version>3.8.0</maven.android.plugin.version>
         <builder.helper.plugin.version>1.7</builder.helper.plugin.version>
 
         <!-- Android configs -->
@@ -69,7 +61,6 @@
     </properties>
 
     <dependencyManagement>
-
         <dependencies>
 
             <!-- AeroGear Dependencies BOM Imports -->
@@ -99,7 +90,6 @@
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <version>${android.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -143,16 +133,8 @@
                 <plugin>
                     <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                     <artifactId>android-maven-plugin</artifactId>
-                    <version>${maven.android.plugin.verson}</version>
+                    <version>${maven.android.plugin.version}</version>
                     <extensions>true</extensions>
-                    <configuration>
-                        <dex>
-                            <jvmArguments>
-                                <jvmArgument>-Xms256m</jvmArgument>
-                                <jvmArgument>-Xmx4096m</jvmArgument>
-                            </jvmArguments>
-                        </dex>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
