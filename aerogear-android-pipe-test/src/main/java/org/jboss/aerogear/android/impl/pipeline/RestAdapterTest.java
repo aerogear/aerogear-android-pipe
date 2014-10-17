@@ -77,6 +77,7 @@ import static junit.framework.Assert.assertEquals;
 import org.jboss.aerogear.android.code.ModuleFields;
 import org.jboss.aerogear.android.pipeline.MarshallingConfig;
 import org.jboss.aerogear.android.pipeline.PipeManager;
+import org.json.JSONArray;
 
 public class RestAdapterTest extends AndroidTestCase {
 
@@ -316,9 +317,12 @@ public class RestAdapterTest extends AndroidTestCase {
 
         latch.await(2, TimeUnit.SECONDS);
 
-        String expectedJSONString = new JSONObject(SERIALIZED_POINTS).toString();
-        String requestAsJSONString = new JSONObject(new String(request.toByteArray())).toString();
-        assertEquals(expectedJSONString, requestAsJSONString);
+        int expectedId = new JSONObject(SERIALIZED_POINTS).getInt("id");
+        JSONArray expectedPoints = new JSONObject(SERIALIZED_POINTS).getJSONArray("points");
+        int requestId = new JSONObject(new String(request.toByteArray())).getInt("id");
+        JSONArray requestPoints = new JSONObject(new String(request.toByteArray())).getJSONArray("points");
+        assertEquals(expectedId, requestId);
+        assertEquals(expectedPoints.toString(), requestPoints.toString());
         assertEquals(listClass.points, returnedPoints);
     }
 

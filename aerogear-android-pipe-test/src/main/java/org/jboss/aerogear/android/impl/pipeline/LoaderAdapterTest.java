@@ -38,7 +38,7 @@ import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
-import org.jboss.aerogear.android.pipe.MainActivity;
+import org.jboss.aerogear.android.pipe.test.MainActivity;
 import org.jboss.aerogear.android.Callback;
 import org.jboss.aerogear.android.Provider;
 import org.jboss.aerogear.android.ReadFilter;

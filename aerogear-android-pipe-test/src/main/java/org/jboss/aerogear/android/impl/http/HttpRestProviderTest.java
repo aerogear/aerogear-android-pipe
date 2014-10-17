@@ -43,7 +43,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import org.jboss.aerogear.android.impl.util.PatchedActivityInstrumentationTestCase;
-import org.jboss.aerogear.android.pipe.MainActivity;
+import org.jboss.aerogear.android.pipe.test.MainActivity;
 
 public class HttpRestProviderTest extends PatchedActivityInstrumentationTestCase<MainActivity> {
 

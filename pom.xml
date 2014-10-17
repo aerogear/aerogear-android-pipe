@@ -94,35 +94,20 @@
         </dependency>
 
         <dependency>
-            <groupId>android.support</groupId>
-            <artifactId>compatibility-v4</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.jboss.aerogear</groupId>
             <artifactId>aerogear-android-core</artifactId>
             <version>${aerogear.android.core.version}</version>
             <type>aar</type>
         </dependency>
-
+<!--
         <dependency>
             <groupId>org.jboss.aerogear</groupId>
             <artifactId>aerogear-android-core</artifactId>
             <version>${aerogear.android.core.version}</version>
             <type>jar</type>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
 
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <type>jar</type>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-        </dependency>
 
     </dependencies>
 

@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.jboss.aerogear.android.pipe.MainFragmentActivity;
+import org.jboss.aerogear.android.pipe.test.MainFragmentActivity;
 import org.jboss.aerogear.android.Provider;
 import org.jboss.aerogear.android.ReadFilter;
 import org.jboss.aerogear.android.RecordId;

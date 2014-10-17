@@ -14,11 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.aerogear.android.pipe;
+package org.jboss.aerogear.android.pipe.test;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import org.jboss.aerogear.android.pipe.test.R;
 
 public class MainActivity extends Activity {
 
