@@ -14,13 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.aerogear.android.impl.helper;
+package org.jboss.aerogear.android.pipe.test;
 
-import org.jboss.aerogear.android.RecordId;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import org.jboss.aerogear.android.pipe.test.R;
 
-public class DataWithNoPropertyId {
+public class MainFragmentActivity extends FragmentActivity {
 
-    @RecordId
-    private Integer id;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
 }

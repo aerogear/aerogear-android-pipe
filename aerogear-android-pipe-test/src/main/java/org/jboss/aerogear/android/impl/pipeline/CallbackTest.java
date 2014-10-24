@@ -24,7 +24,7 @@ import org.jboss.aerogear.android.impl.pipeline.LoaderAdapter.CallbackHandler;
 import org.jboss.aerogear.android.impl.pipeline.loader.ReadLoader;
 import org.jboss.aerogear.android.impl.pipeline.loader.support.SupportReadLoader;
 import org.jboss.aerogear.android.impl.util.PatchedActivityInstrumentationTestCase;
-import org.jboss.aerogear.android.pipe.MainActivity;
+import org.jboss.aerogear.android.pipe.test.MainActivity;
 import org.jboss.aerogear.android.pipeline.AbstractActivityCallback;
 import org.jboss.aerogear.android.pipeline.AbstractFragmentCallback;
 import org.jboss.aerogear.android.pipeline.Pipe;

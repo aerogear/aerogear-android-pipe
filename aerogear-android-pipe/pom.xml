@@ -21,7 +21,7 @@
     <groupId>org.jboss.aerogear</groupId>
     <artifactId>aerogear-android-pipe</artifactId>
     <version>2.0.0-SNAPSHOT</version>
-    <packaging>apklib</packaging>
+    <packaging>aar</packaging>
     <name>AeroGear Android Pipe Library</name>
     <url>http://aerogear.org</url>
 
@@ -38,8 +38,27 @@
         <tag>HEAD</tag>
     </scm>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>android.support</groupId>
+            <artifactId>compatibility-v4</artifactId>
+        </dependency>
+
+        
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
-        <sourceDirectory>src</sourceDirectory>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -99,15 +118,6 @@
                         <skip>${proguard.skip}</skip>
                     </proguard>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>aar</goal>
-                            <goal>apklib</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -121,10 +131,6 @@
                         </goals>
                         <configuration>
                             <artifacts>
-                                <artifact>
-                                    <type>aar</type>
-                                    <file>${project.build.directory}/${project.build.finalName}.aar</file>
-                                </artifact>
                                 <artifact>
                                     <type>jar</type>
                                     <file>${project.build.directory}/${project.build.finalName}.jar</file>
