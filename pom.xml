@@ -57,7 +57,6 @@
         <android.platform>19</android.platform>
         <android.debug>false</android.debug>
         <proguard.skip>true</proguard.skip>
-
     </properties>
 
     <dependencyManagement>
@@ -92,22 +91,6 @@
             <artifactId>android</artifactId>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.jboss.aerogear</groupId>
-            <artifactId>aerogear-android-core</artifactId>
-            <version>${aerogear.android.core.version}</version>
-            <type>aar</type>
-        </dependency>
-<!--
-        <dependency>
-            <groupId>org.jboss.aerogear</groupId>
-            <artifactId>aerogear-android-core</artifactId>
-            <version>${aerogear.android.core.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>-->
-
 
     </dependencies>
 
