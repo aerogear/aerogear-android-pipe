@@ -46,7 +46,6 @@ import org.jboss.aerogear.android.Callback;
 import org.jboss.aerogear.android.Provider;
 import org.jboss.aerogear.android.ReadFilter;
 import org.jboss.aerogear.android.RecordId;
-import org.jboss.aerogear.android.authentication.AuthenticationModule;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.http.HttpProvider;
 import org.jboss.aerogear.android.impl.core.HttpProviderFactory;
@@ -75,6 +74,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import static junit.framework.Assert.assertEquals;
 import org.jboss.aerogear.android.code.ModuleFields;
+import org.jboss.aerogear.android.code.PipeModule;
 import org.jboss.aerogear.android.pipeline.MarshallingConfig;
 import org.jboss.aerogear.android.pipeline.PipeManager;
 import org.json.JSONArray;
@@ -365,8 +365,8 @@ public class RestAdapterTest extends AndroidTestCase {
 
         ModuleFields authFields = new ModuleFields();
 
-        AuthenticationModule urlModule = mock(AuthenticationModule.class);
-        when(urlModule.isLoggedIn()).thenReturn(true);
+        PipeModule urlModule = mock(PipeModule.class);
+        
         when(urlModule.loadModule((URI) anyObject(), (String) anyObject(), (byte[]) anyObject())).thenReturn(authFields);
 
         RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
