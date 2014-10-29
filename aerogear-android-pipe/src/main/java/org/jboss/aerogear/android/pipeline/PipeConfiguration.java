@@ -19,6 +19,7 @@ package org.jboss.aerogear.android.pipeline;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import org.jboss.aerogear.android.Config;
 import org.jboss.aerogear.android.code.PipeModule;
 import org.jboss.aerogear.android.pipeline.paging.PageConfig;
@@ -146,6 +147,16 @@ public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<
      */
     public abstract CONFIGURATION module(PipeModule module);
 
+    
+    /**
+     * Modules are bits of functionality which are called during a Pipes 
+     * lifecycle.
+     * 
+     * @return the current List of Modules
+     */
+    public abstract List<PipeModule> getModules();
+
+    
     /**
      * Because of their async nature, Pipes need to have a timeout which will 
      * error if reached.

@@ -18,10 +18,9 @@ package org.jboss.aerogear.android.impl.pipeline;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.jboss.aerogear.android.Config;
-import org.jboss.aerogear.android.authentication.AuthenticationModule;
-import org.jboss.aerogear.android.authorization.AuthzModule;
 import org.jboss.aerogear.android.code.PipeModule;
 import org.jboss.aerogear.android.pipeline.Pipe;
 import org.jboss.aerogear.android.pipeline.PipeConfiguration;
@@ -78,6 +77,11 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
     }
 
     @Override
+    public List<PipeModule> getModules() {
+        return new ArrayList<PipeModule>(this.modules);
+    }
+    
+    @Override
     public RestfulPipeConfiguration timeout(Integer timeout) {
         this.timeout = timeout;
         return this;
@@ -126,27 +130,10 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
         return pageConfig;
     }
 
-    AuthenticationModule getAuthModule() {
-        for (PipeModule module : modules) {
-            if (module instanceof AuthenticationModule) {
-                return (AuthenticationModule) module;
-            }
-        }
-        return null;
-    }
-
-    AuthzModule getAuthzModule() {
-        for (PipeModule module : modules) {
-            if (module instanceof AuthzModule) {
-                return (AuthzModule) module;
-            }
-        }
-        return null;
-    }
-
     public URL getUrl() {
         return url;
     }
+
 
 
     
