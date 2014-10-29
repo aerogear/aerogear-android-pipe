@@ -168,7 +168,7 @@ public class RestRunner<T> implements PipeHandler<T> {
 
     }
 
-    private void addAuthHeaders(HttpProvider httpProvider, AuthorizationFields fields) {
+    private void addAuthHeaders(HttpProvider httpProvider, ModuleFields fields) {
         List<Pair<String, String>> authHeaders = fields.getHeaders();
 
         for (Pair<String, String> header : authHeaders) {
@@ -184,7 +184,7 @@ public class RestRunner<T> implements PipeHandler<T> {
     private HttpProvider getHttpProvider(URI relativeUri) {
         final String queryString;
 
-        AuthorizationFields fields = loadAuth(relativeUri, "GET");
+        ModuleFields fields = loadAuth(relativeUri, "GET");
 
         if (relativeUri == null || relativeUri.getQuery() == null) {
             queryString = "";
@@ -205,19 +205,28 @@ public class RestRunner<T> implements PipeHandler<T> {
     /**
      * Apply authentication if the token is present
      */
-    private AuthorizationFields loadAuth(URI relativeURI, String httpMethod) {
+    private ModuleFields loadAuth(URI relativeURI, String httpMethod) {
 
-        if (authModule != null && authModule.isLoggedIn()) {
-            ModuleFields fields = authModule.loadModule(relativeURI, httpMethod, new byte[] {});
-            AuthorizationFields authorizationFields = new AuthorizationFields();
-            authorizationFields.setHeaders(fields.getHeaders());
-            authorizationFields.setQueryParameters(fields.getQueryParameters());
-            return authorizationFields;
-        } else if (authzModule != null && authzModule.hasCredentials()) {
-            return authzModule.getAuthorizationFields(relativeURI, httpMethod, new byte[] {});
+        ModuleFields authFields = new ModuleFields();
+        
+        for (PipeModule module : modules) {
+            ModuleFields moduleFields = module.loadModule(relativeURI, httpMethod, new byte[] {});
+            if (!moduleFields.getHeaders().isEmpty()) {
+                for (Pair<String, String> header : moduleFields.getHeaders()) {
+                    authFields.addHeader(header.first, header.second);
+                }
+            }
+            
+            if (!moduleFields.getQueryParameters().isEmpty()) {
+                for (Pair<String, String> header : moduleFields.getQueryParameters()) {
+                    authFields.addQueryParameter(header.first, header.second);
+                }
+            }
+            
         }
-
-        return new AuthorizationFields();
+        
+        return authFields;
+        
     }
 
 
