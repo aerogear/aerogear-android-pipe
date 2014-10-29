@@ -18,7 +18,6 @@ package org.jboss.aerogear.android.impl.pipeline;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import org.jboss.aerogear.android.Config;
 import org.jboss.aerogear.android.code.PipeModule;
@@ -37,7 +36,7 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
     private String name;
     private Integer timeout = 60000;
     
-    private List<PipeModule> modules = new ArrayList<PipeModule>();
+    private final List<PipeModule> modules = new ArrayList<PipeModule>();
     private PageConfig pageConfig;
     private RequestBuilder requestBuilder = new GsonRequestBuilder();
     private ResponseParser responseParser = new GsonResponseParser();
