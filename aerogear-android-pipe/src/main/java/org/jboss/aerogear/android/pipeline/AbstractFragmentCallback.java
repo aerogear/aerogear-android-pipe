@@ -16,7 +16,6 @@
  */
 package org.jboss.aerogear.android.pipeline;
 
-import org.jboss.aerogear.android.authentication.AuthenticationModule;
 import org.jboss.aerogear.android.impl.pipeline.loader.AbstractPipeLoader;
 
 import android.app.Activity;
@@ -26,7 +25,7 @@ import com.google.common.base.Objects;
 
 /**
  *
- * {@link LoaderPipe} and {@link AuthenticationModule} instances which consume
+ * {@link LoaderPipe} which consume
  * callbacks of this type will supply it with a {@link Activity} instance before
  * onSuccess or onFailure are called. This should not be done by the user.
  *
