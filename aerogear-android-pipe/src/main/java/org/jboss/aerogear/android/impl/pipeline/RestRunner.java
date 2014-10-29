@@ -26,8 +26,6 @@ import java.util.List;
 
 import org.jboss.aerogear.android.Provider;
 import org.jboss.aerogear.android.ReadFilter;
-import org.jboss.aerogear.android.authentication.AuthenticationModule;
-import org.jboss.aerogear.android.authentication.AuthorizationFields;
 import org.jboss.aerogear.android.authorization.AuthzModule;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.http.HttpException;
@@ -49,7 +47,6 @@ import android.util.Pair;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.http.HttpStatus;
 import org.jboss.aerogear.android.code.ModuleFields;
 import org.jboss.aerogear.android.code.PipeModule;
 import org.jboss.aerogear.android.impl.util.ClassUtils;
@@ -259,14 +256,6 @@ public class RestRunner<T> implements PipeHandler<T> {
     protected RequestBuilder<T> getRequestBuilder() {
         return requestBuilder;
     }
-
-    private boolean retryAuth(AuthenticationModule authModule) {
-        return authModule != null && authModule.handleError(null);
-    }
-
-    private boolean retryAuthz(AuthzModule authzModule) {
-        return authzModule != null && authzModule.isAuthorized() && authzModule.refreshAccess();
-    }
     
     @Override
     public HeaderAndBody onRawRead(Pipe<T> requestingPipe) {
@@ -297,17 +286,16 @@ public class RestRunner<T> implements PipeHandler<T> {
 
         try {
             httpResponse = httpProvider.get();
+            return httpResponse;
         } catch (HttpException exception) {
-            //TODO: After modularization this should look over modules and pass in the httpException.
-            if ((exception.getStatusCode() == HttpStatus.SC_UNAUTHORIZED
-                    || exception.getStatusCode() == HttpStatus.SC_FORBIDDEN) && (retryAuth(authModule) || retryAuthz(authzModule))) {
-                httpResponse = httpProvider.get();
-            } else {
-                throw exception;
+            for (PipeModule module : modules) {
+                if (module.handleError(exception)) {
+                    httpResponse = httpProvider.get();
+                    return httpResponse;
+                }
             }
+            throw exception;
         }
-
-        return httpResponse;
     }
 
     @Override
