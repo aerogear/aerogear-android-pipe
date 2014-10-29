@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.jboss.aerogear.android.Provider;
 import org.jboss.aerogear.android.ReadFilter;
-import org.jboss.aerogear.android.authorization.AuthzModule;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.http.HttpException;
 import org.jboss.aerogear.android.http.HttpProvider;
