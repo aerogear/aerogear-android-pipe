@@ -46,9 +46,12 @@ import org.jboss.aerogear.android.pipeline.paging.ParameterProvider;
 
 import android.util.Log;
 import android.util.Pair;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.http.HttpStatus;
 import org.jboss.aerogear.android.code.ModuleFields;
+import org.jboss.aerogear.android.code.PipeModule;
 import org.jboss.aerogear.android.impl.util.ClassUtils;
 
 public class RestRunner<T> implements PipeHandler<T> {
@@ -71,8 +74,7 @@ public class RestRunner<T> implements PipeHandler<T> {
     private final Provider<HttpProvider> httpProviderFactory = new HttpProviderFactory();
     private final Integer timeout;
     private final ResponseParser<T> responseParser;
-    private AuthenticationModule authModule;
-    private AuthzModule authzModule;
+    private Set<PipeModule> modules = new HashSet<PipeModule>();
     
 
     public RestRunner(Class<T> klass, URL baseURL) {
@@ -127,14 +129,8 @@ public class RestRunner<T> implements PipeHandler<T> {
             this.parameterProvider = new DefaultParameterProvider();
         }
 
-        if (config.getAuthModule() != null) {
-            this.authModule = config.getAuthModule();
-        }
-
-        if (config.getAuthzModule() != null) {
-            this.authzModule = config.getAuthzModule();
-        }
-
+        this.modules.addAll(config.getModules());
+        
     }
     
     @Override
@@ -224,10 +220,6 @@ public class RestRunner<T> implements PipeHandler<T> {
         return new AuthorizationFields();
     }
 
-    
-    public void setAuthenticationModule(AuthenticationModule module) {
-        this.authModule = module;
-    }
 
     private URL appendQuery(String query, URL baseURL) {
         try {
@@ -260,7 +252,7 @@ public class RestRunner<T> implements PipeHandler<T> {
     }
 
     private boolean retryAuth(AuthenticationModule authModule) {
-        return authModule != null && authModule.isLoggedIn() && authModule.handleError(null);
+        return authModule != null && authModule.handleError(null);
     }
 
     private boolean retryAuthz(AuthzModule authzModule) {
