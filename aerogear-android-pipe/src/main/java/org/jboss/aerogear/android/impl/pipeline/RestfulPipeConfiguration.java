@@ -56,8 +56,8 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
     }
 
     @Override
-    public <DATA> Pipe<DATA> buildPipeForClass(Class<DATA> aClass) {
-        if (url == null) {
+    protected <DATA> Pipe<DATA> buildPipeForClass(Class<DATA> aClass) {
+        if (this.url == null) {
             throw new IllegalStateException("url may not be null");
         }
         
