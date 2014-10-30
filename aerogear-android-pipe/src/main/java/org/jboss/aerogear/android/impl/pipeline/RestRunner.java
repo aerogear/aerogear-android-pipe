@@ -26,9 +26,6 @@ import java.util.List;
 
 import org.jboss.aerogear.android.Provider;
 import org.jboss.aerogear.android.ReadFilter;
-import org.jboss.aerogear.android.authentication.AuthenticationModule;
-import org.jboss.aerogear.android.authentication.AuthorizationFields;
-import org.jboss.aerogear.android.authorization.AuthzModule;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.http.HttpException;
 import org.jboss.aerogear.android.http.HttpProvider;
@@ -46,9 +43,11 @@ import org.jboss.aerogear.android.pipeline.paging.ParameterProvider;
 
 import android.util.Log;
 import android.util.Pair;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.apache.http.HttpStatus;
 import org.jboss.aerogear.android.code.ModuleFields;
+import org.jboss.aerogear.android.code.PipeModule;
 import org.jboss.aerogear.android.impl.util.ClassUtils;
 
 public class RestRunner<T> implements PipeHandler<T> {
@@ -71,8 +70,7 @@ public class RestRunner<T> implements PipeHandler<T> {
     private final Provider<HttpProvider> httpProviderFactory = new HttpProviderFactory();
     private final Integer timeout;
     private final ResponseParser<T> responseParser;
-    private AuthenticationModule authModule;
-    private AuthzModule authzModule;
+    private Set<PipeModule> modules = new HashSet<PipeModule>();
     
 
     public RestRunner(Class<T> klass, URL baseURL) {
@@ -127,14 +125,8 @@ public class RestRunner<T> implements PipeHandler<T> {
             this.parameterProvider = new DefaultParameterProvider();
         }
 
-        if (config.getAuthModule() != null) {
-            this.authModule = config.getAuthModule();
-        }
-
-        if (config.getAuthzModule() != null) {
-            this.authzModule = config.getAuthzModule();
-        }
-
+        this.modules.addAll(config.getModules());
+        
     }
     
     @Override
@@ -172,7 +164,7 @@ public class RestRunner<T> implements PipeHandler<T> {
 
     }
 
-    private void addAuthHeaders(HttpProvider httpProvider, AuthorizationFields fields) {
+    private void addAuthHeaders(HttpProvider httpProvider, ModuleFields fields) {
         List<Pair<String, String>> authHeaders = fields.getHeaders();
 
         for (Pair<String, String> header : authHeaders) {
@@ -188,7 +180,7 @@ public class RestRunner<T> implements PipeHandler<T> {
     private HttpProvider getHttpProvider(URI relativeUri) {
         final String queryString;
 
-        AuthorizationFields fields = loadAuth(relativeUri, "GET");
+        ModuleFields fields = loadAuth(relativeUri, "GET");
 
         if (relativeUri == null || relativeUri.getQuery() == null) {
             queryString = "";
@@ -209,25 +201,30 @@ public class RestRunner<T> implements PipeHandler<T> {
     /**
      * Apply authentication if the token is present
      */
-    private AuthorizationFields loadAuth(URI relativeURI, String httpMethod) {
+    private ModuleFields loadAuth(URI relativeURI, String httpMethod) {
 
-        if (authModule != null && authModule.isLoggedIn()) {
-            ModuleFields fields = authModule.loadModule(relativeURI, httpMethod, new byte[] {});
-            AuthorizationFields authorizationFields = new AuthorizationFields();
-            authorizationFields.setHeaders(fields.getHeaders());
-            authorizationFields.setQueryParameters(fields.getQueryParameters());
-            return authorizationFields;
-        } else if (authzModule != null && authzModule.hasCredentials()) {
-            return authzModule.getAuthorizationFields(relativeURI, httpMethod, new byte[] {});
+        ModuleFields authFields = new ModuleFields();
+        
+        for (PipeModule module : modules) {
+            ModuleFields moduleFields = module.loadModule(relativeURI, httpMethod, new byte[] {});
+            if (!moduleFields.getHeaders().isEmpty()) {
+                for (Pair<String, String> header : moduleFields.getHeaders()) {
+                    authFields.addHeader(header.first, header.second);
+                }
+            }
+            
+            if (!moduleFields.getQueryParameters().isEmpty()) {
+                for (Pair<String, String> header : moduleFields.getQueryParameters()) {
+                    authFields.addQueryParameter(header.first, header.second);
+                }
+            }
+            
         }
-
-        return new AuthorizationFields();
+        
+        return authFields;
+        
     }
 
-    
-    public void setAuthenticationModule(AuthenticationModule module) {
-        this.authModule = module;
-    }
 
     private URL appendQuery(String query, URL baseURL) {
         try {
@@ -257,14 +254,6 @@ public class RestRunner<T> implements PipeHandler<T> {
 
     protected RequestBuilder<T> getRequestBuilder() {
         return requestBuilder;
-    }
-
-    private boolean retryAuth(AuthenticationModule authModule) {
-        return authModule != null && authModule.isLoggedIn() && authModule.handleError(null);
-    }
-
-    private boolean retryAuthz(AuthzModule authzModule) {
-        return authzModule != null && authzModule.isAuthorized() && authzModule.refreshAccess();
     }
     
     @Override
@@ -296,17 +285,16 @@ public class RestRunner<T> implements PipeHandler<T> {
 
         try {
             httpResponse = httpProvider.get();
+            return httpResponse;
         } catch (HttpException exception) {
-            //TODO: After modularization this should look over modules and pass in the httpException.
-            if ((exception.getStatusCode() == HttpStatus.SC_UNAUTHORIZED
-                    || exception.getStatusCode() == HttpStatus.SC_FORBIDDEN) && (retryAuth(authModule) || retryAuthz(authzModule))) {
-                httpResponse = httpProvider.get();
-            } else {
-                throw exception;
+            for (PipeModule module : modules) {
+                if (module.handleError(exception)) {
+                    httpResponse = httpProvider.get();
+                    return httpResponse;
+                }
             }
+            throw exception;
         }
-
-        return httpResponse;
     }
 
     @Override

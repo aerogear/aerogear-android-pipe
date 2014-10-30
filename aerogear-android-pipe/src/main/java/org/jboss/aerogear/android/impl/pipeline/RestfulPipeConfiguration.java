@@ -20,8 +20,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.jboss.aerogear.android.Config;
-import org.jboss.aerogear.android.authentication.AuthenticationModule;
-import org.jboss.aerogear.android.authorization.AuthzModule;
 import org.jboss.aerogear.android.code.PipeModule;
 import org.jboss.aerogear.android.pipeline.Pipe;
 import org.jboss.aerogear.android.pipeline.PipeConfiguration;
@@ -38,7 +36,7 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
     private String name;
     private Integer timeout = 60000;
     
-    private List<PipeModule> modules = new ArrayList<PipeModule>();
+    private final List<PipeModule> modules = new ArrayList<PipeModule>();
     private PageConfig pageConfig;
     private RequestBuilder requestBuilder = new GsonRequestBuilder();
     private ResponseParser responseParser = new GsonResponseParser();
@@ -77,6 +75,11 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
         return this;
     }
 
+    @Override
+    public List<PipeModule> getModules() {
+        return new ArrayList<PipeModule>(this.modules);
+    }
+    
     @Override
     public RestfulPipeConfiguration timeout(Integer timeout) {
         this.timeout = timeout;
@@ -126,27 +129,10 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
         return pageConfig;
     }
 
-    AuthenticationModule getAuthModule() {
-        for (PipeModule module : modules) {
-            if (module instanceof AuthenticationModule) {
-                return (AuthenticationModule) module;
-            }
-        }
-        return null;
-    }
-
-    AuthzModule getAuthzModule() {
-        for (PipeModule module : modules) {
-            if (module instanceof AuthzModule) {
-                return (AuthzModule) module;
-            }
-        }
-        return null;
-    }
-
     public URL getUrl() {
         return url;
     }
+
 
 
     
