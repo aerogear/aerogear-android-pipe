@@ -4,7 +4,7 @@
           android:versionName="1.0"
           package="org.jboss.aerogear.android.pipe.test">
 
-    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="19"/>
+    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="19"/>
     <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
 
     <instrumentation
