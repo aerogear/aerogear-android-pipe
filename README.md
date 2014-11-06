@@ -8,7 +8,7 @@ AeroGear uses a Pipe metaphor for connecting to a remote web service.
 
 ## Building
 
-Until the 2.0 modules are stable and in Maven Central, we will need to build the projects first. Please take a look of the [step by step on our website](http://aerogear.org/docs/guides/aerogear-android/HowToBuildAeroGearAndroidLibrary/). 
+Until the 2.0 modules are stable and in Maven Central, we will need to build the projects first. Please take a look of the [step by step on our website](http://aerogear.org/docs/guides/aerogear-android/how-to-build-aerogear-android/). 
 
 *The following dependencies are required to build this project:*
 
