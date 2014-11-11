@@ -33,7 +33,7 @@ import org.jboss.aerogear.android.pipeline.support.AbstractSupportFragmentCallba
 import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 
-@SuppressWarnings( { "unchecked", "rawtypes" })
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class CallbackTest extends PatchedActivityInstrumentationTestCase<MainActivity> {
 
     public CallbackTest() {

@@ -29,9 +29,9 @@ import org.jboss.aerogear.android.http.HeaderAndBody;
 /**
  * This class performs a read operation on behalf of a Pipe using the Loader
  * infrastructure.
- *
+ * 
  * As a Loader it will retain a reference it its result until reset() is called.
- *
+ * 
  */
 public class SupportReadLoader<T> extends AbstractSupportPipeLoader<List<T>> {
 
@@ -40,7 +40,6 @@ public class SupportReadLoader<T> extends AbstractSupportPipeLoader<List<T>> {
     private final ReadFilter filter;
     private final Pipe<T> requestingPipe;
 
-
     public SupportReadLoader(Context context, Callback<List<T>> callback, PipeHandler<T> runner, ReadFilter filter, Pipe<T> pipe) {
         super(context, callback);
         this.filter = filter;
@@ -48,7 +47,7 @@ public class SupportReadLoader<T> extends AbstractSupportPipeLoader<List<T>> {
         this.requestingPipe = pipe;
     }
 
-     @Override
+    @Override
     public HeaderAndBody loadInBackground() {
         try {
             return (result = runner.onRawReadWithFilter(filter, requestingPipe));

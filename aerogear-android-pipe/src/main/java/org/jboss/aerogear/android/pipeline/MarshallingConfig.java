@@ -29,9 +29,9 @@ public class MarshallingConfig {
 
     /**
      * Encoding is the data encoding of the http body.
-     *
+     * 
      * Default is "UTF-8"
-     *
+     * 
      * @return the current encoding.
      */
     public Charset getEncoding() {
@@ -40,9 +40,9 @@ public class MarshallingConfig {
 
     /**
      * Encoding is the data encoding of the http body.
-     *
+     * 
      * Default is "UTF-8"
-     *
+     * 
      * @param encoding a new encoding to set
      * @throws IllegalArgumentException if encoding is null
      */
@@ -56,8 +56,9 @@ public class MarshallingConfig {
     /**
      * DataRoot refers to the dotted location of the result we are interested in
      * from the JSON response from the server.
-     *
+     * 
      * For example:
+     * 
      * <pre>
      * {
      * "speakers": {
@@ -68,10 +69,10 @@ public class MarshallingConfig {
      *  }
      * }
      * </pre>
-     *
+     * 
      * A DataRoot of "speakers.data" would make the pipe pass a List using the
      * array of speakers to the onSuccess method of callback.
-     *
+     * 
      * @return the current DataRoot
      */
     public String getDataRoot() {
@@ -81,8 +82,9 @@ public class MarshallingConfig {
     /**
      * DataRoot refers to the dotted location of the result we are interested in
      * from the JSON response from the server.
-     *
+     * 
      * For example:
+     * 
      * <pre>
      * {
      * "speakers": {
@@ -93,12 +95,12 @@ public class MarshallingConfig {
      *  }
      * }
      * </pre>
-     *
+     * 
      * A DataRoot of "speakers.data" would make the pipe pass a List using the
      * array of speakers to the onSuccess method of callback.
-     *
+     * 
      * @param dataRoot the root element that the response data will be found
-     * under.
+     *            under.
      */
     public void setDataRoot(String dataRoot) {
         this.dataRoot = dataRoot;

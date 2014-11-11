@@ -70,7 +70,7 @@ import org.mockito.Matchers;
 import static org.mockito.Matchers.anyObject;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-@SuppressWarnings( { "unchecked", "rawtypes" })
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class SupportLoaderAdapterTest extends
         PatchedActivityInstrumentationTestCase<MainFragmentActivity> {
 
@@ -98,7 +98,6 @@ public class SupportLoaderAdapterTest extends
         Pipe<SupportLoaderAdapterTest.ListClassId> restPipe = config.withUrl(url)
                 .requestBuilder(new GsonRequestBuilder(builder.create()))
                 .forClass(SupportLoaderAdapterTest.ListClassId.class);
-      
 
         Object restRunner = UnitTestUtils.getPrivateField(restPipe,
                 "restRunner");
@@ -138,7 +137,7 @@ public class SupportLoaderAdapterTest extends
         HeaderAndBody response = new HeaderAndBody(
                 SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>());
         final HttpStubProvider provider = new HttpStubProvider(url, response);
-        
+
         RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
 
         Pipe<SupportLoaderAdapterTest.ListClassId> restPipe = config.withUrl(url)
@@ -182,14 +181,13 @@ public class SupportLoaderAdapterTest extends
         HeaderAndBody response = new HeaderAndBody(
                 SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>());
         final HttpStubProvider provider = new HttpStubProvider(url, response);
-        
+
         RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
 
         Pipe<SupportLoaderAdapterTest.ListClassId> restPipe = config.withUrl(url)
                 .requestBuilder(new GsonRequestBuilder(builder.create()))
                 .forClass(SupportLoaderAdapterTest.ListClassId.class);
 
-        
         Object restRunner = UnitTestUtils.getPrivateField(restPipe,
                 "restRunner");
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory",
@@ -228,13 +226,12 @@ public class SupportLoaderAdapterTest extends
         HeaderAndBody response = new HeaderAndBody(
                 SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>());
         final HttpStubProvider provider = new HttpStubProvider(url, response);
-        
+
         RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
 
         Pipe<SupportLoaderAdapterTest.ListClassId> restPipe = config.withUrl(url)
                 .requestBuilder(new GsonRequestBuilder(builder.create()))
                 .forClass(SupportLoaderAdapterTest.ListClassId.class);
-
 
         Object restRunner = UnitTestUtils.getPrivateField(restPipe,
                 "restRunner");

@@ -49,7 +49,7 @@ public class PageConfig {
      * MetadataLocation indicates whether paging information is received from
      * the response header, the response body (body) or via RFC 5988
      * (webLinking), which is the default
-     *
+     * 
      * @return the current location
      */
     public MetadataLocation getMetadataLocation() {
@@ -60,7 +60,7 @@ public class PageConfig {
      * MetadataLocation indicates whether paging information is received from
      * the response header, the response body (body) or via RFC 5988
      * (webLinking), which is the default
-     *
+     * 
      * @param metadataLocation a different metaDataLocation
      */
     public void setMetadataLocation(MetadataLocation metadataLocation) {
@@ -70,7 +70,7 @@ public class PageConfig {
     /**
      * NextIdentifier names the element containing data for the next page
      * (default: next)
-     *
+     * 
      * @return the current identifier
      */
     public String getNextIdentifier() {
@@ -82,7 +82,7 @@ public class PageConfig {
      * (default: next)
      * 
      * @param nextIdentifier names the element containing data for the next page
-     * (default: next)
+     *            (default: next)
      * 
      */
     public void setNextIdentifier(String nextIdentifier) {
@@ -92,7 +92,7 @@ public class PageConfig {
     /**
      * PreviousIdentifier names the element containing data for the previous
      * page (default: previous)
-     *
+     * 
      * @return the current identifier
      */
     public String getPreviousIdentifier() {
@@ -102,9 +102,9 @@ public class PageConfig {
     /**
      * PreviousIdentifier names the element containing data for the previous
      * page (default: previous)
-     *
+     * 
      * @param previousIdentifier the element containing data for the previous
-     * page (default: previous)
+     *            page (default: previous)
      */
     public void setPreviousIdentifier(String previousIdentifier) {
         this.previousIdentifier = previousIdentifier;
@@ -113,7 +113,7 @@ public class PageConfig {
     /**
      * OffsetValue is the offset of the first element that should be included in
      * the returned collection (default: 0)
-     *
+     * 
      * @return the current offset
      */
     public String getOffsetValue() {
@@ -123,9 +123,9 @@ public class PageConfig {
     /**
      * OffsetValue is the offset of the first element that should be included in
      * the returned collection (default: 0)
-     *
+     * 
      * @param offsetValue the first element that should be included in
-     * the returned collection (default: 0)
+     *            the returned collection (default: 0)
      */
     public void setOffsetValue(String offsetValue) {
         this.offsetValue = offsetValue;
@@ -134,7 +134,7 @@ public class PageConfig {
     /**
      * LimitValue is the maximum number of results the server should return
      * (default: 10)
-     *
+     * 
      * @return the current limit
      */
     public Integer getLimitValue() {
@@ -144,7 +144,7 @@ public class PageConfig {
     /**
      * LimitValue is the maximum number of results the server should return
      * (default: 10)
-     *
+     * 
      * @param limitValue a new Limit value
      */
     public void setLimitValue(Integer limitValue) {
@@ -152,9 +152,8 @@ public class PageConfig {
     }
 
     /**
-     * The {@link ParameterProvider} for paging. Defaults to
-     * {@link DefaultParameterProvider}
-     *
+     * The {@link ParameterProvider} for paging. Defaults to {@link DefaultParameterProvider}
+     * 
      * @return the current provider
      */
     public ParameterProvider getParameterProvider() {
@@ -162,9 +161,8 @@ public class PageConfig {
     }
 
     /**
-     * The {@link ParameterProvider} for paging. Defaults to
-     * {@link DefaultParameterProvider}
-     *
+     * The {@link ParameterProvider} for paging. Defaults to {@link DefaultParameterProvider}
+     * 
      * @param parameterProvider a new provider
      */
     public void setParameterProvider(ParameterProvider parameterProvider) {
@@ -175,7 +173,7 @@ public class PageConfig {
      * PageParameterExtractor is the a {@link PageParameterExtractor} which
      * parses the response and provides data to a Pipe for the "next" and
      * "previous" pages.
-     *
+     * 
      * The default value depends on the current setting of MetadataLocation.
      * 
      * @return the current PageParameterExtractor
@@ -188,7 +186,7 @@ public class PageConfig {
      * PageParameterExtractor is the a {@link PageParameterExtractor} which
      * parses the response and provides data to a Pipe for the "next" and
      * "previous" pages.
-     *
+     * 
      * The default value depends on the current setting of MetadataLocation.
      * 
      * @param pageParameterExtractor an new Extractor

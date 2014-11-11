@@ -50,9 +50,9 @@ public class HttpRestProviderTest extends PatchedActivityInstrumentationTestCase
     private static final URL SIMPLE_URL;
     private static final String HEADER_KEY1_NAME = "KEY1";
     private static final String HEADER_KEY2_NAME = "KEY2";
-    private static final byte[] RESPONSE_DATA = "12345".getBytes();/*Not real data*/
+    private static final byte[] RESPONSE_DATA = "12345".getBytes();/* Not real data */
 
-    private static final String REQUEST_DATA = "12345";/*Not real data*/
+    private static final String REQUEST_DATA = "12345";/* Not real data */
 
     private static final Map<String, List<String>> RESPONSE_HEADERS;
     private static final String HEADER_VALUE = "VALUE";

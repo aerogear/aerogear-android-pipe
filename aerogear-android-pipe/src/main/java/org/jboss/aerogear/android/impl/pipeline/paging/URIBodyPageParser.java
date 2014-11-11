@@ -31,7 +31,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 /**
- * This class assumes the response body paging properties are URI's and parses them 
+ * This class assumes the response body paging properties are URI's and parses them
  * accordingly.
  */
 public class URIBodyPageParser implements PageParameterExtractor<PageConfig> {

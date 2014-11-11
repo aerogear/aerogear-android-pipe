@@ -127,7 +127,7 @@ public class RestAdapterTest extends AndroidTestCase {
     public void testPipeFactoryPipeConfigGson() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
         GsonResponseParser<ListClassId> responseParser = new GsonResponseParser<ListClassId>(builder.create());
-        
+
         RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class)
                 .withUrl(url)
                 .responseParser(responseParser);
@@ -154,11 +154,11 @@ public class RestAdapterTest extends AndroidTestCase {
         marshallingConfig.setEncoding(utf_16);
         marshallingConfig = config.getResponseParser().getMarshallingConfig();
         marshallingConfig.setEncoding(utf_16);
-        
+
         RestAdapter<ListClassId> restPipe = new RestAdapter<ListClassId>(ListClassId.class, url, config);
-        
+
         Object restRunner = UnitTestUtils.getPrivateField(restPipe, "restRunner");
-        
+
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory", new Provider<HttpProvider>() {
             @Override
             public HttpProvider get(Object... in) {
@@ -167,7 +167,6 @@ public class RestAdapterTest extends AndroidTestCase {
         });
 
         runRead(restPipe);
-
 
     }
 
@@ -178,7 +177,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
         RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class);
         config.withUrl(url).requestBuilder(new GsonRequestBuilder(builder.create()))
-        .getRequestBuilder().getMarshallingConfig().setEncoding(utf_16);
+                .getRequestBuilder().getMarshallingConfig().setEncoding(utf_16);
 
         RestAdapter<ListClassId> restPipe = (RestAdapter<ListClassId>) config.forClass(ListClassId.class);
 
@@ -366,7 +365,7 @@ public class RestAdapterTest extends AndroidTestCase {
         ModuleFields authFields = new ModuleFields();
 
         PipeModule urlModule = mock(PipeModule.class);
-        
+
         when(urlModule.loadModule((URI) anyObject(), (String) anyObject(), (byte[]) anyObject())).thenReturn(authFields);
 
         RestfulPipeConfiguration config = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(url);
@@ -400,13 +399,12 @@ public class RestAdapterTest extends AndroidTestCase {
 
     /**
      * This test tests the default paging configuration.
-     *
+     * 
      * @throws java.lang.NoSuchFieldException If this is thrown then the test is broken.
      * @throws java.lang.IllegalAccessException If this is thrown then the test is broken.
      * @throws java.lang.InterruptedException
      */
     public void testLinkPagingReturnsData() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InterruptedException {
-        
 
         final HttpStubProvider provider = new HttpStubProvider(url, new HeaderAndBody(SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>()));
 
@@ -440,11 +438,10 @@ public class RestAdapterTest extends AndroidTestCase {
 
     /**
      * This test tests the default paging configuration.
-     *
+     * 
      */
-   public void testDefaultPaging() throws InterruptedException, NoSuchFieldException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
+    public void testDefaultPaging() throws InterruptedException, NoSuchFieldException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
             URISyntaxException {
-        
 
         PageConfig pageConfig = new PageConfig();
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
@@ -479,7 +476,7 @@ public class RestAdapterTest extends AndroidTestCase {
         assertEquals(new URI("http://example.com/TheBook/chapter3"), pagedList.getNextFilter().getLinkUri());
         assertEquals(new URI("http://example.com/TheBook/chapter2"), pagedList.getPreviousFilter().getLinkUri());
     }
-   
+
     public void testBuildPagedResultsFromHeaders() throws Exception {
         PageConfig pageConfig = new PageConfig();
         pageConfig.setMetadataLocation(PageConfig.MetadataLocations.HEADERS);
@@ -496,7 +493,7 @@ public class RestAdapterTest extends AndroidTestCase {
             }
         });
         JSONObject where = new JSONObject();
-        
+
         Method method = adapter.getClass().getDeclaredMethod("computePagedList", List.class, HeaderAndBody.class, JSONObject.class, Pipe.class);
         method.setAccessible(true);
 
@@ -516,7 +513,7 @@ public class RestAdapterTest extends AndroidTestCase {
         config.pageConfig(pageConfig);
 
         RestAdapter adapter = (RestAdapter) config.forClass(Data.class);
-        
+
         List<Data> list = new ArrayList<Data>();
         HeaderAndBody response = new HeaderAndBody("{\"pages\":{\"next\":\"chapter3\",\"previous\":\"chapter2\"}}".getBytes(), new HashMap<String, Object>());
         JSONObject where = new JSONObject();
@@ -563,7 +560,7 @@ public class RestAdapterTest extends AndroidTestCase {
     /**
      * Runs a read method, returns the result of the call back and makes sure no
      * exceptions are thrown
-     *
+     * 
      * @param restPipe
      */
     private <T> List<T> runRead(Pipe<T> restPipe, ReadFilter readFilter) throws InterruptedException {
@@ -595,7 +592,7 @@ public class RestAdapterTest extends AndroidTestCase {
     /**
      * Runs a read method, returns the result of the call back and rethrows the
      * underlying exception
-     *
+     * 
      * @param restPipe
      */
     private <T> List<T> runReadForException(Pipe<T> restPipe, ReadFilter readFilter) throws InterruptedException, Exception {

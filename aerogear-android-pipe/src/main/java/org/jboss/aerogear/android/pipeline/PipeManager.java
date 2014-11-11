@@ -29,15 +29,14 @@ import org.jboss.aerogear.android.impl.pipeline.LoaderAdapter;
 import org.jboss.aerogear.android.impl.pipeline.SupportLoaderAdapter;
 
 /**
- * A Manager which handles the registration of configurations and references to 
+ * A Manager which handles the registration of configurations and references to
  * created pipes.
  */
 public class PipeManager {
 
     private static Map<String, Pipe<?>> pipes = new HashMap<String, Pipe<?>>();
 
-    private static Map<Class<? extends PipeConfiguration<?>>, ConfigurationProvider<?>>
-            configurationProviderMap = new HashMap<Class<? extends PipeConfiguration<?>>, ConfigurationProvider<?>>();
+    private static Map<Class<? extends PipeConfiguration<?>>, ConfigurationProvider<?>> configurationProviderMap = new HashMap<Class<? extends PipeConfiguration<?>>, ConfigurationProvider<?>>();
 
     private static OnPipeCreatedListener onPipeCreatedListener = new OnPipeCreatedListener() {
         @Override
@@ -52,13 +51,13 @@ public class PipeManager {
     }
 
     private static final Map<String, List<Integer>> loaderIdsForNamed = new HashMap<String, List<Integer>>();
-    
+
     private PipeManager() {
     }
 
     /**
      * 
-     * This will add a new Configuration that this Manager can build 
+     * This will add a new Configuration that this Manager can build
      * Configurations for.
      * 
      * @param <CFG> the actual Configuration type
@@ -74,18 +73,18 @@ public class PipeManager {
      * Begins a new fluent configuration stanza.
      * 
      * @param <CFG> the Configuration type.
-     * @param name an identifier which will be used to fetch the Pipe after 
-     * configuration is finished. See : {@link PipeManager#getPipe(java.lang.String) }
+     * @param name an identifier which will be used to fetch the Pipe after
+     *            configuration is finished. See : {@link PipeManager#getPipe(java.lang.String) }
      * @param pipeConfigurationClass the class of the configuration type.
-     *
+     * 
      * @return a PipeConfiguration which can be used to build a Pipe object.
-     */            
+     */
     public static <CFG extends PipeConfiguration<CFG>> CFG config(String name, Class<CFG> pipeConfigurationClass) {
 
         @SuppressWarnings("unchecked")
         ConfigurationProvider<? extends PipeConfiguration<CFG>> provider =
                 (ConfigurationProvider<? extends PipeConfiguration<CFG>>)
-                        configurationProviderMap.get(pipeConfigurationClass);
+                configurationProviderMap.get(pipeConfigurationClass);
 
         if (provider == null) {
             throw new IllegalArgumentException("Configuration not registered!");
@@ -99,19 +98,18 @@ public class PipeManager {
 
     /**
      * Fetches a named pipe
+     * 
      * @param name the name of the Pipe given in {@link PipeManager#config(java.lang.String, java.lang.Class) }
-     *
+     * 
      * @return the named Pipe or null
      */
     public static Pipe getPipe(String name) {
         return pipes.get(name);
     }
 
-    
-
     /**
-     * Look up for a pipe object.  This will wrap the Pipe in a Loader.
-     *
+     * Look up for a pipe object. This will wrap the Pipe in a Loader.
+     * 
      * @param name the name of the actual pipe
      * @param activity the activity whose lifecycle the loader will follow
      * @return the new created Pipe object
@@ -125,8 +123,8 @@ public class PipeManager {
     }
 
     /**
-     * Look up for a pipe object.  This will wrap the Pipe in a Loader.
-     *
+     * Look up for a pipe object. This will wrap the Pipe in a Loader.
+     * 
      * @param name the name of the actual pipe
      * @param fragment the Fragment whose lifecycle the activity will follow
      * @param applicationContext the Context of the application.
@@ -142,8 +140,8 @@ public class PipeManager {
     }
 
     /**
-     * Look up for a pipe object.  This will wrap the Pipe in a Loader.
-     *
+     * Look up for a pipe object. This will wrap the Pipe in a Loader.
+     * 
      * @param name the name of the actual pipe
      * @param activity the activity whose lifecycle the loader will follow
      * @return the new created Pipe object
@@ -157,8 +155,8 @@ public class PipeManager {
     }
 
     /**
-     * Look up for a pipe object.  This will wrap the Pipe in a Loader.
-     *
+     * Look up for a pipe object. This will wrap the Pipe in a Loader.
+     * 
      * @param name the name of the actual pipe
      * @param fragment the Fragment whose lifecycle the activity will follow
      * @param applicationContext the Context of the application.

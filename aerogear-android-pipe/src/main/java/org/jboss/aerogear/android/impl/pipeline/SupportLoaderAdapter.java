@@ -54,12 +54,12 @@ import org.jboss.aerogear.android.pipeline.AbstractFragmentCallback;
 
 /**
  * This class wraps a Pipe in an asynchronous Loader.
- *
+ * 
  * This classes uses Loaders from android.support. If you do not need to support
  * Android devices &lt; version 3.0, consider using {@link LoaderAdapter}
- *
+ * 
  */
-@SuppressWarnings( { "rawtypes", "unchecked" })
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.LoaderCallbacks<HeaderAndBody> {
 
     private static final String TAG = SupportLoaderAdapter.class.getSimpleName();
@@ -120,7 +120,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     @Override
     public void read(Callback<List<T>> callback) {
-        int id = Arrays.hashCode(new Object[]{name, callback});
+        int id = Arrays.hashCode(new Object[] { name, callback });
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
@@ -131,7 +131,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     @Override
     public void read(ReadFilter filter, Callback<List<T>> callback) {
-        int id = Arrays.hashCode(new Object[]{name, filter, callback});
+        int id = Arrays.hashCode(new Object[] { name, filter, callback });
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(FILTER, filter);
@@ -141,7 +141,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     @Override
     public void save(T item, Callback<T> callback) {
-        int id = Arrays.hashCode(new Object[]{name, item, callback});
+        int id = Arrays.hashCode(new Object[] { name, item, callback });
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(ITEM, requestBuilder.getBody(item));
@@ -152,7 +152,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     @Override
     public void remove(String toRemoveId, Callback<Void> callback) {
-        int id = Arrays.hashCode(new Object[]{name, toRemoveId, callback});
+        int id = Arrays.hashCode(new Object[] { name, toRemoveId, callback });
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(REMOVE_ID, toRemoveId);
@@ -187,7 +187,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
             byte[] data = bundle.getByteArray(ITEM);
             String dataId = bundle.getString(SAVE_ID);
             loader = new SupportSaveLoader(applicationContext, callback,
-                        pipe.getHandler(), data, dataId);
+                    pipe.getHandler(), data, dataId);
         }
             break;
         }
@@ -268,7 +268,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<HeaderAndBody> loader) {
-        //Gotta do something, though I don't know what
+        // Gotta do something, though I don't know what
     }
 
     @Override
@@ -342,7 +342,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
             throw new IllegalStateException("An AbstractFragmentCallback was supplied, but this is the support Loader.");
         }
     }
-    
+
     private synchronized void addId(String name, int id) {
         List<Integer> ids = this.idsForNamedPipes.get(name);
         if (ids == null) {
@@ -350,5 +350,5 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
         }
         ids.add(id);
     }
-    
+
 }

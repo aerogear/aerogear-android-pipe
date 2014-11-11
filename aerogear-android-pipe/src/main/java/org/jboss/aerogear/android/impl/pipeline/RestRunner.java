@@ -71,7 +71,6 @@ public class RestRunner<T> implements PipeHandler<T> {
     private final Integer timeout;
     private final ResponseParser<T> responseParser;
     private Set<PipeModule> modules = new HashSet<PipeModule>();
-    
 
     public RestRunner(Class<T> klass, URL baseURL) {
         this.klass = klass;
@@ -126,9 +125,9 @@ public class RestRunner<T> implements PipeHandler<T> {
         }
 
         this.modules.addAll(config.getModules());
-        
+
     }
-    
+
     @Override
     public void onRemove(String id) {
         HttpProvider httpProvider = getHttpProvider();
@@ -136,7 +135,7 @@ public class RestRunner<T> implements PipeHandler<T> {
     }
 
     /**
-     *
+     * 
      * @param queryParameters
      * @return a url with query params added
      */
@@ -204,7 +203,7 @@ public class RestRunner<T> implements PipeHandler<T> {
     private ModuleFields loadAuth(URI relativeURI, String httpMethod) {
 
         ModuleFields authFields = new ModuleFields();
-        
+
         for (PipeModule module : modules) {
             ModuleFields moduleFields = module.loadModule(relativeURI, httpMethod, new byte[] {});
             if (!moduleFields.getHeaders().isEmpty()) {
@@ -212,19 +211,18 @@ public class RestRunner<T> implements PipeHandler<T> {
                     authFields.addHeader(header.first, header.second);
                 }
             }
-            
+
             if (!moduleFields.getQueryParameters().isEmpty()) {
                 for (Pair<String, String> header : moduleFields.getQueryParameters()) {
                     authFields.addQueryParameter(header.first, header.second);
                 }
             }
-            
-        }
-        
-        return authFields;
-        
-    }
 
+        }
+
+        return authFields;
+
+    }
 
     private URL appendQuery(String query, URL baseURL) {
         try {
@@ -255,7 +253,7 @@ public class RestRunner<T> implements PipeHandler<T> {
     protected RequestBuilder<T> getRequestBuilder() {
         return requestBuilder;
     }
-    
+
     @Override
     public HeaderAndBody onRawRead(Pipe<T> requestingPipe) {
         return onRawReadWithFilter(new ReadFilter(), requestingPipe);
@@ -279,7 +277,6 @@ public class RestRunner<T> implements PipeHandler<T> {
 
     }
 
-    
     private HeaderAndBody runHttpGet(HttpProvider httpProvider) {
         HeaderAndBody httpResponse;
 

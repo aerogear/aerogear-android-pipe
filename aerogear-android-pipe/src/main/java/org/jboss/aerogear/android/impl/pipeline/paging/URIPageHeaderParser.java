@@ -28,7 +28,7 @@ import org.jboss.aerogear.android.pipeline.paging.PageParameterExtractor;
 import android.util.Log;
 
 /**
- * This class assumes the header responses in a response are URI's and parses them 
+ * This class assumes the header responses in a response are URI's and parses them
  * accordingly.
  */
 public class URIPageHeaderParser implements PageParameterExtractor {

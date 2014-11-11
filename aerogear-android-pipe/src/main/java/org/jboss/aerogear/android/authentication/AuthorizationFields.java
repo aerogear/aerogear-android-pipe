@@ -22,7 +22,7 @@ import java.util.List;
 import android.util.Pair;
 
 /**
- * This class wraps up fields which need to be applied to a 
+ * This class wraps up fields which need to be applied to a
  * request to ensure it can be securely consumed.
  * 
  * Fields on this class are defensively copied.
@@ -45,7 +45,7 @@ public final class AuthorizationFields {
 
     /**
      * 
-     * @param queryParameters  may not be null
+     * @param queryParameters may not be null
      * @throws IllegalArgumentException if queryParameters is null
      */
     public void setQueryParameters(List<Pair<String, String>> queryParameters) {

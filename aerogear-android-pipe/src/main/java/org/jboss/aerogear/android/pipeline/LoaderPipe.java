@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Sometimes a Pipe will actually be wrapped in a Loader.  Classes which do so 
+ * Sometimes a Pipe will actually be wrapped in a Loader. Classes which do so
  * implement this interface and have certain methods like reset exposed.
  */
 public interface LoaderPipe<T> extends Pipe<T> {
@@ -61,7 +61,7 @@ public interface LoaderPipe<T> extends Pipe<T> {
     public void reset();
 
     /**
-     * Passes in a multimap of ids for the named pipe.  LoaderPipe should manage this collection.
+     * Passes in a multimap of ids for the named pipe. LoaderPipe should manage this collection.
      * 
      * @param idsForNamedPipes A map of all LoaderIds for pipes hased by their name
      */

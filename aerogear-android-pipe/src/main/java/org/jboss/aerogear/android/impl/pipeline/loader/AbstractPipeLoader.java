@@ -27,7 +27,7 @@ import org.jboss.aerogear.android.http.HeaderAndBody;
  * This class maintains references to the callback to be called when a Loader
  * supporting a Pipe's operation completes. It also contains a reference to any
  * exception which may have been thrown.
- *
+ * 
  * This class and its subclasses use the Loaders from android.content and will
  * NOT work on devices &lt; Android 3.0. If your application needs to support
  * these devices see {@link AbstractSupportPipeLoader}

@@ -31,17 +31,17 @@ import org.jboss.aerogear.android.pipeline.paging.PageConfig;
 /**
  * Configures a Pipe which interacts with RESTful endpoints.
  */
-public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfiguration> implements Config<RestfulPipeConfiguration>{
+public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfiguration> implements Config<RestfulPipeConfiguration> {
     private URL url;
     private String name;
     private Integer timeout = 60000;
-    
+
     private final List<PipeModule> modules = new ArrayList<PipeModule>();
     private PageConfig pageConfig;
     private RequestBuilder requestBuilder = new GsonRequestBuilder();
     private ResponseParser responseParser = new GsonResponseParser();
     private PipeHandler handler = null;
-    
+
     @Override
     public String getName() {
         return name;
@@ -58,9 +58,9 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
         if (this.url == null) {
             throw new IllegalStateException("url may not be null");
         }
-        
+
         return new RestAdapter<DATA>(aClass, this);
-        
+
     }
 
     @Override
@@ -79,7 +79,7 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
     public List<PipeModule> getModules() {
         return new ArrayList<PipeModule>(this.modules);
     }
-    
+
     @Override
     public RestfulPipeConfiguration timeout(Integer timeout) {
         this.timeout = timeout;
@@ -103,16 +103,16 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
         this.responseParser = responseParser;
         return this;
     }
-    
+
     public RestfulPipeConfiguration pipeHandler(PipeHandler handler) {
         this.handler = handler;
         return this;
     }
-    
+
     public PipeHandler getPipeHandler() {
         return this.handler;
     }
-    
+
     Integer getTimeout() {
         return timeout;
     }
@@ -133,7 +133,4 @@ public class RestfulPipeConfiguration extends PipeConfiguration<RestfulPipeConfi
         return url;
     }
 
-
-
-    
 }

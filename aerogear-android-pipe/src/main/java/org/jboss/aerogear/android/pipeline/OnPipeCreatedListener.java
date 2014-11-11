@@ -20,11 +20,10 @@ package org.jboss.aerogear.android.pipeline;
  * A Listener called when pipes are created.
  */
 public interface OnPipeCreatedListener {
-    
+
     /**
      * 
-     * A method called when Pipes are created.  Typically this will be done from 
-     * {@link PipeConfiguration#forClass(java.lang.Class) }
+     * A method called when Pipes are created. Typically this will be done from {@link PipeConfiguration#forClass(java.lang.Class) }
      * 
      * @param configuration the configuration of the new Pipe
      * @param pipe the new Pipe
