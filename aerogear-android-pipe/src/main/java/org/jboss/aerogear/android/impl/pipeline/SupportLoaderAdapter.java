@@ -43,9 +43,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import java.util.ArrayList;
 
-import com.google.common.collect.Multimap;
 import java.util.Arrays;
+import java.util.Map;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.impl.reflection.Scan;
 import org.jboss.aerogear.android.pipeline.AbstractActivityCallback;
@@ -63,7 +64,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     private static final String TAG = SupportLoaderAdapter.class.getSimpleName();
 
-    private Multimap<String, Integer> idsForNamedPipes;
+    private Map<String, List<Integer>> idsForNamedPipes;
     private final Fragment fragment;
     private final FragmentActivity activity;
     private final Handler handler;
@@ -166,7 +167,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     @Override
     public Loader<HeaderAndBody> onCreateLoader(int id, Bundle bundle) {
-        this.idsForNamedPipes.put(name, id);
+        addId(name, id);
         Methods method = (Methods) bundle.get(METHOD);
         Callback callback = (Callback) bundle.get(CALLBACK);
         verifyCallback(callback);
@@ -278,11 +279,11 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
                 manager.destroyLoader(id);
             }
         }
-        idsForNamedPipes.removeAll(name);
+        idsForNamedPipes.put(name, new ArrayList<Integer>());
     }
 
     @Override
-    public void setLoaderIds(Multimap<String, Integer> idsForNamedPipes) {
+    public void setLoaderIds(Map<String, List<Integer>> idsForNamedPipes) {
         this.idsForNamedPipes = idsForNamedPipes;
     }
 
@@ -341,4 +342,13 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
             throw new IllegalStateException("An AbstractFragmentCallback was supplied, but this is the support Loader.");
         }
     }
+    
+    private synchronized void addId(String name, int id) {
+        List<Integer> ids = this.idsForNamedPipes.get(name);
+        if (ids == null) {
+            this.idsForNamedPipes.put(name, (ids = new ArrayList<Integer>()));
+        }
+        ids.add(id);
+    }
+    
 }

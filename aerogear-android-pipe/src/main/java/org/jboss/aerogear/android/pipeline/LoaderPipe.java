@@ -16,7 +16,8 @@
  */
 package org.jboss.aerogear.android.pipeline;
 
-import com.google.common.collect.Multimap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Sometimes a Pipe will actually be wrapped in a Loader.  Classes which do so 
@@ -64,6 +65,6 @@ public interface LoaderPipe<T> extends Pipe<T> {
      * 
      * @param idsForNamedPipes A map of all LoaderIds for pipes hased by their name
      */
-    public void setLoaderIds(Multimap<String, Integer> idsForNamedPipes);
+    public void setLoaderIds(Map<String, List<Integer>> idsForNamedPipes);
 
 }

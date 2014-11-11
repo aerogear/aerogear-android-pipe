@@ -45,10 +45,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import java.util.ArrayList;
 
 
-import com.google.common.collect.Multimap;
 import java.util.Arrays;
+import java.util.Map;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.impl.reflection.Scan;
 import org.jboss.aerogear.android.pipeline.support.AbstractFragmentActivityCallback;
@@ -69,7 +70,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     private static final String TAG = LoaderAdapter.class.getSimpleName();
     private final Handler handler;
-    private Multimap<String, Integer> idsForNamedPipes;
+    private Map<String, List<Integer>> idsForNamedPipes;
 
     private static enum Methods {
 
@@ -182,7 +183,8 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public Loader<HeaderAndBody> onCreateLoader(int id, Bundle bundle) {
-        this.idsForNamedPipes.put(name, id);
+        addId(name, id);
+        
         Methods method = (Methods) bundle.get(METHOD);
         Callback callback = (Callback) bundle.get(CALLBACK);
         verifyCallback(callback);
@@ -243,11 +245,11 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
                 manager.destroyLoader(id);
             }
         }
-        idsForNamedPipes.removeAll(name);
+        idsForNamedPipes.put(name, new ArrayList<Integer>());
     }
 
     @Override
-    public void setLoaderIds(Multimap<String, Integer> idsForNamedPipes) {
+    public void setLoaderIds(Map<String, List<Integer>> idsForNamedPipes) {
         this.idsForNamedPipes = idsForNamedPipes;
     }
 
@@ -353,4 +355,12 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
         }
     }
 
+    private synchronized void addId(String name, int id) {
+        List<Integer> ids = this.idsForNamedPipes.get(name);
+        if (ids == null) {
+            this.idsForNamedPipes.put(name, (ids = new ArrayList<Integer>()));
+        }
+        ids.add(id);
+    }
+    
 }

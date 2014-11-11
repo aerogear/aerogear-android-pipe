@@ -20,10 +20,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import org.jboss.aerogear.android.impl.pipeline.RestfulPipeConfiguration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.jboss.aerogear.android.ConfigurationProvider;
 import org.jboss.aerogear.android.impl.pipeline.LoaderAdapter;
@@ -52,7 +51,7 @@ public class PipeManager {
         PipeManager.registerConfigurationProvider(RestfulPipeConfiguration.class, configurationProvider);
     }
 
-    private static final Multimap<String, Integer> loaderIdsForNamed = HashMultimap.create();
+    private static final Map<String, List<Integer>> loaderIdsForNamed = new HashMap<String, List<Integer>>();
     
     private PipeManager() {
     }
