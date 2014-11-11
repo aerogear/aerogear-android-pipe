@@ -44,8 +44,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.Multimap;
+import java.util.Arrays;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.impl.reflection.Scan;
 import org.jboss.aerogear.android.pipeline.AbstractActivityCallback;
@@ -119,7 +119,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     @Override
     public void read(Callback<List<T>> callback) {
-        int id = Objects.hashCode(name, callback);
+        int id = Arrays.hashCode(new Object[]{name, callback});
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
@@ -130,7 +130,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     @Override
     public void read(ReadFilter filter, Callback<List<T>> callback) {
-        int id = Objects.hashCode(name, filter, callback);
+        int id = Arrays.hashCode(new Object[]{name, filter, callback});
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(FILTER, filter);
@@ -140,7 +140,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     @Override
     public void save(T item, Callback<T> callback) {
-        int id = Objects.hashCode(name, item, callback);
+        int id = Arrays.hashCode(new Object[]{name, item, callback});
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(ITEM, requestBuilder.getBody(item));
@@ -151,7 +151,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
 
     @Override
     public void remove(String toRemoveId, Callback<Void> callback) {
-        int id = Objects.hashCode(name, toRemoveId, callback);
+        int id = Arrays.hashCode(new Object[]{name, toRemoveId, callback});
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(REMOVE_ID, toRemoveId);
@@ -178,7 +178,7 @@ public class SupportLoaderAdapter<T> implements LoaderPipe<T>, LoaderManager.Loa
         }
             break;
         case REMOVE: {
-            String toRemove = Objects.firstNonNull(bundle.getString(REMOVE_ID), "-1");
+            String toRemove = (bundle.getString(REMOVE_ID) != null ? bundle.getString(REMOVE_ID) : "-1");
             loader = new SupportRemoveLoader(applicationContext, callback, pipe.getHandler(), toRemove);
         }
             break;

@@ -46,8 +46,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.google.common.base.Objects;
+
 import com.google.common.collect.Multimap;
+import java.util.Arrays;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.impl.reflection.Scan;
 import org.jboss.aerogear.android.pipeline.support.AbstractFragmentActivityCallback;
@@ -120,7 +121,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public void read(Callback<List<T>> callback) {
-        int id = Objects.hashCode(name, callback);
+        int id = Arrays.hashCode(new Object[]{name, callback});
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(FILTER, null);
@@ -130,7 +131,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public void read(ReadFilter filter, Callback<List<T>> callback) {
-        int id = Objects.hashCode(name, filter, callback);
+        int id = Arrays.hashCode(new Object[]{name, filter, callback});
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(FILTER, filter);
@@ -140,7 +141,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public void save(T item, Callback<T> callback) {
-        int id = Objects.hashCode(name, item, callback);
+        int id = Arrays.hashCode(new Object[]{name, item, callback});
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(ITEM, requestBuilder.getBody(item));
@@ -151,7 +152,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public void remove(String toRemoveId, Callback<Void> callback) {
-        int id = Objects.hashCode(name, toRemoveId, callback);
+        int id = Arrays.hashCode(new Object[]{name, toRemoveId, callback});
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(REMOVE_ID, toRemoveId);

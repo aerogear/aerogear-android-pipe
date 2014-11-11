@@ -18,7 +18,7 @@ package org.jboss.aerogear.android.pipeline;
 
 import org.jboss.aerogear.android.Callback;
 
-import com.google.common.base.Objects;
+import java.util.Arrays;
 
 /**
  * This class provides a hashcode method for a callback based on constructor
@@ -36,7 +36,7 @@ public abstract class AbstractCallback<T> implements Callback<T> {
     final int hashcode;
 
     /**
-     * This accepts an arbitrary list of Object and uses {@link Objects} to 
+     * This accepts an arbitrary list of Object and uses {@link Arrays#hashCode(java.lang.Object[]) } to 
      * generate a hashcode.  This code is used to provided the loader manager
      * with a unique value to determine uniqueness of calls to read, etc.
      * 
@@ -45,7 +45,7 @@ public abstract class AbstractCallback<T> implements Callback<T> {
      * 
      */
     public AbstractCallback(Object... params) {
-        hashcode = Objects.hashCode(params);
+        hashcode = Arrays.hashCode(params);
     }
 
     @Override

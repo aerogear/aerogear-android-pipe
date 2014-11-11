@@ -19,8 +19,8 @@ package org.jboss.aerogear.android.pipeline;
 import org.jboss.aerogear.android.impl.pipeline.loader.AbstractPipeLoader;
 
 import android.app.Activity;
+import java.util.Arrays;
 
-import com.google.common.base.Objects;
 
 /**
  * 
@@ -40,7 +40,7 @@ public abstract class AbstractActivityCallback<T> extends AbstractCallback<T> {
     private transient Activity activity;
 
     /**
-     * This accepts an arbitrary list of Object and uses {@link Objects} to 
+     * This accepts an arbitrary list of Object and uses {@link Arrays#hashCode(java.lang.Object[]) } to 
      * generate a hashcode.  This code is used to provided the loader manager
      * with a unique value to determine uniqueness of calls to read, etc.
      * 
