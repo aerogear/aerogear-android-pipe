@@ -71,9 +71,9 @@ public final class RestAdapter<T> implements Pipe<T> {
     private final PageConfig pageConfig;
 
     /**
-     *
+     * 
      * This will configure the Adapter as with sane RESTful defaults.
-     *
+     * 
      * @param klass The type that this adapter will consume and produce
      * @param absoluteURL the RESTful URL endpoint.
      */
@@ -87,13 +87,13 @@ public final class RestAdapter<T> implements Pipe<T> {
     }
 
     /**
-     *
+     * 
      * This will build an adapter based on a configuration.
-     *
+     * 
      * @param klass The type that this adapter will consume and produce
      * @param absoluteURL the RESTful URL endpoint.
      * @param config A PipeConfig to use. NOTE: the URL's provided in the config
-     * are ignored in deference to the absoluteURL parameter.
+     *            are ignored in deference to the absoluteURL parameter.
      */
     @SuppressWarnings("unchecked")
     public RestAdapter(Class<T> klass, URL absoluteURL, RestfulPipeConfiguration config) {
@@ -125,9 +125,9 @@ public final class RestAdapter<T> implements Pipe<T> {
         this.requestBuilder = configuration.getRequestBuilder();
         this.responseParser = configuration.getResponseParser();
         this.restRunner = new RestRunner<T>(klass, url, configuration);
-        
+
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -160,11 +160,11 @@ public final class RestAdapter<T> implements Pipe<T> {
                 try {
                     HeaderAndBody response = restRunner.onRawReadWithFilter(innerFilter, RestAdapter.this);
                     this.result = getResponseParser().handleResponse(response, klass);
-                    
+
                     if (pageConfig != null) {
                         result = computePagedList(result, response, innerFilter.getWhere(), RestAdapter.this);
                     }
-                    
+
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                     this.exception = e;
@@ -222,9 +222,9 @@ public final class RestAdapter<T> implements Pipe<T> {
                     id = idObject == null ? null : idObject.toString();
 
                     byte[] body = requestBuilder.getBody(data);
-                    
+
                     HeaderAndBody response = restRunner.onRawSave(id, body);
-                    
+
                     result = getResponseParser().handleResponse(response, klass).get(0);
                 } catch (Exception e) {
                     exception = e;
@@ -287,10 +287,10 @@ public final class RestAdapter<T> implements Pipe<T> {
     }
 
     /**
-     *
+     * 
      * This method checks for paging information and returns the appropriate
      * data
-     *
+     * 
      * @param result
      * @param httpResponse
      * @param where
@@ -307,7 +307,7 @@ public final class RestAdapter<T> implements Pipe<T> {
             final String prevIdentifier = pageConfig.getPreviousIdentifier();
             try {
                 webLinksRaw = getWebLinkHeader(httpResponse);
-                if (webLinksRaw == null) { //no paging, return result
+                if (webLinksRaw == null) { // no paging, return result
                     return result;
                 }
                 List<WebLink> webLinksParsed = WebLinkParser.parse(webLinksRaw);
@@ -357,5 +357,4 @@ public final class RestAdapter<T> implements Pipe<T> {
         return null;
     }
 
-    
 }

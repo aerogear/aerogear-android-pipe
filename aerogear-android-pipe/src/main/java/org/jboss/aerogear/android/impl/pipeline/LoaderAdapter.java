@@ -45,9 +45,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import java.util.ArrayList;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Multimap;
+import java.util.Arrays;
+import java.util.Map;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.impl.reflection.Scan;
 import org.jboss.aerogear.android.pipeline.support.AbstractFragmentActivityCallback;
@@ -62,13 +63,13 @@ import org.jboss.aerogear.android.pipeline.support.AbstractSupportFragmentCallba
  * 
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-@SuppressWarnings( { "rawtypes", "unchecked" })
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class LoaderAdapter<T> implements LoaderPipe<T>,
         LoaderManager.LoaderCallbacks<HeaderAndBody> {
 
     private static final String TAG = LoaderAdapter.class.getSimpleName();
     private final Handler handler;
-    private Multimap<String, Integer> idsForNamedPipes;
+    private Map<String, List<Integer>> idsForNamedPipes;
 
     private static enum Methods {
 
@@ -120,7 +121,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public void read(Callback<List<T>> callback) {
-        int id = Objects.hashCode(name, callback);
+        int id = Arrays.hashCode(new Object[] { name, callback });
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(FILTER, null);
@@ -130,7 +131,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public void read(ReadFilter filter, Callback<List<T>> callback) {
-        int id = Objects.hashCode(name, filter, callback);
+        int id = Arrays.hashCode(new Object[] { name, filter, callback });
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(FILTER, filter);
@@ -140,7 +141,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public void save(T item, Callback<T> callback) {
-        int id = Objects.hashCode(name, item, callback);
+        int id = Arrays.hashCode(new Object[] { name, item, callback });
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(ITEM, requestBuilder.getBody(item));
@@ -151,7 +152,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public void remove(String toRemoveId, Callback<Void> callback) {
-        int id = Objects.hashCode(name, toRemoveId, callback);
+        int id = Arrays.hashCode(new Object[] { name, toRemoveId, callback });
         Bundle bundle = new Bundle();
         bundle.putSerializable(CALLBACK, callback);
         bundle.putSerializable(REMOVE_ID, toRemoveId);
@@ -181,7 +182,8 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public Loader<HeaderAndBody> onCreateLoader(int id, Bundle bundle) {
-        this.idsForNamedPipes.put(name, id);
+        addId(name, id);
+
         Methods method = (Methods) bundle.get(METHOD);
         Callback callback = (Callback) bundle.get(CALLBACK);
         verifyCallback(callback);
@@ -242,11 +244,11 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
                 manager.destroyLoader(id);
             }
         }
-        idsForNamedPipes.removeAll(name);
+        idsForNamedPipes.put(name, new ArrayList<Integer>());
     }
 
     @Override
-    public void setLoaderIds(Multimap<String, Integer> idsForNamedPipes) {
+    public void setLoaderIds(Map<String, List<Integer>> idsForNamedPipes) {
         this.idsForNamedPipes = idsForNamedPipes;
     }
 
@@ -350,6 +352,14 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
         } else if (callback instanceof AbstractSupportFragmentCallback) {
             throw new IllegalStateException("An AbstractSupportFragmentCallback was supplied, but this is the modern Loader.");
         }
+    }
+
+    private synchronized void addId(String name, int id) {
+        List<Integer> ids = this.idsForNamedPipes.get(name);
+        if (ids == null) {
+            this.idsForNamedPipes.put(name, (ids = new ArrayList<Integer>()));
+        }
+        ids.add(id);
     }
 
 }

@@ -80,7 +80,7 @@ import org.jboss.aerogear.android.pipeline.PipeManager;
 import org.mockito.Matchers;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<MainActivity> {
 
     public LoaderAdapterTest() {
@@ -276,14 +276,14 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
         when(provider.post((byte[]) anyObject()))
                 .thenReturn(new HeaderAndBody(
-                                SERIALIZED_POINTS.getBytes(),
-                                new HashMap<String, Object>())
+                        SERIALIZED_POINTS.getBytes(),
+                        new HashMap<String, Object>())
                 );
 
         when(provider.put(any(String.class), (byte[]) anyObject()))
                 .thenReturn(new HeaderAndBody(
-                                SERIALIZED_POINTS.getBytes(),
-                                new HashMap<String, Object>())
+                        SERIALIZED_POINTS.getBytes(),
+                        new HashMap<String, Object>())
                 );
 
         RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
@@ -317,14 +317,14 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
         when(provider.post((byte[]) anyObject()))
                 .thenReturn(new HeaderAndBody(
-                                SERIALIZED_POINTS.getBytes(),
-                                new HashMap<String, Object>())
+                        SERIALIZED_POINTS.getBytes(),
+                        new HashMap<String, Object>())
                 );
 
         when(provider.put(any(String.class), (byte[]) anyObject()))
                 .thenReturn(new HeaderAndBody(
-                                SERIALIZED_POINTS.getBytes(),
-                                new HashMap<String, Object>())
+                        SERIALIZED_POINTS.getBytes(),
+                        new HashMap<String, Object>())
                 );
 
         RestfulPipeConfiguration config = PipeManager.config("MultiPartData", RestfulPipeConfiguration.class);
@@ -361,7 +361,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     public void onFailure(Exception e) {
                         hasException.set(true);
                         Logger.getLogger(LoaderAdapterTest.class.getSimpleName())
-                        .log(Level.SEVERE, e.getMessage(), e);
+                                .log(Level.SEVERE, e.getMessage(), e);
                         latch.countDown();
                     }
                 });
@@ -408,7 +408,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     public void testMultipleCallsToLoadCallDeliver() {
         PipeHandler handler = mock(PipeHandler.class);
         final AtomicBoolean called = new AtomicBoolean(false);
-        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
+        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[] {}, new HashMap<String, Object>()));
         ReadLoader loader = new ReadLoader(getActivity(), null, handler, null, null) {
 
             @Override
@@ -438,7 +438,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     public void testMultipleCallsToSaveCallDeliver() {
         PipeHandler handler = mock(PipeHandler.class);
         final AtomicBoolean called = new AtomicBoolean(false);
-        when(handler.onRawSave(Matchers.anyString(), (byte[]) anyObject())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
+        when(handler.onRawSave(Matchers.anyString(), (byte[]) anyObject())).thenReturn(new HeaderAndBody(new byte[] {}, new HashMap<String, Object>()));
         SaveLoader loader = new SaveLoader(getActivity(), null, handler, null, null) {
 
             @Override
@@ -468,7 +468,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     public void testMultipleCallsToRemoveCallDeliver() {
         PipeHandler handler = mock(PipeHandler.class);
         final AtomicBoolean called = new AtomicBoolean(false);
-        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
+        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[] {}, new HashMap<String, Object>()));
 
         RemoveLoader loader = new RemoveLoader(getActivity(), null, handler, null) {
 
@@ -503,7 +503,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     /**
      * Runs a read method, returns the result of the call back and makes sure no
      * exceptions are thrown
-     *
+     * 
      * @param restPipe
      */
     private <T> List<T> runRead(Pipe<T> restPipe, ReadFilter readFilter)
@@ -539,7 +539,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     /**
      * Runs a remove method, returns the result of the call back and makes sure
      * no exceptions are thrown
-     *
+     * 
      */
     private <T> void runRemove(Pipe<T> restPipe, String id)
             throws InterruptedException {
@@ -585,7 +585,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     public void onFailure(Exception e) {
                         hasException.set(true);
                         Logger.getLogger(LoaderAdapterTest.class.getSimpleName())
-                        .log(Level.SEVERE, e.getMessage(), e);
+                                .log(Level.SEVERE, e.getMessage(), e);
                         latch.countDown();
                     }
                 });
@@ -701,7 +701,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     public static class MultiPartData {
 
-        private byte[] byteArray = {'a', 'b', 'c', 'd', 'e', 'f'};
+        private byte[] byteArray = { 'a', 'b', 'c', 'd', 'e', 'f' };
         private InputStream inputStream = new ByteArrayInputStream(byteArray);
 
         @RecordId

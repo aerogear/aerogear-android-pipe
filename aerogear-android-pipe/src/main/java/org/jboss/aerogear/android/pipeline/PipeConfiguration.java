@@ -26,21 +26,21 @@ import org.jboss.aerogear.android.pipeline.paging.PageConfig;
 
 /**
  * 
- * This is the top level PipeConfiguration class.  
- *
+ * This is the top level PipeConfiguration class.
+ * 
  * @param <CONFIGURATION> The implementation class type.
  */
 public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<CONFIGURATION>> implements Config<CONFIGURATION> {
 
     private String name;
     private Collection<OnPipeCreatedListener> listeners;
-    
+
     public PipeConfiguration() {
         listeners = new HashSet<OnPipeCreatedListener>();
     }
-    
+
     /**
-     * The name is the key which is used to reference the created pipe in 
+     * The name is the key which is used to reference the created pipe in
      * PipeManager.
      * 
      * @return the current name
@@ -51,7 +51,7 @@ public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<
     }
 
     /**
-     * The name is the key which is used to reference the created pipe in 
+     * The name is the key which is used to reference the created pipe in
      * PipeManager.
      * 
      * @param name new name
@@ -62,9 +62,9 @@ public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<
         this.name = name;
         return (CONFIGURATION) this;
     }
-    
+
     /**
-     * OnPipeCreatedListseners are a collection of classes to be notified when 
+     * OnPipeCreatedListseners are a collection of classes to be notified when
      * the configuration of the Pipe is complete.
      * 
      * @return the current collection.
@@ -74,10 +74,10 @@ public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<
     }
 
     /**
-     * OnPipeCreatedListseners are a collection of classes to be notified when 
+     * OnPipeCreatedListseners are a collection of classes to be notified when
      * the configuration of the Pipe is complete.
      * 
-     * @param listener  new listener to add to the collection
+     * @param listener new listener to add to the collection
      * @return this configuration
      */
     public CONFIGURATION addOnPipeCreatedListener(OnPipeCreatedListener listener) {
@@ -86,17 +86,17 @@ public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<
     }
 
     /**
-     * OnPipeCreatedListseners are a collection of classes to be notified when 
+     * OnPipeCreatedListseners are a collection of classes to be notified when
      * the configuration of the Pipe is complete.
      * 
-     * @param listeners  new collection to replace the current one
+     * @param listeners new collection to replace the current one
      * @return this configuration
      */
     public CONFIGURATION setOnPipeCreatedListeners(Collection<OnPipeCreatedListener> listeners) {
         listeners.addAll(listeners);
         return (CONFIGURATION) this;
     }
-    
+
     /**
      * 
      * Creates a pipe based on the current configuration and notifies all listeners
@@ -110,12 +110,12 @@ public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<
      */
     public final <DATA> Pipe<DATA> forClass(Class<DATA> aClass) {
         Pipe<DATA> newPipe = buildPipeForClass(aClass);
-        
+
         for (OnPipeCreatedListener listener : getOnPipeCreatedListeners()) {
             listener.onPipeCreated(this, newPipe);
         }
-        
-        return newPipe;   
+
+        return newPipe;
     }
 
     /**
@@ -129,7 +129,7 @@ public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<
      * @throws IllegalStateException if the Pipe can not be constructed.
      */
     protected abstract <DATA> Pipe<DATA> buildPipeForClass(Class<DATA> aClass);
-    
+
     /**
      * The URL is a location of some resource or service the Pipe will interact with.
      * 
@@ -139,7 +139,7 @@ public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<
     public abstract CONFIGURATION withUrl(URL url);
 
     /**
-     * Modules are bits of functionality which are called during a Pipes 
+     * Modules are bits of functionality which are called during a Pipes
      * lifecycle.
      * 
      * @param module a module to add to the lifecycle.
@@ -147,25 +147,23 @@ public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<
      */
     public abstract CONFIGURATION module(PipeModule module);
 
-    
     /**
-     * Modules are bits of functionality which are called during a Pipes 
+     * Modules are bits of functionality which are called during a Pipes
      * lifecycle.
      * 
      * @return the current List of Modules
      */
     public abstract List<PipeModule> getModules();
 
-    
     /**
-     * Because of their async nature, Pipes need to have a timeout which will 
+     * Because of their async nature, Pipes need to have a timeout which will
      * error if reached.
      * 
      * @param timeout an amount of time in milliseconds.
      * @return this configuration
      */
     public abstract CONFIGURATION timeout(Integer timeout);
-    
+
     /**
      * Paging is controlled and managed by the pageConfig objects
      * 
@@ -182,7 +180,7 @@ public abstract class PipeConfiguration<CONFIGURATION extends PipeConfiguration<
      * @return this configuration
      */
     public abstract CONFIGURATION requestBuilder(RequestBuilder builder);
-    
+
     /**
      * 
      * Response Parsers turn service responses into Objects for the Pipe.

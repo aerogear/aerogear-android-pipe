@@ -16,16 +16,15 @@
  */
 package org.jboss.aerogear.android.pipeline;
 
-
 import org.jboss.aerogear.android.ReadFilter;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 
 /**
- * Classes which implement this interface provide the logic for how pipes 
+ * Classes which implement this interface provide the logic for how pipes
  * interact with services.
  */
 public interface PipeHandler<T> {
-    
+
     HeaderAndBody onRawRead(Pipe<T> requestingPipe);
 
     HeaderAndBody onRawReadWithFilter(ReadFilter filter, Pipe<T> requestingPipe);

@@ -41,9 +41,9 @@ import org.jboss.aerogear.android.pipeline.MarshallingConfig;
 
 /**
  * This class generates a Multipart request with the type multipart/form-data
- *
+ * 
  * It will load the entire contents of files into memory before it uploads them.
- *
+ * 
  */
 public class MultipartRequestBuilder<T> implements RequestBuilder<T> {
 

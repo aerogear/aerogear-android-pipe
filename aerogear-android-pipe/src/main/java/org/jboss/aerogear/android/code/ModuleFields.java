@@ -37,7 +37,7 @@ public class ModuleFields {
     }
 
     /**
-     *
+     * 
      * @param queryParameters may not be null
      * @throws IllegalArgumentException if queryParameters is null
      */

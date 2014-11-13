@@ -25,10 +25,10 @@ import org.jboss.aerogear.android.http.HeaderAndBody;
 /**
  * This class performs a remove operation on behalf of a Pipe using the Loader
  * infrastructure.
- *
+ * 
  * As a Loader it will only call the remove once regardless of how many times it
  * is called unless reset() is called.
- *
+ * 
  */
 public class SupportRemoveLoader<T> extends AbstractSupportPipeLoader<T> {
 

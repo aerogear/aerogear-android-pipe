@@ -31,9 +31,9 @@ public final class UrlUtils {
     }
 
     /**
-     *
+     * 
      * Append the base url with endpoint
-     *
+     * 
      * @param baseURL the base url
      * @param endpoint the string to append to the base url
      * @return a new url baseUrl + endpoint
@@ -58,9 +58,9 @@ public final class UrlUtils {
     }
 
     /**
-     *
+     * 
      * Append the base url with the query.
-     *
+     * 
      * @param baseURL the base url to append a query to
      * @param query the query to append.
      * 

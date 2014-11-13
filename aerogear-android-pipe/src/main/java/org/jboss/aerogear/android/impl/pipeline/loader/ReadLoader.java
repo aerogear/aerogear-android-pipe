@@ -29,9 +29,9 @@ import org.jboss.aerogear.android.http.HeaderAndBody;
 /**
  * This class performs a read operation on behalf of a Pipe using the Loader
  * infrastructure.
- *
+ * 
  * As a Loader it will retain a reference it its result until reset() is called.
- *
+ * 
  */
 public class ReadLoader<T> extends AbstractPipeLoader<List<T>> {
 

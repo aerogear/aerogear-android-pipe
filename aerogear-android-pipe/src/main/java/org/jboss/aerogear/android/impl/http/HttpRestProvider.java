@@ -50,7 +50,7 @@ public final class HttpRestProvider implements HttpProvider {
         java.net.CookieHandler.setDefault(cm);
     }
     /**
-     * The get method of this provider optionally takes a String which is the id 
+     * The get method of this provider optionally takes a String which is the id
      * in a restful URL
      * ex http://example.com/data/$id.
      */
@@ -255,7 +255,7 @@ public final class HttpRestProvider implements HttpProvider {
         case HttpStatus.SC_OK:
         case HttpStatus.SC_CREATED:
             InputStream in = new BufferedInputStream(urlConnection
-                        .getInputStream());
+                    .getInputStream());
 
             responseData = readBytes(in);
 
@@ -268,26 +268,26 @@ public final class HttpRestProvider implements HttpProvider {
 
         default:
             InputStream err = new BufferedInputStream(urlConnection
-                        .getErrorStream());
+                    .getErrorStream());
 
             byte[] errData = readBytes(err);
             Map<String, List<String>> errorListHeaders = urlConnection.getHeaderFields();
             Map<String, String> errorHeaders = new HashMap<String, String>();
-            
+
             for (String header : errorListHeaders.keySet()) {
-                
+
                 String comma = "";
                 StringBuilder errorHeaderBuilder = new StringBuilder();
-                
+
                 for (String errorHeader : errorListHeaders.get(header)) {
                     errorHeaderBuilder.append(comma).append(errorHeader);
                     comma = ",";
                 }
-                
+
                 errorHeaders.put(header, errorHeaderBuilder.toString());
-                
+
             }
-            
+
             throw new HttpException(errData, statusCode, errorHeaders);
 
         }

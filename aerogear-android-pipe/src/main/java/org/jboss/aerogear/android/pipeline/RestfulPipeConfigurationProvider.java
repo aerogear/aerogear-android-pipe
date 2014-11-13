@@ -13,23 +13,25 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */package org.jboss.aerogear.android.pipeline;
+ */
+package org.jboss.aerogear.android.pipeline;
 
 import org.jboss.aerogear.android.impl.pipeline.RestfulPipeConfiguration;
 import org.jboss.aerogear.android.ConfigurationProvider;
 
- /**
-  * This provides the configuration for {@link RestfulPipeConfiguration}
-  */
+/**
+ * This provides the configuration for {@link RestfulPipeConfiguration}
+ */
 public class RestfulPipeConfigurationProvider implements ConfigurationProvider<RestfulPipeConfiguration> {
 
     /**
      * Returns a new instance of {@link RestfulPipeConfiguration}
+     * 
      * @return a new instance of {@link RestfulPipeConfiguration}
      */
     @Override
     public RestfulPipeConfiguration newConfiguration() {
         return new RestfulPipeConfiguration();
     }
-    
+
 }

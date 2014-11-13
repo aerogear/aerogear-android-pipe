@@ -16,23 +16,21 @@
  */
 package org.jboss.aerogear.android.pipeline.support;
 
-
 import org.jboss.aerogear.android.impl.pipeline.loader.support.AbstractSupportPipeLoader;
 import org.jboss.aerogear.android.pipeline.AbstractCallback;
 import org.jboss.aerogear.android.pipeline.LoaderPipe;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
-
-import com.google.common.base.Objects;
+import java.util.Arrays;
 
 /**
  * 
  * {@link LoaderPipe} instances which consume
  * callbacks of this type will supply it with a {@link Activity} instance before
- * onSuccess or onFailure are called.  This should not be done by the user.
+ * onSuccess or onFailure are called. This should not be done by the user.
  * 
- * These calls are not guaranteed to be thread safe.  Instances of the callback
+ * These calls are not guaranteed to be thread safe. Instances of the callback
  * should not be shared among Activities and Fragments.
  * 
  * After onSuccess or onFailure have been called, the fragment will be set to null.
@@ -43,22 +41,22 @@ public abstract class AbstractSupportFragmentCallback<T> extends AbstractCallbac
     private transient Fragment fragment;
 
     /**
-     * This accepts an arbitrary list of Object and uses {@link Objects} to 
-     * generate a hashcode.  This code is used to provided the loader manager
+     * This accepts an arbitrary list of Object and uses {@link Arrays#hashCode(java.lang.Object[]) } to
+     * generate a hashcode. This code is used to provided the loader manager
      * with a unique value to determine uniqueness of calls to read, etc.
      * 
-     * @param params A collection of objects which will be used to generate a 
-     * hashcode
+     * @param params A collection of objects which will be used to generate a
+     *            hashcode
      */
     public AbstractSupportFragmentCallback(Object... params) {
         super(params);
     }
 
     /**
-     * This method should be called in the onSuccess or onFailure methods of 
+     * This method should be called in the onSuccess or onFailure methods of
      * subclasses.
      * 
-     * @return the fragment instance 
+     * @return the fragment instance
      */
     protected Fragment getFragment() {
         return fragment;

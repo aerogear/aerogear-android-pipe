@@ -22,6 +22,7 @@ public interface RequestBuilder<T> {
      * This method creates the body of a request for a Pipe to use.
      * 
      * This is basically a serialization style operation.
+     * 
      * @param data an object to form a body out of.
      * 
      * @return A request body which represents the data parameter
