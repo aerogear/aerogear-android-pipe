@@ -17,7 +17,6 @@
 package org.jboss.aerogear.android.impl.pipeline.loader;
 
 import org.jboss.aerogear.android.Callback;
-import org.jboss.aerogear.android.impl.pipeline.loader.support.AbstractSupportPipeLoader;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
