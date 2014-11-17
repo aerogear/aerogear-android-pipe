@@ -55,10 +55,6 @@ import org.jboss.aerogear.android.impl.reflection.Scan;
 /**
  * This class wraps a Pipe in an asynchronous Loader.
  * 
- * This classes uses Loaders from android.conent. It will not work on pre
- * Honeycomb devices. If you do need to support Android devices &lt; version
- * 3.0, consider using {@link SupportLoaderAdapter}
- * 
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 @SuppressWarnings({ "rawtypes", "unchecked" })
