@@ -51,15 +51,9 @@ import java.util.Arrays;
 import java.util.Map;
 import org.jboss.aerogear.android.http.HeaderAndBody;
 import org.jboss.aerogear.android.impl.reflection.Scan;
-import org.jboss.aerogear.android.pipeline.support.AbstractFragmentActivityCallback;
-import org.jboss.aerogear.android.pipeline.support.AbstractSupportFragmentCallback;
 
 /**
  * This class wraps a Pipe in an asynchronous Loader.
- * 
- * This classes uses Loaders from android.conent. It will not work on pre
- * Honeycomb devices. If you do need to support Android devices &lt; version
- * 3.0, consider using {@link SupportLoaderAdapter}
  * 
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -347,10 +341,6 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
             if (fragment == null) {
                 throw new IllegalStateException("An AbstractFragmentCallback was supplied, but there is no Fragment.");
             }
-        } else if (callback instanceof AbstractFragmentActivityCallback) {
-            throw new IllegalStateException("An AbstractFragmentActivityCallback was supplied, but this is the modern Loader.");
-        } else if (callback instanceof AbstractSupportFragmentCallback) {
-            throw new IllegalStateException("An AbstractSupportFragmentCallback was supplied, but this is the modern Loader.");
         }
     }
 

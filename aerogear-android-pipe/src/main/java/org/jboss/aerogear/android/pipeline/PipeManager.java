@@ -19,14 +19,12 @@ package org.jboss.aerogear.android.pipeline;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import org.jboss.aerogear.android.impl.pipeline.RestfulPipeConfiguration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.jboss.aerogear.android.ConfigurationProvider;
 import org.jboss.aerogear.android.impl.pipeline.LoaderAdapter;
-import org.jboss.aerogear.android.impl.pipeline.SupportLoaderAdapter;
 
 /**
  * A Manager which handles the registration of configurations and references to
@@ -135,38 +133,6 @@ public class PipeManager {
     public static LoaderPipe get(String name, Fragment fragment, Context applicationContext) {
         Pipe pipe = pipes.get(name);
         LoaderAdapter adapter = new LoaderAdapter(fragment, applicationContext, pipe, name);
-        adapter.setLoaderIds(loaderIdsForNamed);
-        return adapter;
-    }
-
-    /**
-     * Look up for a pipe object. This will wrap the Pipe in a Loader.
-     * 
-     * @param name the name of the actual pipe
-     * @param activity the activity whose lifecycle the loader will follow
-     * @return the new created Pipe object
-     * 
-     */
-    public static LoaderPipe get(String name, FragmentActivity activity) {
-        Pipe pipe = pipes.get(name);
-        SupportLoaderAdapter adapter = new SupportLoaderAdapter(activity, pipe, name);
-        adapter.setLoaderIds(loaderIdsForNamed);
-        return adapter;
-    }
-
-    /**
-     * Look up for a pipe object. This will wrap the Pipe in a Loader.
-     * 
-     * @param name the name of the actual pipe
-     * @param fragment the Fragment whose lifecycle the activity will follow
-     * @param applicationContext the Context of the application.
-     * 
-     * @return the new created Pipe object
-     * 
-     */
-    public static LoaderPipe get(String name, android.support.v4.app.Fragment fragment, Context applicationContext) {
-        Pipe pipe = pipes.get(name);
-        LoaderPipe adapter = new SupportLoaderAdapter(fragment, applicationContext, pipe, name);
         adapter.setLoaderIds(loaderIdsForNamed);
         return adapter;
     }
