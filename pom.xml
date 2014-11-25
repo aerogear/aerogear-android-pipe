@@ -33,7 +33,6 @@
 
     <modules>
         <module>aerogear-android-pipe</module>
-        <module>aerogear-android-pipe-test</module>
     </modules>
 
     <scm>
@@ -106,6 +105,19 @@
             </plugins>
         </pluginManagement>
     </build>
+    <profiles>
+        <profile>
+            <id>android-tests</id>
+            <activation>
+                <property>
+                    <name>!release</name>
+                </property>
+            </activation>
+            <modules>
+                <module>aerogear-android-pipe-test</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
 
