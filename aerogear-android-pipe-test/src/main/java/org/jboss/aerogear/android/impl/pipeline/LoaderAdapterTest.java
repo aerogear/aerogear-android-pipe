@@ -632,7 +632,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                         TAG, e);
             }
         });
-        latch.await(500, TimeUnit.MILLISECONDS);
+        latch.await(60, TimeUnit.SECONDS);
 
         verify(factory).get(Mockito.argThat(new ObjectVarArgsMatcher(new URL("http://server.com/context?limit=10&model=BMW"), 60000)));
 
