@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -636,6 +637,21 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
         verify(factory).get(Mockito.argThat(new ObjectVarArgsMatcher(new URL("http://server.com/context?limit=10&model=BMW"), 60000)));
 
+    }
+
+    public void testResetWithoutPipeIds() throws NoSuchFieldException, IllegalAccessException {
+        RestfulPipeConfiguration config = PipeManager.config("data", RestfulPipeConfiguration.class);
+        Pipe<Data> pipe = config.withUrl(url).forClass(Data.class);
+
+        LoaderAdapter<Data> loaderPipe = new LoaderAdapter<Data>(getActivity(), pipe, "loaderPipeForTest");
+        loaderPipe.reset();
+
+        Map<String, List<Integer>> idsForNamedPipes = (Map<String, List<Integer>>)
+                UnitTestUtils.getPrivateField(loaderPipe, "idsForNamedPipes");
+
+        Assert.assertEquals("Should be 1", 1, idsForNamedPipes.size());
+        Assert.assertNotNull("Should not null", idsForNamedPipes.get("loaderPipeForTest"));
+        Assert.assertEquals("Should be empty", 0, idsForNamedPipes.get("loaderPipeForTest").size());
     }
 
     private static class PointTypeAdapter implements InstanceCreator,

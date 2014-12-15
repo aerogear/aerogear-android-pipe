@@ -18,6 +18,7 @@ package org.jboss.aerogear.android.impl.pipeline;
 
 import java.net.URL;
 import java.util.List;
+import java.util.HashMap;
 
 import org.jboss.aerogear.android.Callback;
 import org.jboss.aerogear.android.ReadFilter;
@@ -232,12 +233,22 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
     @Override
     public void reset() {
-        for (Integer id : idsForNamedPipes.get(name)) {
-            Loader loader = manager.getLoader(id);
-            if (loader != null) {
-                manager.destroyLoader(id);
+        if (idsForNamedPipes == null) {
+            idsForNamedPipes = new HashMap<String, List<Integer>>();
+        }
+
+        List<Integer> ids = idsForNamedPipes.get(name);
+        if (ids != null) {
+            for (Integer id : ids) {
+                if (id != null) {
+                    Loader loader = manager.getLoader(id);
+                    if (loader != null) {
+                        manager.destroyLoader(id);
+                    }
+                }
             }
         }
+
         idsForNamedPipes.put(name, new ArrayList<Integer>());
     }
 
