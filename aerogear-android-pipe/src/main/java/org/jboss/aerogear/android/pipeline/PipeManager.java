@@ -72,7 +72,7 @@ public class PipeManager {
      * 
      * @param <CFG> the Configuration type.
      * @param name an identifier which will be used to fetch the Pipe after
-     *            configuration is finished. See : {@link PipeManager#getPipe(java.lang.String) }
+     *            configuration is finished. See : {@link PipeManager#get(java.lang.String) }
      * @param pipeConfigurationClass the class of the configuration type.
      * 
      * @return a PipeConfiguration which can be used to build a Pipe object.
@@ -101,7 +101,7 @@ public class PipeManager {
      * 
      * @return the named Pipe or null
      */
-    public static Pipe getPipe(String name) {
+    public static Pipe get(String name) {
         return pipes.get(name);
     }
 
