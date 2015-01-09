@@ -129,7 +129,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.getPipe(config.getName(), getActivity());
 
         List<LoaderAdapterTest.ListClassId> result = runRead(adapter);
 
@@ -162,7 +162,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.getPipe(config.getName(), getActivity());
 
         try {
             adapter.read(new AbstractFragmentCallback<List<LoaderAdapterTest.ListClassId>>() {
@@ -205,7 +205,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.getPipe(config.getName(), getActivity());
 
         try {
 
@@ -252,7 +252,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.getPipe(config.getName(), getActivity());
 
         try {
             adapter.remove("1", new AbstractFragmentCallback<Void>() {
@@ -309,7 +309,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.getPipe(config.getName(), getActivity());
 
         runSave(adapter);
 
@@ -350,7 +350,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<MultiPartData> adapter = PipeManager.get(config.getName(), getActivity());
+        LoaderPipe<MultiPartData> adapter = PipeManager.getPipe(config.getName(), getActivity());
 
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicBoolean hasException = new AtomicBoolean(false);
@@ -404,7 +404,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     }
                 });
 
-        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.get(config.getName(), getActivity());
+        LoaderPipe<LoaderAdapterTest.ListClassId> adapter = PipeManager.getPipe(config.getName(), getActivity());
 
         runRemove(adapter, "1");
 
@@ -622,7 +622,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         filter.setLimit(10);
         filter.setWhere(new JSONObject("{\"model\":\"BMW\"}"));
 
-        LoaderAdapter<Data> adapter = (LoaderAdapter<Data>) PipeManager.get("data", getActivity());
+        LoaderAdapter<Data> adapter = (LoaderAdapter<Data>) PipeManager.getPipe("data", getActivity());
 
         adapter.read(filter, new Callback<List<Data>>() {
             private static final long serialVersionUID = 1L;

@@ -115,7 +115,7 @@ public class PipeManager {
      * @return the new created Pipe object
      * 
      */
-    public static LoaderPipe get(String name, Activity activity) {
+    public static LoaderPipe getPipe(String name, Activity activity) {
         Pipe pipe = pipes.get(name);
         LoaderAdapter adapter = new LoaderAdapter(activity, pipe, name);
         adapter.setLoaderIds(loaderIdsForNamed);
@@ -132,7 +132,7 @@ public class PipeManager {
      * @return the new created Pipe object
      * 
      */
-    public static LoaderPipe get(String name, Fragment fragment, Context applicationContext) {
+    public static LoaderPipe getPipe(String name, Fragment fragment, Context applicationContext) {
         Pipe pipe = pipes.get(name);
         LoaderAdapter adapter = new LoaderAdapter(fragment, applicationContext, pipe, name);
         adapter.setLoaderIds(loaderIdsForNamed);
