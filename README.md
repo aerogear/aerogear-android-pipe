@@ -1,6 +1,6 @@
 # AeroGear Android Pipe [![Build Status](https://travis-ci.org/aerogear/aerogear-android-pipe.png)](https://travis-ci.org/aerogear/aerogear-android-pipe)
 
-AeroGear's Android libraries were built as jar and aar packages using [Maven](http://maven.apache.org/) and the [android-maven-plugin](https://github.com/jayway/maven-android-plugin). The project follows the standard Maven layout so can be imported directly into most IDEs as a Maven project.
+AeroGear's Android libraries were built as jar and aar packages using [Maven](http://maven.apache.org/) and the [android-maven-plugin](https://github.com/jayway/maven-android-plugin). The project follows the standard Maven layout so it can be imported directly into most IDEs as a Maven project.
 
 ## Pipe
 
@@ -8,7 +8,7 @@ AeroGear uses a Pipe metaphor for connecting to a remote web service.
 
 ## Building
 
-Please take a look of the [step by step on our website](http://aerogear.org/docs/guides/aerogear-android/how-to-build-aerogear-android/). 
+Please take a look at the [step by step on our website](http://aerogear.org/docs/guides/aerogear-android/how-to-build-aerogear-android/). 
 
 *The following dependencies are required to build this project:*
 
