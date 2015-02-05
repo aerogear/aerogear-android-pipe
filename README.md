@@ -6,6 +6,15 @@ AeroGear's Android libraries were built as jar and aar packages using [Maven](ht
 
 AeroGear uses a Pipe metaphor for connecting to a remote web service.   
 
+|                 | Project Info  |
+| --------------- | ------------- |
+| License:        | Apache License, Version 2.0  |
+| Build:          | Maven  |
+| Documentation:  | http://aerogear.org/docs/guides/aerogear-android/  |
+| Issue tracker:  | https://issues.jboss.org/browse/AGDROID  |
+| Mailing lists:  | [aerogear-users](http://aerogear-users.1116366.n5.nabble.com/) ([subscribe](https://lists.jboss.org/mailman/listinfo/aerogear-users))  |
+|                 | [aerogear-dev](http://aerogear-dev.1069024.n5.nabble.com/) ([subscribe](https://lists.jboss.org/mailman/listinfo/aerogear-dev)) 
+
 ## Building
 
 Please take a look at the [step by step on our website](http://aerogear.org/docs/guides/aerogear-android/how-to-build-aerogear-android/). 
@@ -54,6 +63,16 @@ Include the following dependencies in your project's `pom.xml`
 ## Documentation
 
 For more details about that please consult [our pipe documentation](http://aerogear.org/docs/guides/aerogear-android/pipe/).
+
+## Demo apps
+
+Take a look in our demo apps
+
+* [Chuck Norris Jokes](https://github.com/aerogear/aerogear-android-cookbook/blob/master/ChuckNorrisJokes)
+* [AG Reddit](https://github.com/aerogear/aerogear-android-cookbook/blob/master/AGReddit)
+* [ShootAndShare](https://github.com/aerogear/aerogear-android-cookbook/blob/master/ShootAndShare)
+* [AuthExamples](https://github.com/aerogear/aerogear-android-cookbook/blob/master/AuthExamples)
+* [AeroDoc](https://github.com/aerogear/aerogear-android-cookbook/blob/master/AeroDoc)
 
 ## Development
 
