@@ -16,6 +16,7 @@
  */
 package org.jboss.aerogear.android.pipe.loader;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.HashMap;
@@ -61,9 +62,9 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
     private final Handler handler;
     private Map<String, List<Integer>> idsForNamedPipes;
 
-    private static enum Methods {
+    private enum Methods {
 
-        READ, SAVE, REMOVE
+        READ, READ_ID, SAVE, REMOVE
     }
 
     private final Context applicationContext;
@@ -102,6 +103,19 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
     @Override
     public URL getUrl() {
         return pipe.getUrl();
+    }
+
+    @Override
+    public void read(String idx, Callback<T> callback) {
+        ReadFilter filter = new ReadFilter();
+        filter.setLinkUri(URI.create(idx));
+
+        int id = Arrays.hashCode(new Object[] { name, filter, callback });
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CALLBACK, callback);
+        bundle.putSerializable(FILTER, filter);
+        bundle.putSerializable(METHOD, Methods.READ_ID);
+        manager.initLoader(id, bundle, this);
     }
 
     @Override
@@ -174,24 +188,30 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
         verifyCallback(callback);
         AbstractPipeLoader loader = null;
         switch (method) {
-        case READ: {
-            ReadFilter filter = (ReadFilter) bundle.get(FILTER);
-            loader = new ReadLoader(applicationContext, callback,
-                    pipe.getHandler(), filter, this);
-        }
+            case READ: {
+                ReadFilter filter = (ReadFilter) bundle.get(FILTER);
+                loader = new ReadLoader(applicationContext, callback,
+                        pipe.getHandler(), filter, this);
+            }
             break;
-        case REMOVE: {
-            String toRemove = bundle.getString(REMOVE_ID, "-1");
-            loader = new RemoveLoader(applicationContext, callback,
-                    pipe.getHandler(), toRemove);
-        }
+            case READ_ID: {
+                ReadFilter filter = (ReadFilter) bundle.get(FILTER);
+                loader = new IdReadLoader(applicationContext, callback,
+                        pipe.getHandler(), filter, this);
+            }
             break;
-        case SAVE: {
-            byte[] data = bundle.getByteArray(ITEM);
-            String dataId = bundle.getString(SAVE_ID);
-            loader = new SaveLoader(applicationContext, callback,
-                    pipe.getHandler(), data, dataId);
-        }
+            case REMOVE: {
+                String toRemove = bundle.getString(REMOVE_ID, "-1");
+                loader = new RemoveLoader(applicationContext, callback,
+                        pipe.getHandler(), toRemove);
+            }
+            break;
+            case SAVE: {
+                byte[] data = bundle.getByteArray(ITEM);
+                String dataId = bundle.getString(SAVE_ID);
+                loader = new SaveLoader(applicationContext, callback,
+                        pipe.getHandler(), data, dataId);
+            }
             break;
         }
         return loader;
@@ -254,8 +274,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
         callback.setFragment(null);
     }
 
-    private void fragmentFailure(Callback typelessCallback,
-            Exception exception) {
+    private void fragmentFailure(Callback typelessCallback, Exception exception) {
         AbstractFragmentCallback callback = (AbstractFragmentCallback) typelessCallback;
         callback.setFragment(fragment);
         callback.onFailure(exception);
@@ -269,8 +288,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
         callback.setActivity(null);
     }
 
-    private void activityFailure(Callback typelessCallback,
-            Exception exception) {
+    private void activityFailure(Callback typelessCallback, Exception exception) {
         AbstractActivityCallback callback = (AbstractActivityCallback) typelessCallback;
         callback.setActivity(activity);
         callback.onFailure(exception);
@@ -282,7 +300,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
         if (results == null || results.size() == 0) {
             return results;
-        } else if (modernLoader instanceof SaveLoader) {
+        } else if ((modernLoader instanceof SaveLoader) || (modernLoader instanceof IdReadLoader)) {
             return results.get(0);
         } else {
             return results;

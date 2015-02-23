@@ -14,24 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.aerogear.android.pipe;
+package org.jboss.aerogear.android.pipe.loader;
 
+import android.content.Context;
+import org.jboss.aerogear.android.core.Callback;
 import org.jboss.aerogear.android.core.ReadFilter;
-import org.jboss.aerogear.android.pipe.http.HeaderAndBody;
+import org.jboss.aerogear.android.pipe.Pipe;
+import org.jboss.aerogear.android.pipe.PipeHandler;
+
+import java.util.List;
 
 /**
- * Classes which implement this interface provide the logic for how pipes
- * interact with services.
+ * This class performs a read by id operation on behalf of a Pipe using the Loader infrastructure.
+ * 
+ * As a Loader it will retain a reference it its result until reset() is called.
  */
-public interface PipeHandler<T> {
+public class IdReadLoader<T> extends ReadLoader<T> {
 
-    HeaderAndBody onRawRead(Pipe<T> requestingPipe, String id);
+    public IdReadLoader(Context context, Callback<List<T>> callback,
+                        PipeHandler<T> runner, ReadFilter filter, Pipe<T> pipe) {
+        super(context, callback, runner, filter, pipe);
+    }
 
-    HeaderAndBody onRawRead(Pipe<T> requestingPipe);
-
-    HeaderAndBody onRawReadWithFilter(ReadFilter filter, Pipe<T> requestingPipe);
-
-    HeaderAndBody onRawSave(String id, byte[] item);
-
-    void onRemove(String id);
 }
