@@ -385,7 +385,7 @@ public class RestAdapterTest extends AndroidTestCase {
      * 
      * @throws java.lang.NoSuchFieldException If this is thrown then the test is broken.
      * @throws java.lang.IllegalAccessException If this is thrown then the test is broken.
-     * @throws java.lang.InterruptedException
+     * @throws java.lang.InterruptedException If this is thrown then the test is broken.
      */
     public void testLinkPagingReturnsData() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InterruptedException {
 
@@ -422,6 +422,11 @@ public class RestAdapterTest extends AndroidTestCase {
     /**
      * This test tests the default paging configuration.
      * 
+     * 
+     * @throws java.lang.InterruptedException this should not be thrown
+     * @throws java.net.URISyntaxException this should not be thrown
+     * @throws java.lang.NoSuchFieldException this should not be thrown
+     * @throws java.lang.IllegalAccessException this should not be thrown
      */
     public void testDefaultPaging() throws InterruptedException, NoSuchFieldException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
             URISyntaxException {
