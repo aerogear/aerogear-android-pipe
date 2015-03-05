@@ -40,7 +40,8 @@ public class ReadLoader<T> extends AbstractPipeLoader<List<T>> {
     private final ReadFilter filter;
     private final Pipe<T> requestingPipe;
 
-    public ReadLoader(Context context, Callback<List<T>> callback, PipeHandler<T> runner, ReadFilter filter, Pipe<T> pipe) {
+    public ReadLoader(Context context, Callback<List<T>> callback,
+                      PipeHandler<T> runner, ReadFilter filter, Pipe<T> pipe) {
         super(context, callback);
         this.filter = filter;
         this.runner = runner;

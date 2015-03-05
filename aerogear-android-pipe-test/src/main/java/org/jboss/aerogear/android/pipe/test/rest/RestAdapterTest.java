@@ -16,19 +16,44 @@
  */
 package org.jboss.aerogear.android.pipe.test.rest;
 
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import android.graphics.Point;
+import android.test.AndroidTestCase;
+import com.google.gson.*;
+import junit.framework.Assert;
+import org.jboss.aerogear.android.core.Callback;
+import org.jboss.aerogear.android.core.Provider;
+import org.jboss.aerogear.android.core.ReadFilter;
+import org.jboss.aerogear.android.core.RecordId;
+import org.jboss.aerogear.android.pipe.MarshallingConfig;
+import org.jboss.aerogear.android.pipe.Pipe;
+import org.jboss.aerogear.android.pipe.PipeManager;
+import org.jboss.aerogear.android.pipe.http.HeaderAndBody;
+import org.jboss.aerogear.android.pipe.http.HttpProvider;
+import org.jboss.aerogear.android.pipe.http.HttpProviderFactory;
+import org.jboss.aerogear.android.pipe.module.ModuleFields;
+import org.jboss.aerogear.android.pipe.module.PipeModule;
+import org.jboss.aerogear.android.pipe.paging.PageConfig;
+import org.jboss.aerogear.android.pipe.paging.PagedList;
+import org.jboss.aerogear.android.pipe.paging.WrappingPagedList;
+import org.jboss.aerogear.android.pipe.rest.RestAdapter;
+import org.jboss.aerogear.android.pipe.rest.RestfulPipeConfiguration;
+import org.jboss.aerogear.android.pipe.rest.gson.GsonRequestBuilder;
+import org.jboss.aerogear.android.pipe.rest.gson.GsonResponseParser;
+import org.jboss.aerogear.android.pipe.test.helper.Data;
+import org.jboss.aerogear.android.pipe.test.http.HttpStubProvider;
+import org.jboss.aerogear.android.pipe.test.util.ObjectVarArgsMatcher;
+import org.jboss.aerogear.android.pipe.test.util.UnitTestUtils;
+import org.jboss.aerogear.android.pipe.util.UrlUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.mockito.Mockito;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URI;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,48 +65,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import junit.framework.Assert;
-
-import org.jboss.aerogear.android.core.Callback;
-import org.jboss.aerogear.android.core.Provider;
-import org.jboss.aerogear.android.core.ReadFilter;
-import org.jboss.aerogear.android.core.RecordId;
-import org.jboss.aerogear.android.pipe.http.HeaderAndBody;
-import org.jboss.aerogear.android.pipe.http.HttpProvider;
-import org.jboss.aerogear.android.pipe.http.HttpProviderFactory;
-import org.jboss.aerogear.android.pipe.rest.RestAdapter;
-import org.jboss.aerogear.android.pipe.rest.RestfulPipeConfiguration;
-import org.jboss.aerogear.android.pipe.test.helper.Data;
-import org.jboss.aerogear.android.pipe.rest.gson.GsonRequestBuilder;
-import org.jboss.aerogear.android.pipe.rest.gson.GsonResponseParser;
-import org.jboss.aerogear.android.pipe.test.util.UnitTestUtils;
-import org.jboss.aerogear.android.pipe.test.http.HttpStubProvider;
-import org.jboss.aerogear.android.pipe.paging.WrappingPagedList;
-import org.jboss.aerogear.android.pipe.Pipe;
-import org.jboss.aerogear.android.pipe.paging.PageConfig;
-import org.jboss.aerogear.android.pipe.paging.PagedList;
-import org.json.JSONObject;
-
-import android.graphics.Point;
-import android.test.AndroidTestCase;
-import com.google.gson.GsonBuilder;
-import com.google.gson.InstanceCreator;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import static junit.framework.Assert.assertEquals;
-import org.jboss.aerogear.android.pipe.module.ModuleFields;
-import org.jboss.aerogear.android.pipe.module.PipeModule;
-import org.jboss.aerogear.android.pipe.MarshallingConfig;
-import org.jboss.aerogear.android.pipe.PipeManager;
-import org.json.JSONArray;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 public class RestAdapterTest extends AndroidTestCase {
 
@@ -399,7 +385,7 @@ public class RestAdapterTest extends AndroidTestCase {
      * 
      * @throws java.lang.NoSuchFieldException If this is thrown then the test is broken.
      * @throws java.lang.IllegalAccessException If this is thrown then the test is broken.
-     * @throws java.lang.InterruptedException
+     * @throws java.lang.InterruptedException If this is thrown then the test is broken.
      */
     public void testLinkPagingReturnsData() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InterruptedException {
 
@@ -436,6 +422,11 @@ public class RestAdapterTest extends AndroidTestCase {
     /**
      * This test tests the default paging configuration.
      * 
+     * 
+     * @throws java.lang.InterruptedException this should not be thrown
+     * @throws java.net.URISyntaxException this should not be thrown
+     * @throws java.lang.NoSuchFieldException this should not be thrown
+     * @throws java.lang.IllegalAccessException this should not be thrown
      */
     public void testDefaultPaging() throws InterruptedException, NoSuchFieldException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
             URISyntaxException {
@@ -548,6 +539,37 @@ public class RestAdapterTest extends AndroidTestCase {
         latch.await(50000, TimeUnit.MILLISECONDS);
         assertTrue(onFailCalled.get());
         assertEquals(SocketTimeoutException.class, exceptionReference.get().getCause().getClass());
+    }
+
+    public void testReadByIdURL() throws Exception {
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        HttpProviderFactory factory = mock(HttpProviderFactory.class);
+        when(factory.get(anyObject())).thenReturn(mock(HttpProvider.class));
+
+        RestfulPipeConfiguration config = PipeManager.config("whatever", RestfulPipeConfiguration.class)
+                .withUrl(url);
+
+        RestAdapter<Data> adapter = new RestAdapter<Data>(Data.class, url, config);
+        Object restRunner = UnitTestUtils.getPrivateField(adapter, "restRunner");
+        UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory", factory);
+
+        adapter.read(String.valueOf(1), new Callback<Data>() {
+            @Override
+            public void onSuccess(Data data) {
+                latch.countDown();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                latch.countDown();
+                Logger.getLogger(getClass().getSimpleName()).log(Level.SEVERE, TAG, e);
+            }
+        });
+        latch.await(500, TimeUnit.MILLISECONDS);
+
+        verify(factory).get(Mockito.argThat(new ObjectVarArgsMatcher(UrlUtils.appendToBaseURL(url, "1"), 60000)));
     }
 
     private <T> List<T> runRead(Pipe<T> restPipe) throws InterruptedException {

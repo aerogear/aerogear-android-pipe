@@ -38,6 +38,14 @@ public interface Pipe<T> {
     URL getUrl();
 
     /**
+     * Sends a signal to the Pipe to read data by id and return it via the callback.
+     *
+     * @param id representing the ‘id’ of the object
+     * @param callback The callback for consuming the result from the {@link Pipe} invocation.
+     */
+    void read(String id, Callback<T> callback);
+
+    /**
      * Sends a signal to the Pipe to read its data and return it via the callback.
      * 
      * @param callback The callback for consuming the result from the {@link Pipe} invocation.

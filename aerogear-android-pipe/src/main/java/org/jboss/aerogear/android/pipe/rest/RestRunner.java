@@ -257,6 +257,13 @@ public class RestRunner<T> implements PipeHandler<T> {
     }
 
     @Override
+    public HeaderAndBody onRawRead(Pipe<T> requestingPipe, String id) {
+        ReadFilter filter = new ReadFilter();
+        filter.setLinkUri(URI.create(id));
+        return onRawReadWithFilter(filter, requestingPipe);
+    }
+
+    @Override
     public HeaderAndBody onRawRead(Pipe<T> requestingPipe) {
         return onRawReadWithFilter(new ReadFilter(), requestingPipe);
     }
