@@ -31,8 +31,8 @@
     
     <properties>
         <mockito.version>1.9.5</mockito.version>
-        <dexmaker.version>1.0</dexmaker.version>
-        <dexmaker.mockito.version>1.0</dexmaker.mockito.version>
+        <dexmaker.version>1.2</dexmaker.version>
+        <dexmaker.mockito.version>1.2</dexmaker.mockito.version>
     </properties>
     
     <dependencies>
@@ -41,6 +41,51 @@
             <groupId>org.jboss.aerogear</groupId>
             <artifactId>aerogear-android-pipe</artifactId>
             <version>${project.version}</version>
+            <type>aar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.aerogear</groupId>
+            <artifactId>aerogear-android-pipe</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.aerogear</groupId>
+            <artifactId>aerogear-android-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support.test</groupId>
+            <artifactId>runner</artifactId>
+            <version>0.2</version>
+            <type>aar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit-dep</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <version>4.10</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hamcrest-core</artifactId>
+                    <groupId>org.hamcrest</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support.test</groupId>
+            <artifactId>rules</artifactId>
+            <version>0.2</version>
             <type>aar</type>
         </dependency>
         <dependency>
@@ -58,6 +103,7 @@
             <groupId>com.google.dexmaker</groupId>
             <artifactId>dexmaker</artifactId>
             <version>${dexmaker.version}</version>
+            
             <exclusions>
                 <exclusion>
                     <artifactId>hamcrest-core</artifactId>
