@@ -16,6 +16,7 @@
  */
 package org.jboss.aerogear.android.pipe.test.http;
 
+import android.support.test.runner.AndroidJUnit4;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doCallRealMethod;
@@ -36,6 +37,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.fail;
 import org.jboss.aerogear.android.core.Provider;
 import org.jboss.aerogear.android.pipe.http.HeaderAndBody;
 import org.jboss.aerogear.android.pipe.http.HttpException;
@@ -45,8 +49,11 @@ import org.mockito.stubbing.Answer;
 
 import org.jboss.aerogear.android.pipe.test.util.PatchedActivityInstrumentationTestCase;
 import org.jboss.aerogear.android.pipe.test.MainActivity;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class HttpRestProviderTest extends PatchedActivityInstrumentationTestCase<MainActivity> {
+@RunWith(AndroidJUnit4.class)
+public class HttpRestProviderTest extends PatchedActivityInstrumentationTestCase {
 
     private static final URL SIMPLE_URL;
     private static final String HEADER_KEY1_NAME = "KEY1";
@@ -79,6 +86,7 @@ public class HttpRestProviderTest extends PatchedActivityInstrumentationTestCase
         super(MainActivity.class);
     }
 
+    @Test
     public void testGetFailsWith404() throws Exception {
         try {
             HttpURLConnection connection404 = mock(HttpURLConnection.class);
@@ -107,6 +115,7 @@ public class HttpRestProviderTest extends PatchedActivityInstrumentationTestCase
         fail("Expected HttpException exception");
     }
 
+    @Test
     public void testGet() throws Exception {
         HttpURLConnection connection = mock(HttpURLConnection.class);
         HttpRestProvider provider = new HttpRestProvider(SIMPLE_URL);
@@ -128,6 +137,7 @@ public class HttpRestProviderTest extends PatchedActivityInstrumentationTestCase
 
     }
 
+    @Test
     public void testPost() throws Exception {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(
@@ -159,6 +169,7 @@ public class HttpRestProviderTest extends PatchedActivityInstrumentationTestCase
 
     }
 
+    @Test
     public void testPut() throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(
                 RESPONSE_DATA.length);
@@ -193,6 +204,7 @@ public class HttpRestProviderTest extends PatchedActivityInstrumentationTestCase
         assertEquals(id, providerProvider.id);
     }
 
+    @Test
     public void testDelete() throws Exception {
         HttpURLConnection connection = mock(HttpURLConnection.class);
         HttpUrlConnectionProvider providerProvider = new HttpUrlConnectionProvider(

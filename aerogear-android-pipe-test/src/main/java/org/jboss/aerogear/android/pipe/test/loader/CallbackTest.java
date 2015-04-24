@@ -18,6 +18,10 @@ package org.jboss.aerogear.android.pipe.test.loader;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.support.test.runner.AndroidJUnit4;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 import org.jboss.aerogear.android.pipe.callback.AbstractActivityCallback;
 import org.jboss.aerogear.android.pipe.callback.AbstractFragmentCallback;
 import org.jboss.aerogear.android.pipe.loader.LoaderAdapter;
@@ -27,16 +31,20 @@ import org.jboss.aerogear.android.pipe.loader.LoaderAdapter.CallbackHandler;
 import org.jboss.aerogear.android.pipe.test.util.PatchedActivityInstrumentationTestCase;
 import org.jboss.aerogear.android.pipe.test.MainActivity;
 import org.jboss.aerogear.android.pipe.Pipe;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 
+@RunWith(AndroidJUnit4.class)
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class CallbackTest extends PatchedActivityInstrumentationTestCase<MainActivity> {
+public class CallbackTest extends PatchedActivityInstrumentationTestCase {
 
     public CallbackTest() {
         super(MainActivity.class);
     }
 
+    @Test
     public void testPassModernFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
         Fragment fragment = Mockito.mock(Fragment.class);
 
@@ -53,6 +61,7 @@ public class CallbackTest extends PatchedActivityInstrumentationTestCase<MainAct
 
     }
 
+    @Test
     public void testFailModernFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
         Fragment fragment = Mockito.mock(Fragment.class);
 
@@ -71,6 +80,7 @@ public class CallbackTest extends PatchedActivityInstrumentationTestCase<MainAct
 
     }
 
+    @Test
     public void testPassModernActivityCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
         Activity activity = Mockito.mock(Activity.class);
 
@@ -87,6 +97,7 @@ public class CallbackTest extends PatchedActivityInstrumentationTestCase<MainAct
 
     }
 
+    @Test
     public void testFailModernActivityCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
         Activity activity = Mockito.mock(Activity.class);
 

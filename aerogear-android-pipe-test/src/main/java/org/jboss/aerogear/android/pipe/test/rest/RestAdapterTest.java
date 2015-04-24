@@ -1,23 +1,23 @@
 /**
- * JBoss, Home of Professional Open Source
- * Copyright Red Hat, Inc., and individual contributors.
+ * JBoss, Home of Professional Open Source Copyright Red Hat, Inc., and
+ * individual contributors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package org.jboss.aerogear.android.pipe.test.rest;
 
 import android.graphics.Point;
-import android.test.AndroidTestCase;
+import android.support.test.runner.AndroidJUnit4;
 import com.google.gson.*;
 import junit.framework.Assert;
 import org.jboss.aerogear.android.core.Callback;
@@ -64,12 +64,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-public class RestAdapterTest extends AndroidTestCase {
+@RunWith(AndroidJUnit4.class)
+public class RestAdapterTest {
 
     private static final String TAG = RestAdapterTest.class.getSimpleName();
     private static final String SERIALIZED_POINTS = "{\"points\":[{\"x\":0,\"y\":0},{\"x\":1,\"y\":2},{\"x\":2,\"y\":4},{\"x\":3,\"y\":6},{\"x\":4,\"y\":8},{\"x\":5,\"y\":10},{\"x\":6,\"y\":12},{\"x\":7,\"y\":14},{\"x\":8,\"y\":16},{\"x\":9,\"y\":18}],\"id\":\"1\"}";
@@ -82,12 +89,12 @@ public class RestAdapterTest extends AndroidTestCase {
         }
     };
 
-    @Override
+    @Before
     public void setUp() throws MalformedURLException, Exception {
-        super.setUp();
         url = new URL("http://server.com/context/");
     }
 
+    @Test
     public void testPipeURLProperty() throws Exception {
         Pipe<Data> restPipe = new RestAdapter<Data>(Data.class, url);
         Object restRunner = UnitTestUtils.getPrivateField(restPipe, "restRunner");
@@ -95,6 +102,7 @@ public class RestAdapterTest extends AndroidTestCase {
         assertEquals("verifying the given URL", "http://server.com/context/", restPipe.getUrl().toString());
     }
 
+    @Test
     public void testPipeFactoryPipeConfigEncoding() {
         try {
             RestfulPipeConfiguration config = PipeManager.config("data", RestfulPipeConfiguration.class).withUrl(url);
@@ -107,6 +115,7 @@ public class RestAdapterTest extends AndroidTestCase {
         fail("Expected IllegalArgumentException");
     }
 
+    @Test
     public void testPipeFactoryPipeConfigGson() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
         GsonResponseParser<ListClassId> responseParser = new GsonResponseParser<ListClassId>(builder.create());
@@ -125,6 +134,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
     }
 
+    @Test
     public void testEncoding() throws Exception {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
         final Charset utf_16 = Charset.forName("UTF-16");
@@ -153,6 +163,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
     }
 
+    @Test
     public void testConfigSetEncoding() throws Exception {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(
                 Point.class, new RestAdapterTest.PointTypeAdapter());
@@ -168,6 +179,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
     }
 
+    @Test
     public void testSingleObjectRead() throws Exception {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
         HeaderAndBody response = new HeaderAndBody(SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>());
@@ -191,6 +203,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
     }
 
+    @Test
     public void testSingleObjectReadWithNestedResult() throws Exception {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
         HeaderAndBody response = new HeaderAndBody(("{\"result\":{\"points\":" + SERIALIZED_POINTS + "}}").getBytes(), new HashMap<String, Object>());
@@ -216,6 +229,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
     }
 
+    @Test
     public void testReadArray() throws Exception {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
         HeaderAndBody response = new HeaderAndBody((POINTS_ARRAY).getBytes(), new HashMap<String, Object>());
@@ -240,6 +254,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
     }
 
+    @Test
     public void testGsonBuilderProperty() throws Exception {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Point.class, new RestAdapterTest.PointTypeAdapter());
 
@@ -382,11 +397,15 @@ public class RestAdapterTest extends AndroidTestCase {
 
     /**
      * This test tests the default paging configuration.
-     * 
-     * @throws java.lang.NoSuchFieldException If this is thrown then the test is broken.
-     * @throws java.lang.IllegalAccessException If this is thrown then the test is broken.
-     * @throws java.lang.InterruptedException If this is thrown then the test is broken.
+     *
+     * @throws java.lang.NoSuchFieldException If this is thrown then the test is
+     * broken.
+     * @throws java.lang.IllegalAccessException If this is thrown then the test
+     * is broken.
+     * @throws java.lang.InterruptedException If this is thrown then the test is
+     * broken.
      */
+    @Test
     public void testLinkPagingReturnsData() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InterruptedException {
 
         final HttpStubProvider provider = new HttpStubProvider(url, new HeaderAndBody(SERIALIZED_POINTS.getBytes(), new HashMap<String, Object>()));
@@ -421,13 +440,14 @@ public class RestAdapterTest extends AndroidTestCase {
 
     /**
      * This test tests the default paging configuration.
-     * 
-     * 
+     *
+     *
      * @throws java.lang.InterruptedException this should not be thrown
      * @throws java.net.URISyntaxException this should not be thrown
      * @throws java.lang.NoSuchFieldException this should not be thrown
      * @throws java.lang.IllegalAccessException this should not be thrown
      */
+    @Test
     public void testDefaultPaging() throws InterruptedException, NoSuchFieldException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
             URISyntaxException {
 
@@ -465,6 +485,7 @@ public class RestAdapterTest extends AndroidTestCase {
         assertEquals(new URI("http://example.com/TheBook/chapter2"), pagedList.getPreviousFilter().getLinkUri());
     }
 
+    @Test
     public void testBuildPagedResultsFromHeaders() throws Exception {
         PageConfig pageConfig = new PageConfig();
         pageConfig.setMetadataLocation(PageConfig.MetadataLocations.HEADERS);
@@ -474,7 +495,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
         RestAdapter adapter = new RestAdapter(Data.class, url, config);
         List<Data> list = new ArrayList<Data>();
-        HeaderAndBody response = new HeaderAndBody(new byte[] {}, new HashMap<String, Object>() {
+        HeaderAndBody response = new HeaderAndBody(new byte[]{}, new HashMap<String, Object>() {
             {
                 put("next", "chapter3");
                 put("previous", "chapter2");
@@ -491,6 +512,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
     }
 
+    @Test
     public void testBuildPagedResultsFromBody() throws Exception {
         PageConfig pageConfig = new PageConfig();
         pageConfig.setMetadataLocation(PageConfig.MetadataLocations.BODY);
@@ -514,6 +536,7 @@ public class RestAdapterTest extends AndroidTestCase {
 
     }
 
+    @Test
     public void testRunTimeout() throws Exception {
 
         final CountDownLatch latch = new CountDownLatch(1);
@@ -541,6 +564,7 @@ public class RestAdapterTest extends AndroidTestCase {
         assertEquals(SocketTimeoutException.class, exceptionReference.get().getCause().getClass());
     }
 
+    @Test
     public void testReadByIdURL() throws Exception {
 
         final CountDownLatch latch = new CountDownLatch(1);
@@ -579,7 +603,7 @@ public class RestAdapterTest extends AndroidTestCase {
     /**
      * Runs a read method, returns the result of the call back and makes sure no
      * exceptions are thrown
-     * 
+     *
      * @param restPipe
      */
     private <T> List<T> runRead(Pipe<T> restPipe, ReadFilter readFilter) throws InterruptedException {
@@ -611,7 +635,7 @@ public class RestAdapterTest extends AndroidTestCase {
     /**
      * Runs a read method, returns the result of the call back and rethrows the
      * underlying exception
-     * 
+     *
      * @param restPipe
      */
     private <T> List<T> runReadForException(Pipe<T> restPipe, ReadFilter readFilter) throws InterruptedException, Exception {

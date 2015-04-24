@@ -16,7 +16,8 @@
  */
 package org.jboss.aerogear.android.pipe.test.rest.gson;
 
-import android.test.AndroidTestCase;
+
+import android.support.test.runner.AndroidJUnit4;
 import junit.framework.Assert;
 import org.jboss.aerogear.android.pipe.http.HeaderAndBody;
 import org.jboss.aerogear.android.pipe.rest.gson.GsonResponseParser;
@@ -24,9 +25,13 @@ import org.jboss.aerogear.android.pipe.test.helper.Data;
 
 import java.util.HashMap;
 import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class GsonResponseParserTest extends AndroidTestCase {
+@RunWith(AndroidJUnit4.class)
+public class GsonResponseParserTest {
 
+    @Test
     public void testHandleResponseWithEmptyResponse() {
         String jsonResponse = "";
         HeaderAndBody httpResponse = new HeaderAndBody(jsonResponse.getBytes(), new HashMap<String, Object>());

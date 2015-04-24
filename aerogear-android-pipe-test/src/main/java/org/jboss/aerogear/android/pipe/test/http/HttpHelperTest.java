@@ -16,20 +16,26 @@
  */
 package org.jboss.aerogear.android.pipe.test.http;
 
+import android.support.test.runner.AndroidJUnit4;
 import java.util.HashMap;
 
-import android.test.AndroidTestCase;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotSame;
 import org.jboss.aerogear.android.pipe.http.HeaderAndBody;
 import org.jboss.aerogear.android.pipe.http.HttpException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class HttpHelperTest extends AndroidTestCase {
+@RunWith(AndroidJUnit4.class)
+public class HttpHelperTest {
     private static final byte[] SIMPLE_DATA = { 8, 6, 7, 5, 3, 0, 9 };
     private static final String SAMPLE_MESSAGE = "SAMPLE_MESSAGE";
     private static final String SAMPLE_HEADER = "SAMPLE_HEADER";
     private static final String DEFAULT_MESSAGE = "The server returned the error code 404.";
     private static final int NOT_FOUND = 404;
 
-    public void testHttpExceptionConstructor() {
+    @Test
+    public void constructsHttpException() {
         HttpException exception = new HttpException(SIMPLE_DATA, NOT_FOUND);
         HttpException exceptionWithMessage = new HttpException(SIMPLE_DATA,
                 NOT_FOUND, SAMPLE_MESSAGE);
@@ -44,7 +50,8 @@ public class HttpHelperTest extends AndroidTestCase {
 
     }
 
-    public void testHeaderAndBody() {
+    @Test
+    public void constructHeaderAndBody() {
         HeaderAndBody headerAndBody = new HeaderAndBody(SIMPLE_DATA,
                 new HashMap<String, Object>());
         headerAndBody.setHeader(SAMPLE_HEADER, SAMPLE_MESSAGE);
