@@ -45,7 +45,7 @@
     <properties>
         <!-- Project depencies versions -->
         <aerogear.bom.version>0.2.10</aerogear.bom.version>
-        <aerogear.android.core.version>2.2.0-SNAPSHOT</aerogear.android.core.version>
+        <aerogear.android.core.version>3.0.0-SNAPSHOT</aerogear.android.core.version>
         
         <!-- Plugins versions -->
         <maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
