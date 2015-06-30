@@ -49,6 +49,11 @@ public class GsonResponseParser<T> implements ResponseParser<T> {
         JsonParser parser = new JsonParser();
         JsonElement httpJsonResult = parser.parse(responseAsString);
         httpJsonResult = getResultElement(httpJsonResult, marshallingConfig.getDataRoot());
+
+        if(responseAsString.trim().isEmpty()) {
+            return new ArrayList<T>();
+        }
+
         if (httpJsonResult.isJsonArray()) {
             T[] resultArray = gson.fromJson(httpJsonResult.toString(), ClassUtils.asArrayClass(responseType));
             result = Arrays.asList(resultArray);
