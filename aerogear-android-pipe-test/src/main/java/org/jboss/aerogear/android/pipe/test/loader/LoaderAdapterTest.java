@@ -39,8 +39,6 @@ import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
-import org.jboss.aerogear.android.pipe.PipeManager;
-import org.jboss.aerogear.android.pipe.callback.AbstractFragmentCallback;
 import org.jboss.aerogear.android.pipe.loader.LoaderAdapter;
 import org.jboss.aerogear.android.pipe.loader.ReadLoader;
 import org.jboss.aerogear.android.pipe.loader.RemoveLoader;
@@ -69,6 +67,7 @@ import org.mockito.Mockito;
 import android.annotation.TargetApi;
 import android.graphics.Point;
 import android.os.Build;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
@@ -81,14 +80,20 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 import org.jboss.aerogear.android.pipe.test.util.PatchedActivityInstrumentationTestCase;
 import org.jboss.aerogear.android.pipe.callback.AbstractFragmentCallback;
 import org.jboss.aerogear.android.pipe.PipeManager;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-@SuppressWarnings({ "unchecked", "rawtypes" })
-public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<MainActivity> {
+@SuppressWarnings({"unchecked", "rawtypes"})
+@RunWith(AndroidJUnit4.class)
+public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase {
 
     public LoaderAdapterTest() {
         super(MainActivity.class);
@@ -100,12 +105,13 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     private URL url;
     private URL listUrl;
 
+    @Before
     public void setUp() throws MalformedURLException, Exception {
-        super.setUp();
         url = new URL("http://server.com/context/");
         listUrl = new URL("http://server.com/context/ListClassId");
     }
 
+    @Test
     public void testSingleObjectRead() throws Exception {
 
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(
@@ -138,6 +144,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     }
 
+    @Test
     public void testReadCallbackFailsWithIncompatibleType() throws Exception {
 
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(
@@ -182,6 +189,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         fail("Incorrect callback should throw exception.");
     }
 
+    @Test
     public void testSaveCallbackFailsWithIncompatibleType() throws Exception {
 
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(
@@ -228,6 +236,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     }
 
+    @Test
     public void testDeleteCallbackFailsWithIncompatibleType() throws Exception {
 
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(
@@ -273,6 +282,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     }
 
+    @Test
     public void testSingleObjectSave() throws Exception {
 
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(
@@ -283,14 +293,14 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
         when(provider.post((byte[]) anyObject()))
                 .thenReturn(new HeaderAndBody(
-                        SERIALIZED_POINTS.getBytes(),
-                        new HashMap<String, Object>())
+                                SERIALIZED_POINTS.getBytes(),
+                                new HashMap<String, Object>())
                 );
 
         when(provider.put(any(String.class), (byte[]) anyObject()))
                 .thenReturn(new HeaderAndBody(
-                        SERIALIZED_POINTS.getBytes(),
-                        new HashMap<String, Object>())
+                                SERIALIZED_POINTS.getBytes(),
+                                new HashMap<String, Object>())
                 );
 
         RestfulPipeConfiguration config = PipeManager.config("ListClassId", RestfulPipeConfiguration.class);
@@ -317,6 +327,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     }
 
+    @Test
     public void testSingleObjectMultipartSave() throws Exception {
 
         final HttpStubProvider provider = mock(HttpStubProvider.class);
@@ -324,14 +335,14 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
         when(provider.post((byte[]) anyObject()))
                 .thenReturn(new HeaderAndBody(
-                        SERIALIZED_POINTS.getBytes(),
-                        new HashMap<String, Object>())
+                                SERIALIZED_POINTS.getBytes(),
+                                new HashMap<String, Object>())
                 );
 
         when(provider.put(any(String.class), (byte[]) anyObject()))
                 .thenReturn(new HeaderAndBody(
-                        SERIALIZED_POINTS.getBytes(),
-                        new HashMap<String, Object>())
+                                SERIALIZED_POINTS.getBytes(),
+                                new HashMap<String, Object>())
                 );
 
         RestfulPipeConfiguration config = PipeManager.config("MultiPartData", RestfulPipeConfiguration.class);
@@ -368,7 +379,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     public void onFailure(Exception e) {
                         hasException.set(true);
                         Logger.getLogger(LoaderAdapterTest.class.getSimpleName())
-                                .log(Level.SEVERE, e.getMessage(), e);
+                        .log(Level.SEVERE, e.getMessage(), e);
                         latch.countDown();
                     }
                 });
@@ -380,6 +391,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     }
 
+    @Test
     public void testSingleObjectDelete() throws Exception {
 
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(
@@ -412,10 +424,11 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     }
 
+    @Test
     public void testMultipleCallsToLoadCallDeliver() {
         PipeHandler handler = mock(PipeHandler.class);
         final AtomicBoolean called = new AtomicBoolean(false);
-        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[] {}, new HashMap<String, Object>()));
+        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
         ReadLoader loader = new ReadLoader(getActivity(), null, handler, null, null) {
 
             @Override
@@ -442,10 +455,11 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     }
 
+    @Test
     public void testMultipleCallsToSaveCallDeliver() {
         PipeHandler handler = mock(PipeHandler.class);
         final AtomicBoolean called = new AtomicBoolean(false);
-        when(handler.onRawSave(Matchers.anyString(), (byte[]) anyObject())).thenReturn(new HeaderAndBody(new byte[] {}, new HashMap<String, Object>()));
+        when(handler.onRawSave(Matchers.anyString(), (byte[]) anyObject())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
         SaveLoader loader = new SaveLoader(getActivity(), null, handler, null, null) {
 
             @Override
@@ -472,10 +486,11 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     }
 
+    @Test
     public void testMultipleCallsToRemoveCallDeliver() {
         PipeHandler handler = mock(PipeHandler.class);
         final AtomicBoolean called = new AtomicBoolean(false);
-        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[] {}, new HashMap<String, Object>()));
+        when(handler.onRawReadWithFilter((ReadFilter) any(), (Pipe) any())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
 
         RemoveLoader loader = new RemoveLoader(getActivity(), null, handler, null) {
 
@@ -510,7 +525,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     /**
      * Runs a read method, returns the result of the call back and makes sure no
      * exceptions are thrown
-     * 
+     *
      * @param restPipe
      */
     private <T> List<T> runRead(Pipe<T> restPipe, ReadFilter readFilter)
@@ -546,7 +561,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
     /**
      * Runs a remove method, returns the result of the call back and makes sure
      * no exceptions are thrown
-     * 
+     *
      */
     private <T> void runRemove(Pipe<T> restPipe, String id)
             throws InterruptedException {
@@ -592,7 +607,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
                     public void onFailure(Exception e) {
                         hasException.set(true);
                         Logger.getLogger(LoaderAdapterTest.class.getSimpleName())
-                                .log(Level.SEVERE, e.getMessage(), e);
+                        .log(Level.SEVERE, e.getMessage(), e);
                         latch.countDown();
                     }
                 });
@@ -601,6 +616,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         Assert.assertFalse(hasException.get());
     }
 
+    @Test
     public void testRunReadWithFilter() throws Exception {
 
         final CountDownLatch latch = new CountDownLatch(1);
@@ -645,6 +661,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     }
 
+    @Test
     public void testResetWithoutPipeIds() throws NoSuchFieldException, IllegalAccessException {
         RestfulPipeConfiguration config = PipeManager.config("data", RestfulPipeConfiguration.class);
         Pipe<Data> pipe = config.withUrl(url).forClass(Data.class);
@@ -652,8 +669,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
         LoaderAdapter<Data> loaderPipe = new LoaderAdapter<Data>(getActivity(), pipe, "loaderPipeForTest");
         loaderPipe.reset();
 
-        Map<String, List<Integer>> idsForNamedPipes = (Map<String, List<Integer>>)
-                UnitTestUtils.getPrivateField(loaderPipe, "idsForNamedPipes");
+        Map<String, List<Integer>> idsForNamedPipes = (Map<String, List<Integer>>) UnitTestUtils.getPrivateField(loaderPipe, "idsForNamedPipes");
 
         Assert.assertEquals("Should be 1", 1, idsForNamedPipes.size());
         Assert.assertNotNull("Should not null", idsForNamedPipes.get("loaderPipeForTest"));
@@ -723,7 +739,7 @@ public class LoaderAdapterTest extends PatchedActivityInstrumentationTestCase<Ma
 
     public static class MultiPartData {
 
-        private byte[] byteArray = { 'a', 'b', 'c', 'd', 'e', 'f' };
+        private byte[] byteArray = {'a', 'b', 'c', 'd', 'e', 'f'};
         private InputStream inputStream = new ByteArrayInputStream(byteArray);
 
         @RecordId
