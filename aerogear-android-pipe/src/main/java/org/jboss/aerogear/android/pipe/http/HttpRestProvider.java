@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.http.HttpStatus;
 import org.jboss.aerogear.android.core.Provider;
 
 import android.util.Log;
@@ -249,8 +248,8 @@ public final class HttpRestProvider implements HttpProvider {
         byte[] responseData;
 
         switch (statusCode) {
-        case HttpStatus.SC_OK:
-        case HttpStatus.SC_CREATED:
+        case HttpURLConnection.HTTP_OK:
+        case HttpURLConnection.HTTP_CREATED:
             InputStream in = new BufferedInputStream(urlConnection
                     .getInputStream());
 
@@ -258,7 +257,7 @@ public final class HttpRestProvider implements HttpProvider {
 
             break;
 
-        case HttpStatus.SC_NO_CONTENT:
+        case HttpURLConnection.HTTP_NO_CONTENT:
             responseData = new byte[0];
 
             break;
