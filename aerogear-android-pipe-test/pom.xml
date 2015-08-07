@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-       JBoss, Home of Professional Open Source
+  JBoss, Home of Professional Open Source
   Copyright Red Hat, Inc., and individual contributors
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>aerogear-android-pipe-test</artifactId>
@@ -28,13 +29,22 @@
         <artifactId>aerogear-android-pipe-parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    
+
     <properties>
+
+        <!-- Dependencies versions -->
         <mockito.version>1.9.5</mockito.version>
         <dexmaker.version>1.2</dexmaker.version>
         <dexmaker.mockito.version>1.2</dexmaker.mockito.version>
+        <android.support.test.version>0.3</android.support.test.version>
+        <junit.version>4.10</junit.version>
+
+        <!-- Plugins parameters -->
+        <android.maven.plugin.dex.xms>-Xms256m</android.maven.plugin.dex.xms>
+        <android.maven.plugin.dex.xmx>-Xmx2048m</android.maven.plugin.dex.xmx>
+
     </properties>
-    
+
     <dependencies>
 
         <dependency>
@@ -43,51 +53,7 @@
             <version>${project.version}</version>
             <type>aar</type>
         </dependency>
-        <dependency>
-            <groupId>org.jboss.aerogear</groupId>
-            <artifactId>aerogear-android-pipe</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.aerogear</groupId>
-            <artifactId>aerogear-android-core</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.android.support.test</groupId>
-            <artifactId>runner</artifactId>
-            <version>0.2</version>
-            <type>aar</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit-dep</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-            <version>4.10</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>hamcrest-core</artifactId>
-                    <groupId>org.hamcrest</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.android.support.test</groupId>
-            <artifactId>rules</artifactId>
-            <version>0.2</version>
-            <type>aar</type>
-        </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
@@ -99,11 +65,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.google.dexmaker</groupId>
             <artifactId>dexmaker</artifactId>
             <version>${dexmaker.version}</version>
-            
             <exclusions>
                 <exclusion>
                     <artifactId>hamcrest-core</artifactId>
@@ -111,6 +77,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.google.dexmaker</groupId>
             <artifactId>dexmaker-mockito</artifactId>
@@ -124,11 +91,35 @@
                     <artifactId>hamcrest-core</artifactId>
                     <groupId>org.hamcrest</groupId>
                 </exclusion>
-            
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>com.android.support.test</groupId>
+            <artifactId>runner</artifactId>
+            <version>${android.support.test.version}</version>
+            <type>aar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit-dep</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.android.support.test</groupId>
+            <artifactId>rules</artifactId>
+            <version>${android.support.test.version}</version>
+            <type>aar</type>
+        </dependency>
+
     </dependencies>
-    
+
     <build>
         <plugins>
             <plugin>
@@ -138,21 +129,20 @@
                     <test>
                         <debug>${android.debug}</debug>
                     </test>
-                    <proguard>
-                        <skip>true</skip>
-                    </proguard>
                     <sdk>
-                        <path>${env.ANDROID_HOME}</path>
                         <platform>${android.platform}</platform>
                     </sdk>
+                    <proguard>
+                        <skip>${proguard.skip}</skip>
+                    </proguard>
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
                     <dex>
                         <jvmArguments>
-                            <jvmArgument>-Xms256m</jvmArgument>
-                            <jvmArgument>-Xmx2048m</jvmArgument>
+                            <jvmArgument>${android.maven.plugin.dex.xms}</jvmArgument>
+                            <jvmArgument>${android.maven.plugin.dex.xmx}</jvmArgument>
                         </jvmArguments>
                     </dex>
                 </configuration>
-                <extensions>true</extensions>
             </plugin>
         </plugins>
     </build>
