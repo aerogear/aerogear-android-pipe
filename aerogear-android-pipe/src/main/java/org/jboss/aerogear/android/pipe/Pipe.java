@@ -54,9 +54,9 @@ public interface Pipe<T> {
 
     /**
      * Reads all the data from the underlying server connection.
-     * 
-     * @param callback The callback for consuming the result from the {@link Pipe} invocation.
+     *
      * @param filter a {@link ReadFilter} for performing pagination and querying.
+     * @param callback The callback for consuming the result from the {@link Pipe} invocation.
      */
     void read(ReadFilter filter, Callback<List<T>> callback);
 
