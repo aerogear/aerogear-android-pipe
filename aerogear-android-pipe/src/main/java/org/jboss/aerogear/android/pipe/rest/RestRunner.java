@@ -270,37 +270,35 @@ public class RestRunner<T> implements PipeHandler<T> {
 
     @Override
     public HeaderAndBody onRawReadWithFilter(ReadFilter filter, Pipe<T> requestingPipe) {
-        HttpProvider httpProvider;
-
         if (filter == null) {
             filter = new ReadFilter();
         }
 
-        if (filter.getLinkUri() == null) {
-            httpProvider = getHttpProvider(parameterProvider.getParameters(filter));
-        } else {
-            httpProvider = getHttpProvider(filter.getLinkUri());
-        }
-
-        return runHttpGet(httpProvider);
-
-    }
-
-    private HeaderAndBody runHttpGet(HttpProvider httpProvider) {
-        HeaderAndBody httpResponse;
-
         try {
-            httpResponse = httpProvider.get();
-            return httpResponse;
-        } catch (HttpException exception) {
+            return readWithFilter(filter);
+        } catch (HttpException e) {
             for (PipeModule module : modules) {
-                if (module.handleError(exception)) {
-                    httpResponse = httpProvider.get();
-                    return httpResponse;
+                if (module.handleError(e)) {
+                    return readWithFilter(filter);
                 }
             }
-            throw exception;
+
+            throw e;
         }
+    }
+
+    private HeaderAndBody readWithFilter(ReadFilter filter) {
+      HttpProvider httpProvider = getHttpProvider(filter);
+
+      return httpProvider.get();
+    }
+
+    private HttpProvider getHttpProvider(ReadFilter filter) {
+      if (filter.getLinkUri() == null) {
+          return getHttpProvider(parameterProvider.getParameters(filter));
+      } else {
+          return getHttpProvider(filter.getLinkUri());
+      }
     }
 
     @Override
