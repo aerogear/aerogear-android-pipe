@@ -540,7 +540,7 @@ public class RestAdapterTest {
     public void testRunTimeout() throws Exception {
 
         final CountDownLatch latch = new CountDownLatch(1);
-        URL aerogearserverUrl = new URL("https://controller-aerogear.rhcloud.com/aerogear-controller-demo/");
+        URL aerogearserverUrl = new URL("https://redhat.com/");
         RestfulPipeConfiguration pipeConfig = PipeManager.config("listClassId", RestfulPipeConfiguration.class).withUrl(aerogearserverUrl);
         pipeConfig.timeout(1);
         RestAdapter<Data> adapter = (RestAdapter<Data>) pipeConfig.forClass(Data.class);
