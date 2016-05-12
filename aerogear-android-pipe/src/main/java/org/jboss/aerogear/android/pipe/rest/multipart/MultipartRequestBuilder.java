@@ -153,8 +153,12 @@ public class MultipartRequestBuilder<T> implements RequestBuilder<T> {
         ArrayList<Property> properties = new ArrayList<Property>();
 
         for (Field field : baseClass.getDeclaredFields()) {
-            Property property = new Property(baseClass, field.getName());
-            properties.add(property);
+            
+            if (!field.isSynthetic()) {
+                Property property = new Property(baseClass, field.getName());
+                properties.add(property);
+            }
+
         }
 
         return properties;
