@@ -229,7 +229,7 @@ public class RestRunner<T> implements PipeHandler<T> {
     private URL appendQuery(String query, URL baseURL) {
         try {
             URI baseURI = baseURL.toURI();
-            String baseQuery = baseURI.getQuery();
+            String baseQuery = baseURI.getRawQuery();
             if (baseQuery == null || baseQuery.isEmpty()) {
                 baseQuery = query;
             } else {
@@ -242,7 +242,7 @@ public class RestRunner<T> implements PipeHandler<T> {
                 baseQuery = null;
             }
 
-            return new URI(baseURI.getScheme(), baseURI.getUserInfo(), baseURI.getHost(), baseURI.getPort(), baseURI.getPath(), baseQuery, baseURI.getFragment()).toURL();
+            return new URI(baseURI.getScheme(), baseURI.getRawUserInfo(), baseURI.getHost(), baseURI.getPort(), baseURI.getRawPath(), baseQuery, baseURI.getRawFragment()).toURL();
         } catch (MalformedURLException ex) {
             Log.e(TAG, "The URL could not be created from " + baseURL.toString(), ex);
             throw new RuntimeException(ex);
