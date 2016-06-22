@@ -20,8 +20,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import android.util.Log;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 public final class UrlUtils {
 
@@ -80,11 +78,9 @@ public final class UrlUtils {
             }
 
             if (!query.startsWith("?")) {
-                query = URLEncoder.encode(query, "UTF-8");
                 query = "?" + query;
             } else {
                 query = query.replaceFirst("[?]", "");
-                query = URLEncoder.encode(query, "UTF-8");
                 query = "?" + query;
             }
 
@@ -93,11 +89,7 @@ public final class UrlUtils {
             String message = "Could not append " + query + " to " + baseURL.toString();
             Log.e(TAG, message, ex);
             throw new IllegalArgumentException(message, ex);
-        } catch (UnsupportedEncodingException ex) {
-            String message = "UTF-8 is not a supported encoding";
-            Log.e(TAG, message, ex);
-            throw new IllegalStateException(message, ex);
-        }
+        } 
     }
 
 }

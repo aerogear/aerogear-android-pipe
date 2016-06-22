@@ -335,7 +335,7 @@ public class RestAdapterTest {
         UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory", factory);
 
         ReadFilter filter = new ReadFilter();
-        filter.setLinkUri(URI.create("?limit=10&where=%7B%22model%22:%22BMW%22%7D"));
+        filter.setLinkUri(URI.create("rail%2Ftrails?limit=10&where=%7B%22model%22:%22BMW%22%7D"));
 
         adapter.read(filter, new Callback<List<Data>>() {
             @Override
@@ -350,7 +350,7 @@ public class RestAdapterTest {
         });
         latch.await(500, TimeUnit.MILLISECONDS);
 
-        verify(factory).get(eq(new URL(url.toString() + "?limit=10&where=%7B%22model%22:%22BMW%22%7D")));
+        verify(factory).get(eq(new URL(url.toString() + "rail%2Ftrails?limit=10&where=%7B%22model%22:%22BMW%22%7D")));
     }
 
     public void runReadWithFilter() throws Exception {

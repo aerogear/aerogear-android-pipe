@@ -16,10 +16,10 @@
  */
 package org.jboss.aerogear.android.pipe.rest;
 
+import android.net.Uri;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
@@ -183,13 +183,13 @@ public class RestRunner<T> implements PipeHandler<T> {
 
         ModuleFields fields = loadAuth(relativeUri, "GET");
 
-        if (relativeUri == null || relativeUri.getQuery() == null) {
+        if (relativeUri == null || relativeUri.getRawQuery() == null) {
             queryString = "";
         } else {
-            queryString = relativeUri.getQuery().toString();
+            queryString = relativeUri.getRawQuery().toString();
         }
 
-        URL mergedURL = UrlUtils.appendToBaseURL(baseURL, relativeUri.getPath());
+        URL mergedURL = UrlUtils.appendToBaseURL(baseURL, relativeUri.getRawPath());
         URL authorizedURL = addAuthorization(fields.getQueryParameters(), UrlUtils.appendQueryToBaseURL(mergedURL, queryString));
 
         final HttpProvider httpProvider = httpProviderFactory.get(authorizedURL, timeout);
@@ -228,8 +228,8 @@ public class RestRunner<T> implements PipeHandler<T> {
 
     private URL appendQuery(String query, URL baseURL) {
         try {
-            URI baseURI = baseURL.toURI();
-            String baseQuery = baseURI.getQuery();
+            Uri uri = Uri.parse(baseURL.toString());
+            String baseQuery = uri.getEncodedQuery();
             if (baseQuery == null || baseQuery.isEmpty()) {
                 baseQuery = query;
             } else {
@@ -237,19 +237,19 @@ public class RestRunner<T> implements PipeHandler<T> {
                     baseQuery = baseQuery + "&" + query;
                 }
             }
-
+            
             if (baseQuery.isEmpty()) {
                 baseQuery = null;
             }
 
-            return new URI(baseURI.getScheme(), baseURI.getUserInfo(), baseURI.getHost(), baseURI.getPort(), baseURI.getPath(), baseQuery, baseURI.getFragment()).toURL();
+            Uri.Builder uriBuilder = uri.buildUpon();
+            uriBuilder.encodedQuery(baseQuery);
+            
+            return new URL(uriBuilder.build().toString());
         } catch (MalformedURLException ex) {
             Log.e(TAG, "The URL could not be created from " + baseURL.toString(), ex);
             throw new RuntimeException(ex);
-        } catch (URISyntaxException ex) {
-            Log.e(TAG, "Error turning " + query + " into URI query.", ex);
-            throw new RuntimeException(ex);
-        }
+        } 
     }
 
     protected RequestBuilder<T> getRequestBuilder() {
