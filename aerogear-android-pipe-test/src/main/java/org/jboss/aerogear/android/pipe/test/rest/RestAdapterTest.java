@@ -352,6 +352,38 @@ public class RestAdapterTest {
 
         verify(factory).get(eq(new URL(url.toString() + "rail%2Ftrails?limit=10&where=%7B%22model%22:%22BMW%22%7D")));
     }
+    
+    public void testEscapeComplexUri() throws Exception {
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        HttpProviderFactory factory = mock(HttpProviderFactory.class);
+        when(factory.get(anyObject())).thenReturn(mock(HttpProvider.class));
+
+        RestAdapter<Data> adapter = new RestAdapter<Data>(Data.class, url);
+        Object restRunner = UnitTestUtils.getPrivateField(adapter, "restRunner");
+        UnitTestUtils.setPrivateField(restRunner, "httpProviderFactory", factory);
+
+        ReadFilter filter = new ReadFilter();
+        filter.setLinkUri(URI.create("metrics/gauges/MI~R~%5Bacbfe3d2-fd73-43b0-94ad-c38f32abba1f"
+                + "%2FHolu~~%5D~MT~WildFly%20Memory%20Metrics~Heap%20Max/data?start=1463907826698&end=1466586226698"));
+
+        adapter.read(filter, new Callback<List<Data>>() {
+            @Override
+            public void onSuccess(List<Data> data) {
+                latch.countDown();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                latch.countDown();
+            }
+        });
+        latch.await(500, TimeUnit.MILLISECONDS);
+
+        verify(factory).get(eq(new URL(url.toString() + "metrics/gauges/MI~R~%5Bacbfe3d2-fd73-43b0-94ad-c38f32abba1f"
+                + "%2FHolu~~%5D~MT~WildFly%20Memory%20Metrics~Heap%20Max/data?start=1463907826698&end=1466586226698")));
+    }
 
     public void runReadWithFilter() throws Exception {
 
