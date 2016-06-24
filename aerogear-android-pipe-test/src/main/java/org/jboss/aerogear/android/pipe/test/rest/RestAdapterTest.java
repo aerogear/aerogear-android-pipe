@@ -354,6 +354,7 @@ public class RestAdapterTest {
         verify(factory).get(Mockito.argThat(new ObjectVarArgsMatcher(new URL(url.toString() + "rail%2Ftrails?limit=10&where=%7B%22model%22:%22BMW%22%7D"), 60000)));
     }
     
+    @Test
     public void testEscapeComplexUri() throws Exception {
 
         final CountDownLatch latch = new CountDownLatch(1);
@@ -382,8 +383,8 @@ public class RestAdapterTest {
         });
         latch.await(500, TimeUnit.MILLISECONDS);
 
-        verify(factory).get(eq(new URL(url.toString() + "metrics/gauges/MI~R~%5Bacbfe3d2-fd73-43b0-94ad-c38f32abba1f"
-                + "%2FHolu~~%5D~MT~WildFly%20Memory%20Metrics~Heap%20Max/data?start=1463907826698&end=1466586226698")));
+        verify(factory).get(Mockito.argThat(new ObjectVarArgsMatcher(new URL(url.toString() + "metrics/gauges/MI~R~%5Bacbfe3d2-fd73-43b0-"
+                + "94ad-c38f32abba1f%2FHolu~~%5D~MT~WildFly%20Memory%20Metrics~Heap%20Max/data?start=1463907826698&end=1466586226698"), 60000)));
     }
 
     public void runReadWithFilter() throws Exception {
