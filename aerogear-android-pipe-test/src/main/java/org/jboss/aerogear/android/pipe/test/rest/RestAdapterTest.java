@@ -323,6 +323,7 @@ public class RestAdapterTest {
         assertEquals(listClass.points, returnedPoints);
     }
 
+    @Test
     public void runReadWithFilterUsingUri() throws Exception {
 
         final CountDownLatch latch = new CountDownLatch(1);
@@ -350,7 +351,7 @@ public class RestAdapterTest {
         });
         latch.await(500, TimeUnit.MILLISECONDS);
 
-        verify(factory).get(eq(new URL(url.toString() + "rail%2Ftrails?limit=10&where=%7B%22model%22:%22BMW%22%7D")));
+        verify(factory).get(Mockito.argThat(new ObjectVarArgsMatcher(new URL(url.toString() + "rail%2Ftrails?limit=10&where=%7B%22model%22:%22BMW%22%7D"), 60000)));
     }
     
     public void testEscapeComplexUri() throws Exception {
