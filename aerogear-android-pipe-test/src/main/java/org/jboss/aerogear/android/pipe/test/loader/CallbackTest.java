@@ -24,6 +24,7 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import org.jboss.aerogear.android.pipe.callback.AbstractActivityCallback;
 import org.jboss.aerogear.android.pipe.callback.AbstractFragmentCallback;
+import org.jboss.aerogear.android.pipe.callback.AbstractSupportFragmentCallback;
 import org.jboss.aerogear.android.pipe.loader.LoaderAdapter;
 import org.jboss.aerogear.android.pipe.loader.ReadLoader;
 import org.jboss.aerogear.android.pipe.test.util.UnitTestUtils;
@@ -67,6 +68,42 @@ public class CallbackTest extends PatchedActivityInstrumentationTestCase {
 
         LoaderAdapter adapter = new LoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
         VoidFragmentCallback fragmentCallback = new VoidFragmentCallback();
+        ReadLoader loader = Mockito.mock(ReadLoader.class);
+        Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);
+        Mockito.when(loader.hasException()).thenReturn(true);
+        Mockito.when(loader.getException()).thenReturn(new RuntimeException("This is only a test exception."));
+
+        Object data = "Data";
+        CallbackHandler handler = new CallbackHandler(adapter, loader, data);
+        handler.run();
+        assertTrue(fragmentCallback.failCalled);
+        assertNull(UnitTestUtils.getSuperPrivateField(fragmentCallback, "fragment"));
+
+    }
+    
+        @Test
+    public void testPassModernSupportFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+        android.support.v4.app.Fragment fragment = Mockito.mock(android.support.v4.app.Fragment.class);
+
+        LoaderAdapter adapter = new LoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
+        VoidSupportFragmentCallback fragmentCallback = new VoidSupportFragmentCallback();
+        ReadLoader loader = Mockito.mock(ReadLoader.class);
+        Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);
+
+        Object data = "Data";
+        CallbackHandler handler = new CallbackHandler(adapter, loader, data);
+        handler.run();
+        assertTrue(fragmentCallback.successCalled);
+        assertNull(UnitTestUtils.getSuperPrivateField(fragmentCallback, "fragment"));
+
+    }
+
+    @Test
+    public void testFailModernSupportFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+        android.support.v4.app.Fragment fragment = Mockito.mock(android.support.v4.app.Fragment.class);
+
+        LoaderAdapter adapter = new LoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
+        VoidSupportFragmentCallback fragmentCallback = new VoidSupportFragmentCallback();
         ReadLoader loader = Mockito.mock(ReadLoader.class);
         Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);
         Mockito.when(loader.hasException()).thenReturn(true);
@@ -134,6 +171,29 @@ public class CallbackTest extends PatchedActivityInstrumentationTestCase {
         @Override
         public void onFailure(Exception e) {
             assertNotNull(getFragment());
+            failCalled = true;
+        }
+
+    }
+    
+        private static class VoidSupportFragmentCallback extends AbstractSupportFragmentCallback<Object> {
+
+        boolean successCalled = false;
+        boolean failCalled = false;
+
+        public VoidSupportFragmentCallback() {
+            super("HashCode");
+        }
+
+        @Override
+        public void onSuccess(Object data) {
+            assertNotNull(getSupportFragment());
+            successCalled = true;
+        }
+
+        @Override
+        public void onFailure(Exception e) {
+            assertNotNull(getSupportFragment());
             failCalled = true;
         }
 

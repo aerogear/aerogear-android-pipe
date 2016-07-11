@@ -48,6 +48,7 @@ import java.util.Arrays;
 import java.util.Map;
 import org.jboss.aerogear.android.pipe.http.HeaderAndBody;
 import org.jboss.aerogear.android.core.reflection.Scan;
+import org.jboss.aerogear.android.pipe.callback.AbstractSupportFragmentCallback;
 
 /**
  * This class wraps a Pipe in an asynchronous Loader.
@@ -70,6 +71,7 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
     private final Context applicationContext;
     private Fragment fragment;
     private Activity activity;
+    private android.support.v4.app.Fragment supportFragment;
     private final Pipe<T> pipe;
     private final LoaderManager manager;
     private final String name;
@@ -98,6 +100,18 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
         this.name = name;
         this.handler = new Handler(Looper.getMainLooper());
         this.fragment = fragment;
+    }
+    
+        public LoaderAdapter(android.support.v4.app.Fragment supportFragment, Context applicationContext,
+            Pipe<T> pipe, String name) {
+        this.pipe = pipe;
+        this.manager = supportFragment.getActivity().getLoaderManager();
+        this.requestBuilder = pipe.getRequestBuilder();
+        this.responseParser = pipe.getResponseParser();
+        this.applicationContext = applicationContext;
+        this.name = name;
+        this.handler = new Handler(Looper.getMainLooper());
+        this.supportFragment = supportFragment;
     }
 
     @Override
@@ -294,6 +308,20 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
         callback.onFailure(exception);
         callback.setActivity(null);
     }
+    
+    private void supportFragmentSuccess(Callback typelessCallback, Object data) {
+        AbstractSupportFragmentCallback callback = (AbstractSupportFragmentCallback) typelessCallback;
+        callback.setSupportFragment(supportFragment);
+        callback.onSuccess(data);
+        callback.setSupportFragment(null);
+    }
+
+    private void supportFragmentFailure(Callback typelessCallback, Exception exception) {
+        AbstractSupportFragmentCallback callback = (AbstractSupportFragmentCallback) typelessCallback;
+        callback.setSupportFragment(supportFragment);
+        callback.onFailure(exception);
+        callback.setSupportFragment(null);
+    }
 
     private Object extractObject(HeaderAndBody data, AbstractPipeLoader<HeaderAndBody> modernLoader) {
         List results = responseParser.handleResponse(data, getKlass());
@@ -328,8 +356,9 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
                 final Exception exception = modernLoader.getException();
                 Log.e(TAG, exception.getMessage(), exception);
                 if (modernLoader.getCallback() instanceof AbstractFragmentCallback) {
-                    adapter.fragmentFailure(modernLoader.getCallback(),
-                            exception);
+                    adapter.fragmentFailure(modernLoader.getCallback(),exception);
+                } else if (modernLoader.getCallback() instanceof AbstractSupportFragmentCallback){
+                    adapter.supportFragmentFailure(modernLoader.getCallback(),exception);
                 } else if (modernLoader.getCallback() instanceof AbstractActivityCallback) {
                     adapter.activityFailure(modernLoader.getCallback(),
                             exception);
@@ -341,6 +370,8 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
 
                 if (modernLoader.getCallback() instanceof AbstractFragmentCallback) {
                     adapter.fragmentSuccess(modernLoader.getCallback(), data);
+                } else if (modernLoader.getCallback() instanceof AbstractSupportFragmentCallback) {
+                    adapter.supportFragmentSuccess(modernLoader.getCallback(), data);
                 } else if (modernLoader.getCallback() instanceof AbstractActivityCallback) {
                     adapter.activitySuccess(modernLoader.getCallback(), data);
                 } else {
@@ -359,6 +390,10 @@ public class LoaderAdapter<T> implements LoaderPipe<T>,
         } else if (callback instanceof AbstractFragmentCallback) {
             if (fragment == null) {
                 throw new IllegalStateException("An AbstractFragmentCallback was supplied, but there is no Fragment.");
+            }
+        } else if (callback instanceof AbstractSupportFragmentCallback) {
+            if (supportFragment == null) {
+                throw new IllegalStateException("An AbstractSupportFragmentCallback was supplied, but there is no Fragment.");
             }
         }
     }
