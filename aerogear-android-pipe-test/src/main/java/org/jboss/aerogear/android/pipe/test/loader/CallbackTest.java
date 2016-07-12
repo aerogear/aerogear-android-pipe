@@ -17,8 +17,13 @@
 package org.jboss.aerogear.android.pipe.test.loader;
 
 import android.app.Activity;
+//import android.support.v4.app.FragmentActivity;
 import android.app.Fragment;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
@@ -38,7 +43,7 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 
 @RunWith(AndroidJUnit4.class)
-@SuppressWarnings({ "unchecked", "rawtypes" })
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class CallbackTest extends PatchedActivityInstrumentationTestCase {
 
     public CallbackTest() {
@@ -80,40 +85,72 @@ public class CallbackTest extends PatchedActivityInstrumentationTestCase {
         assertNull(UnitTestUtils.getSuperPrivateField(fragmentCallback, "fragment"));
 
     }
-    
-        @Test
-    public void testPassModernSupportFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
-        android.support.v4.app.Fragment fragment = Mockito.mock(android.support.v4.app.Fragment.class);
 
-        LoaderAdapter adapter = new LoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
-        VoidSupportFragmentCallback fragmentCallback = new VoidSupportFragmentCallback();
-        ReadLoader loader = Mockito.mock(ReadLoader.class);
-        Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);
+    @Test
+    public void testPassModernSupportFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException, InterruptedException {
+        final android.support.v4.app.Fragment fragment = new android.support.v4.app.Fragment();
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-        Object data = "Data";
-        CallbackHandler handler = new CallbackHandler(adapter, loader, data);
-        handler.run();
-        assertTrue(fragmentCallback.successCalled);
-        assertNull(UnitTestUtils.getSuperPrivateField(fragmentCallback, "fragment"));
+        fragmentManager.beginTransaction().add(0, fragment).addToBackStack(null).commit();
+        fragmentManager.addOnBackStackChangedListener(new OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                LoaderAdapter adapter = new LoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
+                VoidSupportFragmentCallback fragmentCallback = new VoidSupportFragmentCallback();
+                ReadLoader loader = Mockito.mock(ReadLoader.class);
+                Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);
+
+                Object data = "Data";
+                CallbackHandler handler = new CallbackHandler(adapter, loader, data);
+                handler.run();
+                assertTrue(fragmentCallback.successCalled);
+                try {
+                    assertNull(UnitTestUtils.getSuperPrivateField(fragmentCallback, "fragment"));
+                } catch (NoSuchFieldException ex) {
+                    Logger.getLogger(CallbackTest.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalArgumentException ex) {
+                    Logger.getLogger(CallbackTest.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(CallbackTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
 
     }
 
     @Test
     public void testFailModernSupportFragmentCallbacks() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
-        android.support.v4.app.Fragment fragment = Mockito.mock(android.support.v4.app.Fragment.class);
+        final android.support.v4.app.Fragment fragment = new android.support.v4.app.Fragment();
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-        LoaderAdapter adapter = new LoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
-        VoidSupportFragmentCallback fragmentCallback = new VoidSupportFragmentCallback();
-        ReadLoader loader = Mockito.mock(ReadLoader.class);
-        Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);
-        Mockito.when(loader.hasException()).thenReturn(true);
-        Mockito.when(loader.getException()).thenReturn(new RuntimeException("This is only a test exception."));
+        fragmentManager.beginTransaction().add(0, fragment).addToBackStack(null).commit();
+        fragmentManager.addOnBackStackChangedListener(new OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                LoaderAdapter adapter = new LoaderAdapter(fragment, getActivity(), mock(Pipe.class), "ignore");
+                VoidSupportFragmentCallback fragmentCallback = new VoidSupportFragmentCallback();
+                ReadLoader loader = Mockito.mock(ReadLoader.class);
+                Mockito.when(loader.getCallback()).thenReturn(fragmentCallback);
+                Mockito.when(loader.hasException()).thenReturn(true);
+                Mockito.when(loader.getException()).thenReturn(new RuntimeException("This is only a test exception."));
 
-        Object data = "Data";
-        CallbackHandler handler = new CallbackHandler(adapter, loader, data);
-        handler.run();
-        assertTrue(fragmentCallback.failCalled);
-        assertNull(UnitTestUtils.getSuperPrivateField(fragmentCallback, "fragment"));
+                Object data = "Data";
+                CallbackHandler handler = new CallbackHandler(adapter, loader, data);
+                handler.run();
+                assertTrue(fragmentCallback.failCalled);
+                try {
+                    assertNull(UnitTestUtils.getSuperPrivateField(fragmentCallback, "fragment"));
+                } catch (NoSuchFieldException ex) {
+                    Logger.getLogger(CallbackTest.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalArgumentException ex) {
+                    Logger.getLogger(CallbackTest.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(CallbackTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
 
     }
 
@@ -175,8 +212,8 @@ public class CallbackTest extends PatchedActivityInstrumentationTestCase {
         }
 
     }
-    
-        private static class VoidSupportFragmentCallback extends AbstractSupportFragmentCallback<Object> {
+
+    private static class VoidSupportFragmentCallback extends AbstractSupportFragmentCallback<Object> {
 
         boolean successCalled = false;
         boolean failCalled = false;

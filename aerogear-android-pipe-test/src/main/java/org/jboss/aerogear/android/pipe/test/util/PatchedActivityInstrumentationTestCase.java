@@ -16,7 +16,7 @@
  */
 package org.jboss.aerogear.android.pipe.test.util;
 
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import org.junit.Before;
@@ -33,7 +33,7 @@ public abstract class PatchedActivityInstrumentationTestCase {
     
     private final ActivityTestRule rule;
 
-    public PatchedActivityInstrumentationTestCase(Class<? extends Activity> klass) {
+    public PatchedActivityInstrumentationTestCase(Class<? extends FragmentActivity> klass) {
         rule = new ActivityTestRule(klass, false, false);
     }
     
@@ -46,8 +46,8 @@ public abstract class PatchedActivityInstrumentationTestCase {
         System.setProperty("dexmaker.dexcache", rule.getActivity().getCacheDir().getPath());
     }
     
-    protected Activity getActivity() {
-        return rule.getActivity();
+    protected FragmentActivity getActivity() {
+        return (FragmentActivity)(rule.getActivity());
     }
 
 }
