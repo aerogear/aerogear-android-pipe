@@ -16,13 +16,13 @@
  */
 package org.jboss.aerogear.android.pipe.test;
 
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.WindowManager;
 import org.jboss.aerogear.android.pipe.test.*;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

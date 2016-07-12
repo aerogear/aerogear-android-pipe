@@ -17,6 +17,7 @@
 package org.jboss.aerogear.android.pipe.test.loader;
 
 import android.app.Activity;
+//import android.support.v4.app.FragmentActivity;
 import android.app.Fragment;
 import android.support.test.runner.AndroidJUnit4;
 import static junit.framework.Assert.assertNotNull;
