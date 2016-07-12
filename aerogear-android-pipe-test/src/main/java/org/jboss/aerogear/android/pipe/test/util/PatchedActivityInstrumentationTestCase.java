@@ -47,7 +47,7 @@ public abstract class PatchedActivityInstrumentationTestCase {
     }
     
     protected FragmentActivity getActivity() {
-        return rule.getActivity();
+        return (FragmentActivity)(rule.getActivity());
     }
 
 }
