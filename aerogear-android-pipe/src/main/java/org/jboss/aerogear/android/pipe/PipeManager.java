@@ -138,5 +138,22 @@ public class PipeManager {
         adapter.setLoaderIds(loaderIdsForNamed);
         return adapter;
     }
+    
+    /**
+     * Look up for a pipe object. This will wrap the Pipe in a Loader.
+     * 
+     * @param name the name of the actual pipe
+     * @param fragment the Fragment whose lifecycle the activity will follow
+     * @param applicationContext the Context of the application.
+     * 
+     * @return the new created Pipe object
+     * 
+     */
+    public static LoaderPipe getPipe(String name, android.support.v4.app.Fragment fragment, Context applicationContext) {
+        Pipe pipe = pipes.get(name);
+        LoaderAdapter adapter = new LoaderAdapter(fragment, applicationContext, pipe, name);
+        adapter.setLoaderIds(loaderIdsForNamed);
+        return adapter;
+    }
 
 }

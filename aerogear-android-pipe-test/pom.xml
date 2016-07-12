@@ -115,6 +115,13 @@
             <version>${android.support.test.version}</version>
             <type>aar</type>
         </dependency>
+        
+        <dependency>
+            <groupId>com.android.support</groupId>
+            <artifactId>support-v4</artifactId>
+            <version>23.4.0</version>
+            <type>aar</type>
+        </dependency>
 
     </dependencies>
 
