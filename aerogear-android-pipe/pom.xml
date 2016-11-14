@@ -44,7 +44,6 @@
         <aerogear.android.core.version>3.0.0</aerogear.android.core.version>
 
         <!-- Plugins versions -->
-        <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
         <builder.helper.plugin.version>1.12</builder.helper.plugin.version>
 
     </properties>
@@ -108,7 +107,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven.javadoc.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
