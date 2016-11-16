@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import junit.framework.Assert;
+
 
 import org.jboss.aerogear.android.pipe.loader.LoaderAdapter;
 import org.jboss.aerogear.android.pipe.loader.ReadLoader;
@@ -62,6 +62,7 @@ import org.jboss.aerogear.android.pipe.LoaderPipe;
 import org.jboss.aerogear.android.pipe.Pipe;
 import org.jboss.aerogear.android.pipe.PipeHandler;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.mockito.Mockito;
 
 import android.annotation.TargetApi;
@@ -80,8 +81,8 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import org.jboss.aerogear.android.pipe.test.util.PatchedActivityInstrumentationTestCase;
 import org.jboss.aerogear.android.pipe.callback.AbstractFragmentCallback;
 import org.jboss.aerogear.android.pipe.PipeManager;

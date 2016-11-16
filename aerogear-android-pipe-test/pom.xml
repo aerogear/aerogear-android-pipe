@@ -116,13 +116,6 @@
             <type>aar</type>
         </dependency>
         
-        <dependency>
-            <groupId>com.android.support</groupId>
-            <artifactId>support-v4</artifactId>
-            <version>23.4.0</version>
-            <type>aar</type>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -130,6 +123,7 @@
             <plugin>
                 <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
+                <version>${maven.android.plugin.version}</version>
                 <configuration>
                     <test>
                         <debug>${android.debug}</debug>

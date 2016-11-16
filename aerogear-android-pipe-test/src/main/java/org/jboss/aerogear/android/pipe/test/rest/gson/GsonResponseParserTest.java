@@ -18,7 +18,7 @@ package org.jboss.aerogear.android.pipe.test.rest.gson;
 
 
 import android.support.test.runner.AndroidJUnit4;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.jboss.aerogear.android.pipe.http.HeaderAndBody;
 import org.jboss.aerogear.android.pipe.rest.gson.GsonResponseParser;
 import org.jboss.aerogear.android.pipe.test.helper.Data;

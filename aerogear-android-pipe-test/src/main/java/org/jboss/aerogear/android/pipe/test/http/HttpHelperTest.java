@@ -19,8 +19,8 @@ package org.jboss.aerogear.android.pipe.test.http;
 import android.support.test.runner.AndroidJUnit4;
 import java.util.HashMap;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotSame;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 import org.jboss.aerogear.android.pipe.http.HeaderAndBody;
 import org.jboss.aerogear.android.pipe.http.HttpException;
 import org.junit.Test;
