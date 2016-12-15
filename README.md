@@ -73,7 +73,6 @@ For more details about that please consult [our pipe documentation](http://aerog
 Take a look in our demo apps
 
 * [Chuck Norris Jokes](https://github.com/aerogear/aerogear-android-cookbook/blob/master/ChuckNorrisJokes)
-* [AG Reddit](https://github.com/aerogear/aerogear-android-cookbook/blob/master/AGReddit)
 * [ShootAndShare](https://github.com/aerogear/aerogear-android-cookbook/blob/master/ShootAndShare)
 * [AuthExamples](https://github.com/aerogear/aerogear-android-cookbook/blob/master/AuthExamples)
 * [AeroDoc](https://github.com/aerogear/aerogear-android-cookbook/blob/master/AeroDoc)
