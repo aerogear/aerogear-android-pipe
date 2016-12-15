@@ -39,7 +39,7 @@ Add to your application's `build.gradle` file
 
 ```
 dependencies {
-  compile 'org.jboss.aerogear:aerogear-android-pipe:2.1.1'
+  compile 'org.jboss.aerogear:aerogear-android-pipe:3.2.0'
 }
 ```
 
@@ -47,12 +47,11 @@ dependencies {
 
 Include the following dependencies in your project's `pom.xml`
 
-
 ```
 <dependency>
   <groupId>org.jboss.aerogear</groupId>
   <artifactId>aerogear-android-pipe</artifactId>
-  <version>2.1.1</version>
+  <version>3.2.0</version>
   <scope>provided</scope>
   <type>jar</type>
 </dependency>
@@ -60,7 +59,7 @@ Include the following dependencies in your project's `pom.xml`
 <dependency>
   <groupId>org.jboss.aerogear</groupId>
   <artifactId>aerogear-android-pipe</artifactId>
-  <version>2.1.1</version>
+  <version>3.2.0</version>
   <type>aar</type>
 </dependency>
 ```
