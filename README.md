@@ -5,8 +5,6 @@
 [![Maven Central](https://img.shields.io/maven-central/v/org.jboss.aerogear/aerogear-android-pipe.svg)](http://search.maven.org/#search%7Cga%7C1%7Caerogear-android-pipe)
 [![Javadocs](http://www.javadoc.io/badge/org.jboss.aerogear/aerogear-android-pipe.svg?color=blue)](http://www.javadoc.io/doc/org.jboss.aerogear/aerogear-android-pipe)
 
-AeroGear's Android libraries were built as jar and aar packages using [Maven](http://maven.apache.org/) and the [android-maven-plugin](https://github.com/jayway/maven-android-plugin). The project follows the standard Maven layout so it can be imported directly into most IDEs as a Maven project.
-
 ## Pipe
 
 AeroGear uses a Pipe metaphor for connecting to a remote web service.   
@@ -14,7 +12,7 @@ AeroGear uses a Pipe metaphor for connecting to a remote web service.
 |                 | Project Info  |
 | --------------- | ------------- |
 | License:        | Apache License, Version 2.0  |
-| Build:          | Maven  |
+| Build:          | Gradle |
 | Documentation:  | https://aerogear.org/android/ |
 | Issue tracker:  | https://issues.jboss.org/browse/AGDROID  |
 | Mailing lists:  | [aerogear-users](http://aerogear-users.1116366.n5.nabble.com/) ([subscribe](https://lists.jboss.org/mailman/listinfo/aerogear-users))  |
