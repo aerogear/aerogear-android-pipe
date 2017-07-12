@@ -1,7 +1,7 @@
 # AeroGear Android Pipe
 
-[![Maintenance](https://img.shields.io/maintenance/yes/2016.svg)](http://github.com/aerogear/aerogear-android-pipe)
 [![Travis](https://img.shields.io/travis/aerogear/aerogear-android-pipe.svg)](http://travis-ci.org/aerogear/aerogear-android-pipe)
+[![circle-ci](https://img.shields.io/circleci/project/github/aerogear/aerogear-android-pipe/master.svg)](https://circleci.com/gh/aerogear/aerogear-android-pipe)
 [![License](https://img.shields.io/badge/-Apache%202.0-blue.svg)](https://opensource.org/s/Apache-2.0)
 [![Maven Central](https://img.shields.io/maven-central/v/org.jboss.aerogear/aerogear-android-pipe.svg)](http://search.maven.org/#search%7Cga%7C1%7Caerogear-android-pipe)
 [![Javadocs](http://www.javadoc.io/badge/org.jboss.aerogear/aerogear-android-pipe.svg?color=blue)](http://www.javadoc.io/doc/org.jboss.aerogear/aerogear-android-pipe)
