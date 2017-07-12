@@ -17,8 +17,10 @@
 package org.jboss.aerogear.android.pipe.loader;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.graphics.Point;
 import android.os.Build;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.google.gson.GsonBuilder;
@@ -48,13 +50,16 @@ import org.jboss.aerogear.android.pipe.http.HttpStubProvider;
 import org.jboss.aerogear.android.pipe.rest.RestfulPipeConfiguration;
 import org.jboss.aerogear.android.pipe.rest.gson.GsonRequestBuilder;
 import org.jboss.aerogear.android.pipe.rest.multipart.MultipartRequestBuilder;
+import org.jboss.aerogear.android.pipe.test.MainActivity;
 import org.jboss.aerogear.android.pipe.util.ObjectVarArgsMatcher;
 import org.jboss.aerogear.android.pipe.util.UnitTestUtils;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
@@ -93,6 +98,10 @@ public class LoaderAdapterTest {
     private static final String SERIALIZED_POINTS = "{\"points\":[{\"x\":0,\"y\":0},{\"x\":1,\"y\":2},{\"x\":2,\"y\":4},{\"x\":3,\"y\":6},{\"x\":4,\"y\":8},{\"x\":5,\"y\":10},{\"x\":6,\"y\":12},{\"x\":7,\"y\":14},{\"x\":8,\"y\":16},{\"x\":9,\"y\":18}],\"id\":\"1\"}";
     private URL url;
     private URL listUrl;
+
+    @Rule
+    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
+
 
     @Before
     public void setUp() throws MalformedURLException, Exception {
@@ -448,8 +457,8 @@ public class LoaderAdapterTest {
     public void testMultipleCallsToSaveCallDeliver() {
         PipeHandler handler = mock(PipeHandler.class);
         final AtomicBoolean called = new AtomicBoolean(false);
-        when(handler.onRawSave(Matchers.anyString(), (byte[]) anyObject())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
-        SaveLoader loader = new SaveLoader(getActivity(), null, handler, null, null) {
+        when(handler.onRawSave(ArgumentMatchers.anyString(), (byte[]) any())).thenReturn(new HeaderAndBody(new byte[]{}, new HashMap<String, Object>()));
+        SaveLoader loader = new SaveLoader(getActivity(), null, handler, new byte[]{}, "string") {
 
             @Override
             public void deliverResult(Object data) {
@@ -756,5 +765,9 @@ public class LoaderAdapterTest {
         public void setString(String string) {
             this.string = string;
         }
+    }
+
+    private Activity getActivity() {
+        return activityRule.getActivity();
     }
 }
