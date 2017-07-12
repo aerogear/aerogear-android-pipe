@@ -18,6 +18,7 @@ package org.jboss.aerogear.android.pipe.http;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -44,11 +45,11 @@ public class HttpException extends RuntimeException {
     private final int statusCode;
 
     public HttpException(byte[] data, int statusCode) {
-        this(data, statusCode, String.format(DEFAULT_MESSAGE, statusCode), new HashMap<String, String>());
+        this(data, statusCode, String.format(Locale.getDefault(), DEFAULT_MESSAGE, statusCode), new HashMap<String, String>());
     }
 
     public HttpException(byte[] data, int statusCode, Map<String, String> headers) {
-        this(data, statusCode, String.format(DEFAULT_MESSAGE, statusCode), headers);
+        this(data, statusCode, String.format(Locale.getDefault(), DEFAULT_MESSAGE, statusCode), headers);
     }
 
     public HttpException(byte[] data, int statusCode, String message) {
