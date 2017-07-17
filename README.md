@@ -18,14 +18,6 @@ AeroGear uses a Pipe metaphor for connecting to a remote web service.
 | Mailing lists:  | [aerogear-users](http://aerogear-users.1116366.n5.nabble.com/) ([subscribe](https://lists.jboss.org/mailman/listinfo/aerogear-users))  |
 |                 | [aerogear-dev](http://aerogear-dev.1069024.n5.nabble.com/) ([subscribe](https://lists.jboss.org/mailman/listinfo/aerogear-dev)) 
 
-## Building
-
-Please take a look at the [step by step on our website](http://aerogear.org/docs/guides/aerogear-android/how-to-build-aerogear-android/). 
-
-*The following dependencies are required to build this project:*
-
-* [aerogear-android-core](http://github.com/aerogear/aerogear-android-core) 
-
 ## Usage
 
 There are two supported ways of developing apps using AeroGear for Android: Android Studio and Maven.
