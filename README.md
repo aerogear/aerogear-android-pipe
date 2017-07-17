@@ -41,14 +41,6 @@ Include the following dependencies in your project's `pom.xml`
   <groupId>org.jboss.aerogear</groupId>
   <artifactId>aerogear-android-pipe</artifactId>
   <version>3.2.0</version>
-  <scope>provided</scope>
-  <type>jar</type>
-</dependency>
-
-<dependency>
-  <groupId>org.jboss.aerogear</groupId>
-  <artifactId>aerogear-android-pipe</artifactId>
-  <version>3.2.0</version>
   <type>aar</type>
 </dependency>
 ```
