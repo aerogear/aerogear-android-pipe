@@ -28,7 +28,7 @@ Add to your application's `build.gradle` file
 
 ```groovy
 dependencies {
-  compile 'org.jboss.aerogear:aerogear-android-pipe:3.2.0'
+  compile 'org.jboss.aerogear:aerogear-android-pipe:4.0.0'
 }
 ```
 
@@ -40,7 +40,7 @@ Include the following dependencies in your project's `pom.xml`
 <dependency>
   <groupId>org.jboss.aerogear</groupId>
   <artifactId>aerogear-android-pipe</artifactId>
-  <version>3.2.0</version>
+  <version>4.0.0</version>
   <type>aar</type>
 </dependency>
 ```
